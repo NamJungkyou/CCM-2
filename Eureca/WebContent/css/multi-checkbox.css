@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+.dropdownBox {
+	display: inline-block;
+}
+
+.dropdownBox * {
+	vertical-align: middle;
+	padding: 0;
+	margin: 0;
+	font-size: 9pt;
+}
+
+.dropdownBox dt {
+	cursor: pointer;
+}
+
+.dropdownBox dt, .dropdownBox dd {
+	width: 200px;
+}
+
+.dropdownBox dt {
+	display: inline-block;
+	vertical-align: middle;
+	line-height: 23px;
+	padding: 0em 0.5em;
+	border: 1px solid #000;
+	background-color: #fff;
+}
+
+.dropdownBox dt>span {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.dropdownBox dt>span.multiCheckValues {
+	width: 90%;
+}
+
+.dropdownBox dt>span.dropBtn {
+	width: 10px;
+}
+
+.dropdownBox dd {
+	display: none;
+	position: absolute;
+	overflow-x: hidden;
+	overflow-y: auto;
+	word-break: break-all;
+	z-index: 100;
+	border: 1px solid #000;
+	background-color: #ffffff;
+	max-height: 200px;
+	padding: 0.3em 0.5em;
+}
+
+.dropdownBox ul, .dropdownBox li {
+	list-style: none;
+}
+
+.dropdownBox dd>ul li {
+	line-height: 25px;
+}
