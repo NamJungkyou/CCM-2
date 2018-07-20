@@ -13,7 +13,7 @@ import ccm.controller.action.Action;
 import ccm.dao.CommonDAO;
 import ccm.data.table.Employee;
 import ccm.data.table.Freelancer;
-import ccm.data.table.JoinProject_view;
+import ccm.data.table.JoinProjectView;
 
 public class SelectProjectAction implements Action{
 
@@ -22,7 +22,7 @@ public class SelectProjectAction implements Action{
 		// TODO Auto-generated method stub
 		String url ="common/msg/selectProject.jsp";
 		String freeId = request.getParameter("freeId");
-		List <JoinProject_view> joinproj = null;
+		List <JoinProjectView> joinproj = null;
 		
 		CommonDAO cDao = CommonDAO.getInstance();
 

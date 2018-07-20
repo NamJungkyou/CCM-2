@@ -13,8 +13,8 @@ import ccm.data.table.DBMS;
 import ccm.data.table.Education;
 import ccm.data.table.Framework;
 import ccm.data.table.Freelancer;
+import ccm.data.table.JoinProjectView;
 import ccm.data.table.ProgLang;
-import ccm.data.table.ProjectView;
 import ccm.data.table.SkillInventory;
 import ccm.util.DBManager;
 
@@ -653,17 +653,6 @@ public class FreelancerDAO {
 		String frameSkillDeleteSql = "delete from frameworkskill where joinnum=(select joinnum from joinproj where projnum=?)";
 		String frameSkillInsertSql2 = "insert into frameworkskill(joinnum, framenum) values((select joinnum from joinproj where projnum=?), ?)";
 
-		/*
-		 * insert into project (projname, isextern, dbNum, projcompany, projtarget)
-		 * values ('유전자분석시스템',1, 1, '정규소프트', '한남생나대연구소'); insert into joinproj (projnum,
-		 * freeid, projrole, joinprojdate, exitprojdate) values((select
-		 * last_insert_id()), 'free1', '개발',date_format('2017-05-12','%Y-%m-%d'),
-		 * date_format('2017-05-12','%Y-%m-%d')); insert into langskill(joinnum,
-		 * langnum) values((select last_insert_id()), 6); insert into
-		 * frameworkskill(joinnum, framenum) values((select joinnum from langskill where
-		 * langskillnum=(select last_insert_id())), 2);
-		 */
-
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -851,33 +840,35 @@ public class FreelancerDAO {
 		return freestate;
 	}
 
-	public List<ProjectView> selectJoinProjList(int freeId){
-		String sql = "select * from projoinfreefamelangcnt_view where projnum = ? group by projnum";
-		List<ProjectView> list = new ArrayList<ProjectView>();
-		
+	public List<JoinProjectView> selectJoinProjectViewList(String freeId) {
+		String sql = "select * from projoinfreeframelangcnt_view where projnum = ? group by projnum";
+		List<JoinProjectView> list = new ArrayList<JoinProjectView>();
+
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		
+
 		try {
-			ProjectView proj = new ProjectView();
+			JoinProjectView proj = new JoinProjectView();
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, freeId);
+			pstmt.setString(1, freeId);
 			rs = pstmt.executeQuery();
-			
-			proj.setProjNum(rs.getInt("projNum"));
-			proj.setProjName(rs.getString("projName"));
-			proj.setJoinFLCount(rs.getInt("joinFreeCount"));
-			proj.setRequireCount(rs.getInt("requireCount"));
-			proj.setProjState(rs.getString("projState"));
-			proj.setProjName(rs.getString("joinProjDate"));
-			proj.setProjName(rs.getString("exitProjDate"));
-			proj.setProjPlan(rs.getString("projPlan"));
-			proj.setProjName(rs.getString("projName"));
-			
-			list.add(proj);
-		} catch (Exception e){
+
+			while (rs.next()) {
+				proj.setProjNum(rs.getInt("projNum"));
+				proj.setProjName(rs.getString("projName"));
+				proj.setJoinFLCount(rs.getInt("joinFreeCount"));
+				proj.setRequireCount(rs.getInt("requireCount"));
+				proj.setProjState(rs.getString("projState"));
+				proj.setProjStartDate(rs.getString("projStartDate"));
+				proj.setJoinProjDate(rs.getDate("joinProjDate"));
+//				proj.setExitProjDate(rs.getDate("exitProjDate"));
+				proj.setProjPlan(rs.getString("projPlan"));
+
+				list.add(proj);
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			DBManager.close(conn, pstmt, rs);
@@ -913,7 +904,6 @@ public class FreelancerDAO {
 	}
 
 	public Freelancer getfVo(String id) {
-		// TODO Auto-generated method stub
 
 		Connection conn = null;
 		String sql = "select * from freelancer where freeId=?";
@@ -1020,7 +1010,7 @@ public class FreelancerDAO {
 
 	/*-------------------------------박태근------------------------------------------*/
 	/*
-	 * public Freelancer getfVo(String id) { // TODO Auto-generated method stub
+	 * public Freelancer getfVo(String id) { //
 	 * 
 	 * Connection conn = null; String sql =
 	 * "select * from freelancer where freeId=?"; PreparedStatement pstmt = null;

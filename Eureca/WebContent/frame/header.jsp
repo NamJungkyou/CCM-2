@@ -90,7 +90,7 @@
 								<li><a href="FreelancerServ?command=freelancer_Profile">프로필 등록</a></li>
 							<!-- <li><a href="ProjectServ?command=project_list">프로젝트 관리</a></li> -->
 							<li><a href="FreelancerServ?command=freelancer_join_project">프로젝트 참여신청</a></li>
-							<li><a href="CommonServ?command=show_message">My페이지</a></li>
+							<li><a href="FreelancerServ?command=freelancer_myPage">My페이지</a></li>
 						</ul>
 					</div>
 				</c:otherwise>

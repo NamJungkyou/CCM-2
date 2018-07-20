@@ -13,7 +13,7 @@ import ccm.data.table.Employee;
 import ccm.data.table.Framework;
 import ccm.data.table.Freelancer;
 import ccm.data.table.JoinProj;
-import ccm.data.table.JoinProject_view;
+import ccm.data.table.JoinProjectView;
 import ccm.data.table.LangAndDBAndFrame;
 import ccm.data.table.Message;
 import ccm.data.table.ProgLang;
@@ -802,10 +802,10 @@ public class CommonDAO {
 		return pVo;
 	}
 	
-	public List<JoinProject_view> selectJoinProjectByFreeId(String id) {
+	public List<JoinProjectView> selectJoinProjectByFreeId(String id) {
 		String sql = "select * from joinProject where freeId='"+ id + "' order by joinNum desc";
 
-		List<JoinProject_view> list = new ArrayList<JoinProject_view>();
+		List<JoinProjectView> list = new ArrayList<JoinProjectView>();
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -818,7 +818,7 @@ public class CommonDAO {
 
 			while (rs.next()) {
 				
-				JoinProject_view jVo = new JoinProject_view();
+				JoinProjectView jVo = new JoinProjectView();
 				
 				jVo.setParams(rs);
 				
