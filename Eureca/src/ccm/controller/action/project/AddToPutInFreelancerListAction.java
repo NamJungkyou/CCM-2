@@ -1,4 +1,4 @@
-package ccm.controller.action.projact;
+package ccm.controller.action.project;
 
 import java.io.IOException;
 import java.util.ArrayList;

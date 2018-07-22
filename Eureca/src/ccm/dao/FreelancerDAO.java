@@ -841,32 +841,37 @@ public class FreelancerDAO {
 	}
 
 	public List<JoinProjectView> selectJoinProjectViewList(String freeId) {
-		String sql = "select * from projoinfreeframelangcnt_view where projnum = ? group by projnum";
+		String sql = "select * from projoinfreeframelangcnt_view where freeid = ? group by projnum";
 		List<JoinProjectView> list = new ArrayList<JoinProjectView>();
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
+		System.out.println(freeId);
 		try {
-			JoinProjectView proj = new JoinProjectView();
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, freeId);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				proj.setProjNum(rs.getInt("projNum"));
-				proj.setProjName(rs.getString("projName"));
-				proj.setJoinFLCount(rs.getInt("joinFreeCount"));
-				proj.setRequireCount(rs.getInt("requireCount"));
-				proj.setProjState(rs.getString("projState"));
-				proj.setProjStartDate(rs.getString("projStartDate"));
-				proj.setJoinProjDate(rs.getDate("joinProjDate"));
+				JoinProjectView proj = new JoinProjectView();
+				System.out.println("프로젝트 명 = " +rs.getString("projname"));
+				proj.setProjNum(rs.getInt("projnum"));
+				proj.setProjName(rs.getString("projname"));
+				proj.setJoinFLCount(rs.getInt("joinfreecount"));
+				proj.setRequireCount(rs.getInt("requirecount"));
+				proj.setProjState(rs.getString("projstate"));
+				proj.setProjStartDate(rs.getString("projstartdate"));
+				proj.setJoinProjDate(rs.getDate("joinprojdate"));
 //				proj.setExitProjDate(rs.getDate("exitProjDate"));
 				proj.setProjPlan(rs.getString("projPlan"));
 
 				list.add(proj);
+			}
+			for(JoinProjectView proj : list) {
+				System.out.println(proj);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

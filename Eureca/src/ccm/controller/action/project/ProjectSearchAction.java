@@ -1,4 +1,4 @@
-package ccm.controller.action.projact;
+package ccm.controller.action.project;
 
 import java.io.IOException;
 import java.util.List;
@@ -19,15 +19,13 @@ import ccm.data.table.JoinProj;
 import ccm.data.table.ProgLang;
 import ccm.data.table.ProjectView;
 
-public class GoToPutInOfSearchProjectAction implements Action
-{
+public class ProjectSearchAction implements Action {
 
 	@Override
-	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-	{
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
-		String url = "/project/putinofsearchproject.jsp";
+		String url = "/project/projectSearch.jsp";
 
 		ProjectViewDAO projectViewDao = ProjectViewDAO.getInstance();
 		CommonDAO commonDao = CommonDAO.getInstance();
@@ -122,7 +120,6 @@ public class GoToPutInOfSearchProjectAction implements Action
 			
 			ParamInt joinFreeParamInt = projectViewDao.proJoinFreePaging(pageNum, Integer.parseInt(projNum));
 			
-			request.setAttribute("projNum", projNum);
 			request.setAttribute("joinFreePageNum", joinFreePageNum);
 			request.setAttribute("joinFreePageCount", joinFreeParamInt.getPageCount());
 			request.setAttribute("joinFreeFirstPage", joinFreeParamInt.getFirstPage());

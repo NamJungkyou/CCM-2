@@ -1,4 +1,4 @@
-package ccm.controller.action.projact;
+package ccm.controller.action.project;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import ccm.controller.action.Action;
 import ccm.dao.ProjectAdministrationDAO;
 import ccm.data.FreeIdFreeNameStartEndDate;
 
-public class SendMessageAndPutInProcessAction implements Action {
+public class SendMessageForPutInProcessAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
@@ -45,8 +45,8 @@ public class SendMessageAndPutInProcessAction implements Action {
 		String startDate = startDates[Integer.parseInt(request.getParameter("index"))];
 		String exitDate = endDates[Integer.parseInt(request.getParameter("index"))];
 		
-		ProjectAdministrationDAO.getInstance().sendMessageAndPutIn(projNum,
-				empId, freeId, freeName, startDate, exitDate);
+		ProjectAdministrationDAO.getInstance().sendMessageForPutInRequest(projNum, empId, freeId, freeName,
+				startDate, exitDate);
 		
 		ArrayList<FreeIdFreeNameStartEndDate> freeList = new ArrayList<FreeIdFreeNameStartEndDate>(); 
 		
@@ -65,12 +65,6 @@ public class SendMessageAndPutInProcessAction implements Action {
 		request.setAttribute("projName", projName);
 		
 		request.getRequestDispatcher("/project/putRequestOrDelete.jsp").forward(request, response);
-		
-		/*response.setContentType("text/html;charset=UTF-8");
-		response.getWriter().println("<html><head></head><body>");
-		response.getWriter().println("<script>");
-		response.getWriter().println("alert(\"투입되었습니다\");");
-		response.getWriter().println("</script>");
-		response.getWriter().println("</body></html>");*/
 	}
+
 }

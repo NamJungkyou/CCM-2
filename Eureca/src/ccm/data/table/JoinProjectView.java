@@ -15,6 +15,8 @@ public class JoinProjectView extends ProjectView {
 	private Date joinAcceptDate; // 접수일
 	private String freeId; // 프리랜서 번호
 
+	
+	
 	public String getJoinNum() {
 		return joinNum;
 	}
@@ -109,4 +111,13 @@ public class JoinProjectView extends ProjectView {
 		setProjDevelopSort(rs.getString("projDevelopSort"));
 		setDbNum(rs.getInt("DBNum"));
 	}
+
+	@Override
+	public String toString() {
+		return "JoinProjectView [joinNum=" + joinNum + ", joinProjDate=" + joinProjDate + ", exitProjDate="
+				+ exitProjDate + ", projRole=" + projRole + ", freeState=" + freeState + ", applicationDate="
+				+ applicationDate + ", joinAcceptDate=" + joinAcceptDate + ", freeId=" + freeId + "projName="+getProjName()+"]";
+	}
+	
+	
 }
