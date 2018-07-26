@@ -647,7 +647,7 @@ public class ProjectViewDAO {
 	public List<ProjectView> searchAllCheckedProject(String projName, String[] devCount, String[] langCount,
 			String[] dbCount, String[] tfwCount, String time1, String time2, String order, int pageNum) {
 
-		// 
+		// 전체 정보를 조회하는 기본 쿼리
 		String sql = "select * from projoinfreeframelang_view";
 
 		System.out.println("dao 프로젝트명 = " + projName);
