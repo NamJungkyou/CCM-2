@@ -18,16 +18,27 @@ import ccm.data.table.Project;
 import ccm.data.table.ProjectView;
 import ccm.util.DBManager;
 
+/**
+ * 프로젝트에 관련된 메소드를 정의해 놓은 클래스
+ * 
+ * @author 글로벌IT경영 남정규
+ *
+ */
 public class ProjectViewDAO {
+	// 
 	public static ProjectViewDAO instance = new ProjectViewDAO();
 
 	public static ProjectViewDAO getInstance() {
 		return instance;
 	}
 
+	/**
+	 * project테이블의 모든 정보를 가져오는 메소드
+	 * @return
+	 */
 	public List<Project> selectProjectList() {
-		String sql = "select * from project";
 
+		// 필요한 객체 선언
 		List<Project> list = new ArrayList<Project>();
 
 		Project pro = null;
@@ -36,12 +47,21 @@ public class ProjectViewDAO {
 		ResultSet rs = null;
 
 		try {
+			// 커넥션 연결
 			conn = DBManager.getConnection();
+			
+			// project테이블의 모든 정보를 조회하는 쿼리 준비
+			String sql = "select * from project";
 			stmt = conn.createStatement();
+			
+			// 쿼리 실행
 			rs = stmt.executeQuery(sql);
 
+			// 실행 결과 처리
 			while (rs.next()) {
+				// 프로젝트 객체 생성
 				pro = new Project();
+				// 객체의 멤버변수에 테이블의 각 컬럼에 해당하는 정보를 수정자를 통해 설정
 				pro.setProjNum(rs.getInt("projnum"));
 				pro.setIsExtern(rs.getBoolean("isextern"));
 				pro.setProjDevelopSort(rs.getString("projdevelopsort"));
@@ -61,20 +81,26 @@ public class ProjectViewDAO {
 				pro.setProjState(rs.getString("projstate"));
 				pro.setProjTarget(rs.getString("projtarget"));
 				pro.setDbNum(rs.getInt("dbnum"));
-
+				
+				//list에 pro를 추가
 				list.add(pro);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			// 리소스 해제
 			DBManager.close(conn, stmt, rs);
 		}
 		return list;
 	}
 
+	/**
+	 *  project 테이블과 dbms 테이블을 조인하여 프로젝트에 사용된 DBMS 정보를 가져오는 메소드
+	 * @return
+	 */
 	public List<DBMS> selectProjectDBMSList() {
-		String sql = "select distinct * from projdbmsview";
-
+		
+		// 필요한 객체 선언
 		List<DBMS> list = new ArrayList<DBMS>();
 
 		DBMS db = null;
@@ -83,29 +109,43 @@ public class ProjectViewDAO {
 		ResultSet rs = null;
 
 		try {
+			// 커넥션 연결
 			conn = DBManager.getConnection();
+			
+			// project 테이블과 dbms 테이블을 조인하여 생성한 
+			//projdbmsview 뷰의 모든 정보를 중복 제거하여 조회하는 쿼리 준비
+			String sql = "select distinct * from projdbmsview";
 			stmt = conn.createStatement();
+			
+			// 쿼리 실행
 			rs = stmt.executeQuery(sql);
 
+			// 실행결과 처리
 			while (rs.next()) {
 				db = new DBMS();
+				// 실행결과에서 원하는 컬럼의 값들만 가져와 수정자를 통해 db에 할당
 				db.setDbNum(rs.getInt("dbnum"));
 				db.setDbName(rs.getString("dbname"));
-
+				
+				// list에 db를 추가
 				list.add(db);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			// 리소스 해제
 			DBManager.close(conn, stmt, rs);
 		}
 		return list;
 	}
 
-	// 프로젝트에 사용된 언어
+	/**
+	 * 프로젝트에 사용된 모든 언어의 정보를 가져오는 메소드
+	 * @return
+	 */
 	public List<ProgLang> selectProjLangList() {
-		String sql = "select distinct * from projlangview";
-
+		
+		// 필요한 객체 선언
 		List<ProgLang> list = new ArrayList<ProgLang>();
 
 		ProgLang plang = null;
@@ -114,13 +154,18 @@ public class ProjectViewDAO {
 		ResultSet rs = null;
 
 		try {
+			// 커넥션 연결
+			
 			conn = DBManager.getConnection();
+			
+			// project, proglang, projlang 테이블을 조인하여 생성한 
+			// projlangview 뷰의 모든 정보를 중복 제거하여 조회하는 쿼리 준비
+			String sql = "select distinct * from projlangview";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				plang = new ProgLang();
-				/* plang.setLangNum(rs.getInt("langnum")); */
 				plang.setLangName(rs.getString("langname"));
 
 				list.add(plang);
@@ -133,10 +178,13 @@ public class ProjectViewDAO {
 		return list;
 	}
 
-	// 프로젝트에 사용된 프레임워크 전체 출력
+	/**
+	 * 프로젝트에 사용된 모든 프레임워크 정보를 가져오는 메소드
+	 * @return
+	 */
 	public List<Framework> selectProjFameworkList() {
-		String sql = "select distinct * from projframeview";
 
+		// 필요한 객체 선언
 		List<Framework> list = new ArrayList<Framework>();
 
 		Framework fwk = null;
@@ -145,17 +193,24 @@ public class ProjectViewDAO {
 		ResultSet rs = null;
 
 		try {
+			// 커넥션 연결
 			conn = DBManager.getConnection();
+			
+			// project, projfamework, framework 테이블을 조인하여 생성한
+			// projfameview 뷰의 모든 정보를 중복 제거하여 조회하는 쿼리 준비
+			String sql = "select distinct * from projframeview";
 			stmt = conn.createStatement();
+			
+			//쿼리 실행
 			rs = stmt.executeQuery(sql);
 
 			while (rs.next()) {
 				fwk = new Framework();
-				/* fwk.setFrameNum(rs.getInt("framenum")); */
+//				fwk.setFrameNum(rs.getInt("framenum"));  // 현재 프레임워크 번호는 필요하지 않아 주석처리 하였음
 				fwk.setFrameName(rs.getString("framename"));
-				/*
-				 * fwk.setFrameDevelopField(rs.getString("framedevelopfield"));
-				 */
+//				fwk.setFrameDevelopField(rs.getString("framedevelopfield")); // 현재 개발 분야는 필요하지 않아 주석처리 하였음
+				 
+				
 				list.add(fwk);
 			}
 		} catch (Exception e) {
@@ -166,9 +221,14 @@ public class ProjectViewDAO {
 		return list;
 	}
 
+	/**
+	 * 참여한 프리랜서 수, db 명, 예상 종료일, 남은 기간은 project 테이블에 없기때문에 
+	 * project와 dbms 테이블, projjoinedfreelancer 뷰를 조인하여 조회한 결과를
+	 * ProjectView 리스트로 받는 메소드
+	 * @return
+	 */
 	public List<ProjectView> selectAllProjectInfo() {
-		String sql = "select * from projoinfreecount_view";
-
+		
 		List<ProjectView> proViewList = new ArrayList<ProjectView>();
 
 		Connection conn = null;
@@ -178,7 +238,8 @@ public class ProjectViewDAO {
 
 		try {
 			conn = DBManager.getConnection();
-
+			
+			String sql = "select * from projoinfreecount_view";
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 
@@ -218,6 +279,11 @@ public class ProjectViewDAO {
 		return proViewList;
 	}
 
+	/**
+	 * 프로젝트 번호를 매개변수로 받아 조회한 결과를 받는 메소드
+	 * @param projNum
+	 * @return
+	 */
 	public ProjectView selectAllProjectInfoByProjNum(int projNum) {
 		String sql = "select * from projoinfreecount_view where projnum=?";
 
@@ -268,6 +334,13 @@ public class ProjectViewDAO {
 		return projView;
 	}
 
+	/**
+	 * 프로젝트 번호를 매개변수로 받아 해당 프로젝트에 사용된 모든 프레임워크를 조회한 결과를 
+	 * 
+	 * Framework 리스트로 받는 메소드
+	 * @param projNum
+	 * @return
+	 */
 	public List<Framework> selectProjFrameworkByProjNum(int projNum) {
 		String sql = "select * from projframeview where projnum=?";
 
@@ -301,6 +374,13 @@ public class ProjectViewDAO {
 		return list;
 	}
 
+	/**
+	 * 프로젝트 번호를 매개변수로 받아 해당 프로젝트에 사용된 모든 언어 정보를 조회한 결과를
+	 * 
+	 * ProgLang 리스트로 받는 메소드
+	 * @param projNum
+	 * @return
+	 */
 	public List<ProgLang> selectProjProgLangByProjNum(int projNum) {
 		String sql = "select * from projlangview where projnum=?";
 
@@ -334,6 +414,10 @@ public class ProjectViewDAO {
 		return list;
 	}
 
+	/**
+	 * 
+	 * @return
+	 *//*
 	public List<ProjectView> selectAllProjectInfoOderByRemains() {
 		String sql = "select * from projoinfreecount_view order by remaindays asc";
 
@@ -540,13 +624,30 @@ public class ProjectViewDAO {
 			DBManager.close(conn, stmt, rs);
 		}
 		return proViewList;
-	}
+	}*/
 
-	String sql;
+	String sql;// 쿼리문을 담을 String타입 객체 선언
 
+	/**
+	 * 프로젝트명, 개발분야, 언어, 데이터베이스, 프레임워크, 기간, 정렬기준을 매개변수로 받아 
+	 * 
+	 * 프로젝트를 검색하고 그 결과를 ProjectView 리스트로 받는 메소드
+	 * 
+	 * @param projName //프로젝트명
+	 * @param devCount //개발분야를 담은 배열
+	 * @param langCount //언어를 담은 배열
+	 * @param dbCount //데이터베이스를 담은 배열
+	 * @param tfwCount // 툴,프레임워크를 담은 배열
+	 * @param time1 // 날짜1
+	 * @param time2 // 날짜2
+	 * @param order // 정렬기준
+	 * @param pageNum // 페이지 번호
+	 * @return
+	 */
 	public List<ProjectView> searchAllCheckedProject(String projName, String[] devCount, String[] langCount,
 			String[] dbCount, String[] tfwCount, String time1, String time2, String order, int pageNum) {
 
+		// 
 		String sql = "select * from projoinfreeframelang_view";
 
 		System.out.println("dao 프로젝트명 = " + projName);
@@ -1054,7 +1155,7 @@ public class ProjectViewDAO {
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(projSql);
-			
+
 			pstmt.setString(1, proj.getProjField());
 			pstmt.setString(2, proj.getProjName());
 			pstmt.setString(3, proj.getProjState());
@@ -1069,7 +1170,7 @@ public class ProjectViewDAO {
 			pstmt.setString(12, proj.getProjRecruitEndDate());
 			pstmt.setString(13, proj.getProjDevelopSort());
 			pstmt.setInt(14, proj.getDbNum());
-			
+
 			pstmt.executeUpdate();
 			pstmt.close();
 
@@ -1107,63 +1208,42 @@ public class ProjectViewDAO {
 			DBManager.close(conn, pstmt);
 		}
 	}
-	
-	/*public List<ProgLang> selectLangByProjNum(int projNum){
-		String sql="select langname from projoinfreeframelang_view where projnum=? group by langname";
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		List<ProgLang> list = new ArrayList<ProgLang>();
-		
-		try {
-			conn = DBManager.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1,projNum);
-			rs = pstmt.executeQuery();
-			
-			ProgLang plang = new ProgLang();
-			while(rs.next()) {
-				plang.setLangName(rs.getString("langname"));
-				
-				list.add(plang);
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-		}finally {
-			DBManager.close(conn, pstmt, rs);
-		}
-		return list;
-	}
-	
-	public List<Framework> selectFrameByProjNum(int projNum){
-		String sql="select framename from projoinfreeframelang_view where projnum=? group by framename";
-		
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		List<Framework> list = new ArrayList<Framework>();
-		
-		try {
-			conn = DBManager.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, projNum);
-			rs = pstmt.executeQuery();
-			
-			Framework fw = new Framework();
-			while(rs.next()) {
-				fw.setFrameName(rs.getString("framename"));
-				
-				list.add(fw);
-			}
-			
-		}catch (Exception e) {
-			e.printStackTrace();
-		}finally {
-			DBManager.close(conn, pstmt, rs);
-		}
-		return list;
-	}*/
+
+	/*
+	 * public List<ProgLang> selectLangByProjNum(int projNum){ String
+	 * sql="select langname from projoinfreeframelang_view where projnum=? group by langname"
+	 * ;
+	 * 
+	 * Connection conn = null; PreparedStatement pstmt = null; ResultSet rs = null;
+	 * 
+	 * List<ProgLang> list = new ArrayList<ProgLang>();
+	 * 
+	 * try { conn = DBManager.getConnection(); pstmt = conn.prepareStatement(sql);
+	 * pstmt.setInt(1,projNum); rs = pstmt.executeQuery();
+	 * 
+	 * ProgLang plang = new ProgLang(); while(rs.next()) {
+	 * plang.setLangName(rs.getString("langname"));
+	 * 
+	 * list.add(plang); } }catch(Exception e) { e.printStackTrace(); }finally {
+	 * DBManager.close(conn, pstmt, rs); } return list; }
+	 * 
+	 * public List<Framework> selectFrameByProjNum(int projNum){ String
+	 * sql="select framename from projoinfreeframelang_view where projnum=? group by framename"
+	 * ;
+	 * 
+	 * Connection conn = null; PreparedStatement pstmt = null; ResultSet rs = null;
+	 * List<Framework> list = new ArrayList<Framework>();
+	 * 
+	 * try { conn = DBManager.getConnection(); pstmt = conn.prepareStatement(sql);
+	 * pstmt.setInt(1, projNum); rs = pstmt.executeQuery();
+	 * 
+	 * Framework fw = new Framework(); while(rs.next()) {
+	 * fw.setFrameName(rs.getString("framename"));
+	 * 
+	 * list.add(fw); }
+	 * 
+	 * }catch (Exception e) { e.printStackTrace(); }finally { DBManager.close(conn,
+	 * pstmt, rs); } return list; }
+	 */
 
 }
