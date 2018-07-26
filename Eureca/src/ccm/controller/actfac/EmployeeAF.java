@@ -44,10 +44,11 @@ public class EmployeeAF {
 
 	public Action getAction(String command) {
 		Action action = null;
-		System.out.println("EmployeeAF :" + command);
+		System.out.println("EmployeeAF :" + command); // 어떤 EmployeeAF 커맨드가 실행되는지 출력
 
 		// 커맨드를 넣는 코드 http://localhost:8181/FMS/Eu?c=login 이런식
 		if (command.equals("employee_Profile")) {
+			// 사원 등록
 			action = new EmployeeProfileAction();
 		} else if (command.equals("employee_Profile_insert_form")) {
 			// 사원등록 페이지로 이동
