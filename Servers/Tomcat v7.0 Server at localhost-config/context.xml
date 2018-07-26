@@ -27,5 +27,5 @@
 		driverClassName="com.mysql.jdbc.Driver" loginTimeout="10"
 		testOnBorrow="true" url="jdbc:mysql://ccmfmsmysqlserver.mysql.database.azure.com/fms"
 		maxIdle="30" maxWait="10000" />
-
+테스트
 </Context>
