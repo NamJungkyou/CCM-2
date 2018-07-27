@@ -4677,18 +4677,22 @@
   <!-- here, so be sure to include any of the default values that you wish  -->
   <!-- to use within your application.                                       -->
 
+	<!-- 저장된 blob 타입 이미지를 불러오는 servlet 호출문   -->
+	<!-- 프리랜서 사진 불러오기 -->
    <display-name>BlobImage</display-name>
    <servlet>
       <display-name>ImageDataServlet</display-name>
       <servlet-name>ImageDataServlet</servlet-name>
-      <servlet-class>servlets.ImageDataServlet</servlet-class>
+      <servlet-class>ccm.servlt.ImageDataServlet</servlet-class>
    </servlet>
    <servlet-mapping>
       <servlet-name>ImageDataServlet</servlet-name>
       <url-pattern>/ImageDataServlet</url-pattern>
    </servlet-mapping>
    
-      <display-name>BlobImage2</display-name>
+   <!-- 저장된 blob 타입 이미지를 불러오는 servlet 호출문   -->
+   <!-- 사원 사진 불러오기  -->
+   <display-name>BlobImage2</display-name>
    <servlet>
       <display-name>EmployeeImageDataServlet</display-name>
       <servlet-name>EmployeeImageDataServlet</servlet-name>

@@ -14,6 +14,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+/**
+ * ImageDateServlet.java와 동일한 기능(emloyee테이블에서 사진호출)
+ * 자세한 사항은 ImageDateServlet 참조
+ * 
+ * @작성자 글로벌IT경영 김민현
+ */
 
 /**
  * Servlet implementation class EmployeeImageDataServlet
@@ -34,15 +40,15 @@ public class EmployeeImageDataServlet extends HttpServlet {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		/*String freePic = request.getParameter("freePic");*/
-		String empId = request.getParameter("empId");
-		if (empId == null)
+		String empPicture = request.getParameter("empPicture");
+		if (empPicture == null)
 			return;
 		response.setContentType("image/jpeg");
 		try {
 			Class.forName(jdbcDrvier);
 			conn = DriverManager.getConnection(url, id, pwd);
-			pstmt = conn.prepareStatement("select empPicture from employee where empId=?");
-			pstmt.setString(1, empId);
+			pstmt = conn.prepareStatement("select empFilePath from employee where empPicture=?");
+			pstmt.setString(1, empPicture);
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
 				Blob blob = rs.getBlob(1);

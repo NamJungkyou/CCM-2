@@ -14,7 +14,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+/**
+ * 업로드된 사진을 불러오는 Servlet
+ * DB연동 및 서버와 연결을 시켜줘야함
+ * web.xml에서 서블릿명과 url-pattern을 선언해야함
+ * 
+ * @작성자 글로벌IT경영 김민현
+ */
 
 /**
  * Servlet implementation class ImageDataServlet
@@ -25,28 +31,28 @@ public class ImageDataServlet extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	public final static String jdbcDrvier = "com.mysql.jdbc.Driver";
-	private final static String url = "jdbc:mysql://ccmfmsmysqlserver.mysql.database.azure.com/fms";
-	private final static String id = "ccmadmin@ccmfmsmysqlserver";
-	private final static String pwd = "ccmfmsmysqladmin1234!";
+	public final static String jdbcDrvier = "com.mysql.jdbc.Driver"; // jdbcDrvier 명칭
+	private final static String url = "jdbc:mysql://ccmfmsmysqlserver.mysql.database.azure.com/fms"; // 연동DB url
+	private final static String id = "ccmadmin@ccmfmsmysqlserver"; // 연동DB 아이디
+	private final static String pwd = "ccmfmsmysqladmin1234!"; // 연동DB 비밀번호
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		/*String freePic = request.getParameter("freePic");*/
-		String freeId = request.getParameter("freeId");
-		if (freeId == null)
+		String freePic = request.getParameter("freePic");
+		if(freePic == null)
 			return;
-		response.setContentType("image/jpeg");
+		response.setContentType("image/jpeg"); // 사진타입을 지정
 		try {
 			Class.forName(jdbcDrvier);
 			conn = DriverManager.getConnection(url, id, pwd);
-			pstmt = conn.prepareStatement("select freePic from freelancer where freeId=?");
-			pstmt.setString(1, freeId);
+			// freelancer 테이블에서 freePic이름을 기준으로 DB에 저장된 freeFilePath(사진저장경로)를 불러오는 sql문
+			pstmt = conn.prepareStatement("select freeFilePath from freelancer where freePic=?");
+			pstmt.setString(1, freePic); // String으로 선언한 사진이름을 freePic=?에 넣어줌
 			rs = pstmt.executeQuery();
 			if(rs.next()) {
-				Blob blob = rs.getBlob(1);
+				Blob blob = rs.getBlob(1); // blob타입으로 저장된 사진 호출을 위해 blob선언
 				InputStream is = blob.getBinaryStream();
 				OutputStream os = response.getOutputStream();
 				int length;
