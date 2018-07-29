@@ -63,6 +63,7 @@ public class EmployeeAF {
 			// 사원 학력정보를 등록
 			action = new EmployeeEducationUpdateAction();
 		} else if (command.equals("phone_Check")) {
+			// 사원 휴대폰번호 중복체크(jsp페이지에 넣을 필요는 없음)/개발자 편의를 위해 제작
 			action = new EmployeePhoneCheckAction();
 		} else if (command.equals("employee_Career_update")) {
 			// 사원 경력정보를 등록
@@ -71,10 +72,13 @@ public class EmployeeAF {
 			// 프리랜서등록 페이지로 이동
 			action = new EmpFreelancerProfileAction();
 		} else if (command.equals("email_Check")) {
+			// 사원 이메일 중복체크(jsp페이지에 넣을 필요는 없음)/개발자 편의를 위해 제작
 			action = new EmployeeEmailCheckAction();
 		} else if (command.equals("employee_Profile_update")) {
+			// 사원 추가 기본정보 등록 및 수정
 			action = new EmployeeProfileUpdateAction();
 		} else if (command.equals("employee_Profile_update_form")) {
+			// 사원 추가 정보 등록 페이지로 이동
 			action = new EmployeeProfileUpdateActionForm();
 		} else if (command.equals("employee_Profile_delete")) {
 			// 등록된 사원정보를 삭제
