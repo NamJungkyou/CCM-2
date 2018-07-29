@@ -5,15 +5,15 @@ import java.util.List;
 
 public class ProjectView extends Project{
 	
-	private String usedDbName;
-	private String usedLangName;
-	private String usedFrameName;
-	private int joinFLCount;
-	private int remainDays;
-	private Date expectedEndDate;
-	private int requireCount;
-	private List<ProgLang> langs;
-	private List<Framework> frames;
+	private String usedDbName; // 데이터베이스 이름
+	private String usedLangName; // 언어 이름
+	private String usedFrameName; // 프레임워크 이름
+	private int joinFLCount; // 참여한 프리랜서 수
+	private int remainDays; // 남은 기간
+	private Date expectedEndDate; // 예상종료
+	private int requireCount; // 필요한 인원
+	private List<ProgLang> langs; // 언어 리스트
+	private List<Framework> frames; // 프레임워크 리스트
 	
 	public String getUsedDbName() {
 		return usedDbName;
