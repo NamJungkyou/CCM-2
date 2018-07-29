@@ -14,7 +14,7 @@ import ccm.data.table.Career;
 import ccm.data.table.Education;
 import ccm.data.table.Employee;
 /**
- * 사원등록페이지에서 입력된 사원정보를 등록하는 액션(MultipartRequest로 Parameter값을 받을 때)
+ * 사원등록페이지에서 입력된 사원정보를 등록하는 액션(MultipartRequest로 Parameter값을 받지않고, request로 받을때)
  * 커맨드값 : employee_Profile
  * 
  * @작성자 글로벌IT경영 김민현

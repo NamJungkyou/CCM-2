@@ -12,7 +12,14 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import ccm.controller.action.Action;
 import ccm.dao.EmployeeDAO;
 import ccm.data.table.Employee;
-
+/**
+ * 사원등록페이지에서 입력된 사원 추가 기본정보를 등록하는 액션(MultipartRequest로 Parameter값을 받을 때)
+ * EmployeeProfileAction.java참조
+ * 커맨드값 : employee_Profile_update
+ * 
+ * @작성자 글로벌IT경영 김민현
+ *
+ */
 public class EmployeeProfileUpdateAction implements Action {
 
 	@Override
