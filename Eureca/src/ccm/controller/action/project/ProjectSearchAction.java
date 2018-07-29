@@ -19,6 +19,12 @@ import ccm.data.table.JoinProj;
 import ccm.data.table.ProgLang;
 import ccm.data.table.ProjectView;
 
+/**
+ * 프로젝트 검색 페이지로 이동하고 검색결과를 받아오는 클래스
+ * 
+ * @author 글로벌IT경영 남정규
+ *
+ */
 public class ProjectSearchAction implements Action {
 
 	@Override
@@ -48,7 +54,6 @@ public class ProjectSearchAction implements Action {
 		System.out.println("언어 리스트 = " + langList.toString());
 		System.out.println("프레임 리스트 = " + frameList.toString());
 
-		
 		// 각 리스트들을 request에 할당
 		request.setAttribute("dbmsList", dbmsList);
 		request.setAttribute("langList", langList);
@@ -62,7 +67,7 @@ public class ProjectSearchAction implements Action {
 		String[] tfwCount = request.getParameterValues("TOOLfwSearch");
 		String time1 = request.getParameter("period1");
 		String time2 = request.getParameter("period2");
-		
+
 		// 페이지번호
 		int pageNum;
 
@@ -88,9 +93,9 @@ public class ProjectSearchAction implements Action {
 		List<ProjectView> projViewList = projectViewDao.searchAllCheckedProject(projName, devCount, langCount, dbCount,
 				tfwCount, time1, time2, order, pageNum);
 		// 페이징을 하기위한 객체 생성 및 메소드 호출
-		ParamInt paramInt = projectViewDao.projectPaging(projName, devCount, langCount, dbCount,
-				tfwCount, time1, time2, pageNum);
-		
+		ParamInt paramInt = projectViewDao.projectPaging(projName, devCount, langCount, dbCount, tfwCount, time1, time2,
+				pageNum);
+
 		// 리스트 확인
 		System.out.println("프로젝트 검색결과 리스트" + projViewList.toString());
 
@@ -113,7 +118,7 @@ public class ProjectSearchAction implements Action {
 		request.setAttribute("order", order);// 정렬기준
 
 		/*----------------------------------------프로젝트 상세보기------------------------------------*/
-		
+
 		String projNum = request.getParameter("projNum");
 		System.out.println("프로젝트 번호 = " + projNum);
 
@@ -124,34 +129,35 @@ public class ProjectSearchAction implements Action {
 			List<ProgLang> projLangList = projectViewDao.selectProjProgLangByProjNum(Integer.parseInt(projNum));
 			List<Freelancer> freelancerList = projectViewDao.proJoinFreeListByProjNum(Integer.parseInt(projNum));
 			List<JoinProj> joinProjList = projectViewDao.proJoinListByProjNum(Integer.parseInt(projNum));
-			
+
 			// 프로젝트 검색결과 확인
 			System.out.println("선택한 프로젝트 기본정보 = " + pSelectViewList.toString());
 			System.out.println("선택한 프로젝트 프레임워크정보 = " + projFrameList.toString());
 			System.out.println("선택한 프로젝트 언어정보 = " + projLangList.toString());
 			System.out.println("선택한 프로젝트 참여자 정보 = " + freelancerList.toString());
 			System.out.println("선택한 프로젝트 참여 정보 = " + joinProjList.toString());
-			
+
 			// 검색한 정보들을 담은 변수들를 request에 저장
 			request.setAttribute("pSelectViewList", pSelectViewList);
 			request.setAttribute("projFrameList", projFrameList);
 			request.setAttribute("projLangList", projLangList);
 			request.setAttribute("freelancerList", freelancerList);
 			request.setAttribute("joinProjList", joinProjList);
-		/*---------------------------------참여자목록 페이징-----------------------------------*/	
-			
+			/*---------------------------------참여자목록 페이징-----------------------------------*/
+
 			// 참여자 목록을 페이징 처리하기위한 변수
 			int joinFreePageNum;
 
-			if ((request.getParameter("joinFreePageNum") == null) || (request.getParameter("joinFreePageNum").equals(""))) {
+			if ((request.getParameter("joinFreePageNum") == null)
+					|| (request.getParameter("joinFreePageNum").equals(""))) {
 				joinFreePageNum = 1;
 			} else {
 				joinFreePageNum = Integer.parseInt(request.getParameter("joinFreePageNum"));// 페이지 번호
 			}
 			System.out.println("페이지 번호 = " + joinFreePageNum);
-			
+
 			ParamInt joinFreeParamInt = projectViewDao.proJoinFreePaging(pageNum, Integer.parseInt(projNum));
-			
+
 			// 참여자 목록의 페이징 처리를 위한 변수들을 request에 저장
 			request.setAttribute("joinFreePageNum", joinFreePageNum);
 			request.setAttribute("joinFreePageCount", joinFreeParamInt.getPageCount());
