@@ -9,7 +9,9 @@
 <title>프로젝트 찾기</title>
 </head>
 <body>
+	<!-- 헤더 -->
 	<jsp:include page="/frame/popup_header.jsp"></jsp:include>
+	<!-- 헤더 아래쪽부터 감싸는 컨테이너 -->
 	<section id="container" class="sidebar-closed">
 		<section id="main-content">
 
@@ -374,6 +376,7 @@
 		</section>
 	</section>
 
+	<!-- 푸터 -->
 	<jsp:include page="/frame/popup_footer.jsp"></jsp:include>
 	<!-- javascripts -->
 	<script type="text/javascript" src="script/projectView.js"></script>
