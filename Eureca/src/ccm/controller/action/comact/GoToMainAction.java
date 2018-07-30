@@ -38,7 +38,7 @@ public class GoToMainAction implements Action
 		
 		request.setAttribute("projectList", projectList);
 		request.setAttribute("project", project_Info_view);
-		//이동식씨 어서가시죠
+		// 인덱스에서 메인으로 이동
 		request.getRequestDispatcher("/common/main.jsp").forward(request, response);
 	}
 }
