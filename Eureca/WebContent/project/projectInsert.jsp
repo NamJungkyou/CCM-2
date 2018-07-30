@@ -9,7 +9,9 @@
 <title>프로젝트 등록</title>
 </head>
 <body>
+	<!-- 헤더 -->
 	<jsp:include page="/frame/header.jsp"></jsp:include>
+	<!-- 헤더 끝 -->
 	<section id="container" class="">
 		<section id="main-content">
 			<section class="wrapper">
@@ -120,6 +122,7 @@
 									<th>사용언어</th>
 									<td colspan="5">
 										<ul class="table-custom">
+											<!-- proglang 테이블에 등록되어있는 언어들을 체크박스로 출력 -->
 											<c:forEach var="langIter" items="${langList}">
 												<li><input type="checkbox" name="progLangSearch"
 													value="${langIter.langNum}" id="${langIter.langName}"><label
@@ -132,6 +135,7 @@
 									<th>DBMS</th>
 									<td colspan="5">
 										<ul class="table-custom">
+											<!-- DBMS 테이블에 등록되어있는 데이터베이스들을 체크박스로 출력 -->
 											<c:forEach var="DBMSIter" items="${dbmsList}">
 												<li><input type="radio" name="DBMSSearch"
 													value="${DBMSIter.dbNum}" id="${DBMSIter.dbName}"><label
@@ -144,6 +148,7 @@
 								<tr>
 									<th>TOOL/framework</th>
 									<td colspan="5"><ul class="table-custom">
+											<!-- framework 테이블에 등록되어있는 프레임워크들을 체크박스로 출력 -->
 											<c:forEach var="tfwIter" items="${frameList}">
 												<li><input type="checkbox" name="TOOLfwSearch"
 													value="${tfwIter.frameNum}" id="${tfwIter.frameName}"><label
@@ -167,11 +172,14 @@
 			</section>
 		</section>
 	</section>
-
+	<!-- 푸터 -->
 	<jsp:include page="/frame/footer.jsp"></jsp:include>
+	<!-- 푸터 끝 -->
+
 	<!-- javascripts -->
 	<script src="script/projectView.js"></script>
 	<script type="text/javascript">
+	/* 시간을 실시간으로 출력하기 위한 자바스크립트 */
 		setInterval("dpTime()", 1000);
 		function dpTime() {
 			var now = new Date();
