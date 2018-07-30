@@ -209,36 +209,62 @@
 					+ minutes + ":" + seconds;
 		}
 
+		// 예상기간을 입력하면 프로젝트 종료일이 자동으로 출력되는 함수
 		function calcExpectedTimeToEndDate() {
+			// 예상기간 인풋태그 객체를 불러옴
 			var expectedTime = document.getElementsByName("projExpectedTime")[0].value;
+			
+			// 시작일 인풋태그 객체를 불러옴
 			var startDate = new Date(document
 					.getElementsByName("projStartDate")[0].value);
+			
+			// 종료일을 우선 시작일로 참조함
 			var endDate = startDate;
+			
+			// 종료일에 예상기간을 더함
 			endDate.setDate(endDate.getDate() + parseInt(expectedTime));
 
+			// 달을 계산
 			var month = (endDate.getMonth() + 1) < 10 ? ("0" + (endDate
 					.getMonth() + 1)) : (endDate.getMonth() + 1);
+			
+			// 일을 계산
 			var days = (endDate.getDate()) < 10 ? ("0" + (endDate.getDate()))
 					: (endDate.getDate());
+			
+			// 종료일을 다시 포맷팅함
 			var datetime = endDate.getFullYear() + "-" + month + "-" + days;
 
 			if (datetime == "NaN-NaN-NaN" || expectedTime == "")
 				datetime = "";
-
+			
+			// 종료일 태그의 값을 최신화함
 			document.getElementsByName("projEndDate")[0].value = datetime;
 		}
 
+		// 역할별 필요인원을 합산하는 함수
 		function calcTotalNumOfRequire() {
+			
+			// 분석 필요인원을 계산
 			var analyst = parseInt(document
 					.getElementsByName("requiredPerson1")[0].value);
+			
+			// 디자이너 필요인원
 			var designer = parseInt(document
 					.getElementsByName("requiredPerson2")[0].value);
+			
+			// 개발 필요인원
 			var developer = parseInt(document
 					.getElementsByName("requiredPerson3")[0].value);
+			
+			// 보안 필요인원
 			var security = parseInt(document
 					.getElementsByName("requiredPerson4")[0].value);
+			
+			// QA 필요인원
 			var QA = parseInt(document.getElementsByName("requiredPerson5")[0].value);
 
+			// 값이 비어있으면 0으로 처리
 			if (analyst == null || isNaN(analyst))
 				analyst = 0;
 			if (designer == null || isNaN(designer))
@@ -249,9 +275,11 @@
 				security = 0;
 			if (QA == null || isNaN(QA))
 				QA = 0;
-
+			
+			// 역할별 필요인원들을 합산함
 			var total = analyst + designer + developer + security + QA;
 
+			// 총 필요인원을 최신화함
 			document.getElementsByName("joinFLCount")[0].value = total
 		}
 	</script>
