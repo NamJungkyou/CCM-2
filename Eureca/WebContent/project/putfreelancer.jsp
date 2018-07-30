@@ -82,6 +82,7 @@
 								<td><c:set var="numOfProjJoinedFree" value="${0}"></c:set>
 									<c:forEach var="joinedFree"
 										items="${curProject.projJoinedFree}" varStatus="status">
+										
 										<c:set var="numOfProjJoinedFree"
 											value="${numOfProjJoinedFree + status.count}"></c:set>
 									</c:forEach> ${numOfProjJoinedFree}</td>
