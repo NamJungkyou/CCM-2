@@ -15,27 +15,38 @@ import ccm.data.table.DBMS;
 import ccm.data.table.Framework;
 import ccm.data.table.ProgLang;
 import ccm.data.table.Project;
-
+/**
+ * 프로젝트를 등록하는 클래스
+ * 
+ * @author 글로벌IT경영 남정규
+ *
+ */
 public class ProjectInsertAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 
+		// 이동할 주소를 담을 변수
 		String url = "/project/projectInsert.jsp";
 
 		ProjectViewDAO projectViewDao = ProjectViewDAO.getInstance();
 		CommonDAO commonDao = CommonDAO.getInstance();
 
+		// 데이터베이스, 언어, 프레임워크의 모든 정보를 담은 리스트를 각 객체에 생성하고 저장
 		List<DBMS> dbmsList = commonDao.DBMSList();
 		List<ProgLang> langList = commonDao.ProgLangList();
 		List<Framework> frameList = commonDao.FameworkList();
+		
+		// 새로 등록할 프로젝트 번호
 		Project newProjNum = projectViewDao.selctNewProjNum();
 
+		// 각 리스트들을 제대로 받아왔는지 확인
 		System.out.println("db리스트 =" + dbmsList.toString());
 		System.out.println("언어 리스트 = " + langList.toString());
 		System.out.println("프레임 리스트 = " + frameList.toString());
 
+		//각 리스트들과 신규 프로젝트 번호를 request에 저장
 		request.setAttribute("dbmsList", dbmsList);
 		request.setAttribute("langList", langList);
 		request.setAttribute("frameList", frameList);
@@ -90,6 +101,7 @@ public class ProjectInsertAction implements Action {
 		System.out.println("프로젝트 등록 액션 고객사 = " + projTarget);
 		System.out.println("프로젝트 등록 액션 협력사 = " + projPartner);
 
+		// Project 객체를 생성하고 객체의 각 변수에 맞는 정보를 저장
 		if (projName != null) {
 
 			Project project = new Project();
@@ -115,13 +127,14 @@ public class ProjectInsertAction implements Action {
 			roleName[3] = new String(request.getParameter("roleName4").getBytes("8859_1"), "UTF-8");
 			roleName[4] = new String(request.getParameter("roleName5").getBytes("8859_1"), "UTF-8");
 			for (int i = 0; i < roleName.length; i++)
-				System.out.println("역할역할 " + roleName[i]);
+				System.out.println("역할 " + roleName[i]);
 			requirement[0] = Integer.parseInt(request.getParameter("requiredPerson1"));
 			requirement[1] = Integer.parseInt(request.getParameter("requiredPerson2"));
 			requirement[2] = Integer.parseInt(request.getParameter("requiredPerson3"));
 			requirement[3] = Integer.parseInt(request.getParameter("requiredPerson4"));
 			requirement[4] = Integer.parseInt(request.getParameter("requiredPerson5"));
 
+			// 프로젝트를 등록하는 메소드 호출
 			projectViewDao.insertProject(project, langCount, tfwCount, roleName, requirement);
 		}
 
