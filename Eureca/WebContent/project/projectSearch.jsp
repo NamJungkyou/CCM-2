@@ -1,3 +1,9 @@
+
+<%--
+ 프로젝트 검색 페이지
+ 
+ 작성자 : 남정규
+  --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -16,7 +22,7 @@
 		<section id="main-content">
 
 			<c:choose>
-				<%--로그인 상태가 아니면 --%>
+				<%-- 관리자로 로그인 했을 때만 출력 --%>
 				<c:when test="${loginfree == null && loginemp != null}">
 					<form method="post" action="ProjectServ" id="frm" name="frm">
 						<input type="hidden" name="command" value="project_list">
@@ -32,7 +38,9 @@
 									<tr>
 										<th>개발분야</th>
 										<td><ul class="table-custom col-lg-12">
+												<!-- 검색 후 선택했던 체크박스가 해제 되지 않도록 하기 위해 체크박스 값을 담는 변수-->
 												<c:set var="devCheck" value="" />
+												<!-- 선택했던 검색옵션(devCount)을 다시 받아와 각 항목과 비교하고 같으면 checked   -->
 												<c:forEach var="devName" items="${devCount}">
 													<c:choose>
 														<c:when test="${devName eq '웹'}">
@@ -72,8 +80,12 @@
 										<th>사용언어</th>
 										<td>
 											<ul class="table-custom col-lg-12">
+												<!-- 언어 리스트 출력 -->
 												<c:forEach var="langIter" items="${langList}">
+													<!-- 검색 후 선택했던 체크박스가 해제 되지 않도록 하기 위해 체크박스 값을 담는 변수-->
 													<c:set var="langCheck" value="" />
+													<!-- 선택했던 검색옵션(langCount)을 다시 받아와 
+													langList의 언어명과 langCount의 언어명이 같으면 checked  -->
 													<c:forEach var="langName" items="${langCount}">
 														<c:if test="${langName eq langIter.langName}">
 															<c:set var="langCheck" value="checked" />
@@ -92,8 +104,12 @@
 										<th>DBMS</th>
 										<td>
 											<ul class="table-custom col-lg-12">
+												<!-- 데이터베이스 리스트 출력 -->
 												<c:forEach var="DBMSIter" items="${dbmsList}">
+													<!-- 검색 후 선택했던 체크박스가 해제 되지 않도록 하기 위해 체크박스 값을 담는 변수-->
 													<c:set var="langCheck" value="" />
+													<!-- 선택했던 검색옵션(dbCount)을 다시 받아와 
+													dbmsList의 DB명과 dbCount의 DB명이 같으면 checked   -->
 													<c:forEach var="dbName" items="${dbCount}">
 														<c:if test="${dbName eq DBMSIter.dbName}">
 															<c:set var="langCheck" value="checked" />
@@ -112,8 +128,12 @@
 									<tr>
 										<th>TOOL/framework</th>
 										<td><ul class="table-custom col-lg-12">
+												<!-- 프레임워크 리스트 출력 -->
 												<c:forEach var="tfwIter" items="${frameList}">
+													<!-- 검색 후 선택했던 체크박스가 해제 되지 않도록 하기 위해 체크박스 값을 담는 변수-->
 													<c:set var="langCheck" value="" />
+													<!-- 선택했던 검색옵션(tfwCount)을 다시 받아와 
+													frameList의 DB명과 tfwCount의 DB명이 같으면 checked   -->
 													<c:forEach var="frameName" items="${tfwCount}">
 														<c:if test="${frameName eq tfwIter.frameName}">
 															<c:set var="langCheck" value="checked" />
@@ -144,6 +164,8 @@
 							<section class="panel">
 								<header class="panel-heading">
 									프로젝트 목록 <select name="order" onchange="onSubmit()">
+										<!-- 정렬기준 선택 후에 선택했던 옵션이 초기화 되지 않도록 
+										order을 다시 받아와 각 기준과 비교하고 selected 설정 -->
 										<option value="" ${order eq "" ? "selected" :""}>선택하세요</option>
 										<option value="등록일" ${order eq "등록일" ? "selected" :""}>등록일</option>
 										<option value="시작일" ${order eq "시작일" ? "selected" :""}>시작일</option>
@@ -164,6 +186,7 @@
 											<th>남은기간</th>
 										</tr>
 									</thead>
+									<!-- 검색결과 출력 -->
 									<c:forEach var='projViewList' items="${projViewList}"
 										varStatus="status">
 										<tr
@@ -193,9 +216,11 @@
 										<td colspan="7"></td>
 									</tr>
 									<tr>
+										<!-- 페이징 처리 -->
 										<td colspan="7" class="align-center"><a href="#"
-											onclick="projPrePageSelect('${pagenNum}')">이전</a> <c:forEach
-												var="pageNumIter" begin="${firstPage}" end="${lastPage}">
+											onclick="projPrePageSelect('${pagenNum}')">이전</a> <!-- 페이지 번호를 첫 페이지부터 끝 페이지까지 순차적으로 출력 -->
+											<c:forEach var="pageNumIter" begin="${firstPage}"
+												end="${lastPage}">
 												<input type="hidden" name="first" value="${firstPage}">
 												<input type="hidden" name="last" value="${lastPage}">
 												<input type="hidden" name="pageNum" value="${pageNumIter}">
@@ -209,9 +234,11 @@
 						</div>
 
 						<div class="clear"></div>
+
 						<div class="col-lg-8">
 							<section class="panel details-background">
 								<header class="panel-heading no-border">상세보기</header>
+								<!-- 선택한 프로젝트의 정보를 출력 -->
 								<table class="table table-bordered details-background">
 									<tr>
 										<th>번호</th>
@@ -276,12 +303,14 @@
 									</tr>
 									<tr>
 										<th>사용언어</th>
-										<td colspan="5"><c:forEach var='projLangList'
-												items="${projLangList}" varStatus="status">
-			${projLangList.langName}<c:if test="${not status.last}">/</c:if>
-												<input type="hidden" name="r_langName"
-													value="${projLangList.langName}">
-											</c:forEach></td>
+										<td colspan="5">
+											<!-- 언어들을 '/'로 구분하여 한줄로 출력 --> 
+											<c:forEach var='projLangList' items="${projLangList}" varStatus="status">
+												${projLangList.langName}
+												<c:if test="${not status.last}">/</c:if>
+												<input type="hidden" name="r_langName" value="${projLangList.langName}">
+											</c:forEach>
+										</td>
 									</tr>
 									<tr>
 										<th>DBMS</th>
@@ -292,12 +321,14 @@
 									<tr>
 										<th>TOOL/<br>framework
 										</th>
-										<td colspan="5"><c:forEach var='projFrameList'
-												items="${projFrameList}" varStatus="status">
-			${projFrameList.frameName}<c:if test="${not status.last}">/</c:if>
-												<input type="hidden" name="r_frameName"
-													value="${projFrameList.frameName}">
-											</c:forEach></td>
+										<td colspan="5">
+											<!-- 프레임워크들을 '/'로 구분하여 한줄로 출력 --> 
+											<c:forEach var='projFrameList' items="${projFrameList}" varStatus="status">
+												${projFrameList.frameName}
+												<c:if test="${not status.last}">/</c:if>
+												<input type="hidden" name="r_frameName" value="${projFrameList.frameName}">
+											</c:forEach>
+										</td>
 									</tr>
 									<tr>
 										<th>세부내용</th>
@@ -305,9 +336,13 @@
 												name="r_projPlan">${pSelectViewList.projPlan}</textarea>
 									</tr>
 									<tr>
-										<td colspan="4"><input type="button" value="닫기"
-											onclick="close();"></td>
-										<td><input type="button" value="수정"
+										<td colspan="4">
+										<!-- 팝업 닫기 -->
+										<input type="button" value="닫기" onclick="close();">
+										</td>
+										<td>
+										<!-- 프로젝트 정보를 부모창으로 전송 -->
+										<input type="button" value="수정"
 											onclick="projectOk('${pSelectViewList.projNum}','${pSelectViewList.projName}','${pSelectViewList.projState}','${pSelectViewList.projStartDate}','${pSelectViewList.projExpectedTime}','${pSelectViewList.projEndDate}','${pSelectViewList.joinFLCount}','${pSelectViewList.projTarget}','${pSelectViewList.projPartner}','${pSelectViewList.projPlan}')"></td>
 									</tr>
 								</table>
@@ -329,6 +364,7 @@
 											<th>이메일</th>
 										</tr>
 									</thead>
+									<!-- 참여자목록 출력 -->
 									<c:forEach var='freelancerList' items="${freelancerList}"
 										varStatus="status">
 										<tr>
@@ -352,6 +388,7 @@
 										</tr>
 									</c:forEach>
 									<tr>
+									<!-- 페이징처리 -->
 										<td colspan="7" class="align-center"><a href="#"
 											onclick="projPrePageSelect('${joinFreePageNumIter}')">이전</a>
 											<c:forEach var="joinFreePageNumIter"
@@ -379,6 +416,7 @@
 	<!-- 푸터 -->
 	<jsp:include page="/frame/popup_footer.jsp"></jsp:include>
 	<!-- javascripts -->
+	<!-- 다른 js 파일들과 충돌을 피하가 위해서 가장 아래에 선언  -->
 	<script type="text/javascript" src="script/projectView.js"></script>
 </body>
 </html>
