@@ -57,9 +57,7 @@ public class ProjectInsertAction implements Action {
 
 		String projField = request.getParameter("projField");
 		if (projField != null)
-		{
 			projField = new String(projField.getBytes("UTF-8"));
-		}
 		
 		String projRegisterer = request.getParameter("projRegisterer");
 		String projRegisterDate = request.getParameter("projRegisterDate");
