@@ -133,6 +133,19 @@ public class CommonDAO {
 		return result;
 	}
 	
+	
+	/**
+	 * 
+	 * 로그인할 때 아이디와 비밀번호가 DB에 존재하는 지
+	 *
+	 * 확인하고 결과값을 받환하는 메소드
+	 * 
+	 * @param id
+	 * @param pw
+	 * @param loginFree
+	 * @param loginEmp
+	 * @return
+	 */
 	public int loginCheck(String id, String pw, Freelancer loginFree, Employee loginEmp) // 로그인할때 아이디랑 비번이 맞는지 체크해주는거
 	{
 		// 쿼리를 둘다 실행해서 맞는값이 있는 쿼리일 때 프리랜서 또는 직원 로그인이 정해짐
