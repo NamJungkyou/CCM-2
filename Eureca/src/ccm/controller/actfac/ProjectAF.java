@@ -78,5 +78,6 @@ public class ProjectAF {
 			action = new ccm.controller.action.project.GoToPutInOfSearchFreelancerAction(); // 프로젝트 투입의 프리랜서 검색
 		}
 		return action;
+		}
 	}
 }
