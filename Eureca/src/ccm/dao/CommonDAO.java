@@ -127,8 +127,7 @@ public class CommonDAO {
 	
 	public int loginCheck(String id, String pw, Freelancer loginFree, Employee loginEmp) // 로그인할때 아이디랑 비번이 맞는지 체크해주는거
 	{
-		System.out.println("id = " + id + ", pw = " + pw);
-
+		// 쿼리를 둘다 실행해서 맞는값이 있는 쿼리일 때 프리랜서 또는 직원 로그인이 정해짐
 		String freeSql = "SELECT * FROM FREELANCER WHERE FREEID = ? AND FREEPW = ?";
 		String empSql = "SELECT * FROM EMPLOYEE WHERE EMPID = ? AND EMPPW = ?";
 
@@ -143,15 +142,17 @@ public class CommonDAO {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(freeSql);
 
+			// 프리페어드 스테이트먼트에 아이디와 패스워드를 넣어줌
 			pstmt.setString(1, id);
 			pstmt.setString(2, pw);
 
 			freers = pstmt.executeQuery();
 
+			// 결과값이 있으면 프리랜서로그인
 			while (freers.next()) {
 				if (freers.getString("FREEID") != null)
-					;
 				{
+					// 프리랜서 로그인
 					loginFree.setParams(freers);
 					res = 1;
 					break;
@@ -160,14 +161,15 @@ public class CommonDAO {
 
 			pstmt.close();
 			pstmt = conn.prepareStatement(empSql);
+			// 프리페어드 스테이트먼트에 아이디와 패스워드를 넣어줌
 			pstmt.setString(1, id);
 			pstmt.setString(2, pw);
-
+			
 			emprs = pstmt.executeQuery();
 
+			// 결과값이 있으면 직원로그인
 			while (emprs.next()) {
 				if (emprs.getString("EMPID") != null)
-					;
 				{
 					loginEmp.setParams(emprs);
 					res = 2;
@@ -181,14 +183,15 @@ public class CommonDAO {
 			DBManager.close(conn, pstmt, freers, emprs);
 		}
 
-		System.out.println(loginFree == null ? "로그인프리널" : "로그인프리낫널");
-
 		return res;
 	}
 
+	// DBMS 리스트를 출력하는 메소드
 	public List<DBMS> DBMSList() {
+		// DBMS를 가져오는 쿼리
 		String sql = "select * from dbms order by dbnum";
 
+		// 리스트를 새로 생성해줌
 		List<DBMS> list = new ArrayList<DBMS>();
 
 		DBMS db = null;
@@ -201,7 +204,9 @@ public class CommonDAO {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 
+			// 루프 안에서 결과값을 모두 생성한 리스트에 넣어줌 
 			while (rs.next()) {
+				// DBMS 객체를 생성함
 				db = new DBMS();
 				db.setDbNum(rs.getInt("dbnum"));
 				db.setDbName(rs.getString("dbname"));
@@ -216,9 +221,12 @@ public class CommonDAO {
 		return list;
 	}
 
+	// 프로그래밍 언어 리스트를 가져오는 메소드
 	public List<ProgLang> ProgLangList() {
+		// 프로그래밍 언어를 가져오는 쿼리문
 		String sql = "SELECT * FROM PROGLANG ORDER BY LANGNUM";
 
+		// 리스트를 새로 생성해줌
 		List<ProgLang> list = new ArrayList<ProgLang>();
 
 		ProgLang plang = null;
@@ -231,7 +239,9 @@ public class CommonDAO {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 
+			// 루프 안에서 결과값을 모두 생성한 리스트에 넣어줌
 			while (rs.next()) {
+				// 프로그래밍 언어 객체를 생성함
 				plang = new ProgLang();
 				plang.setLangNum(rs.getInt("langnum"));
 				plang.setLangName(rs.getString("langname"));
@@ -246,9 +256,13 @@ public class CommonDAO {
 		return list;
 	}
 
+	// 프레임워크 리스트를 가져오는 메소드
 	public List<Framework> FameworkList() {
+		
+		// 프레임워크를 모두 가져오는 쿼리문
 		String sql = "SELECT * FROM FRAMEWORK ORDER BY FRAMENUM";
 
+		// 리스트를 새로 생성함
 		List<Framework> list = new ArrayList<Framework>();
 
 		Framework fwk = null;
@@ -261,7 +275,9 @@ public class CommonDAO {
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(sql);
 
+			// 루프 안에서 모든 결과값을 리스트에 넣어줌
 			while (rs.next()) {
+				// 프레임워크 객체를 생성
 				fwk = new Framework();
 				fwk.setFrameNum(rs.getInt("framenum"));
 				fwk.setFrameName(rs.getString("framename"));
@@ -297,6 +313,7 @@ public class CommonDAO {
 	 * return paramInt; }
 	 */
 
+	// DB에서 프로그래밍 언어, DBMS, 프레임워크를 모두 가져오는 메소드 
 	public LangAndDBAndFrame getLangDBFrame() {
 		LangAndDBAndFrame ldf = new LangAndDBAndFrame();
 		Connection conn = null;

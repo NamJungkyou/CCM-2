@@ -15,6 +15,9 @@ import ccm.data.table.DBMS;
 import ccm.data.table.Framework;
 import ccm.data.table.ProgLang;
 import ccm.data.table.Project;
+
+import java.net.URLEncoder;
+
 /**
  * 프로젝트를 등록하는 클래스
  * 
@@ -54,18 +57,19 @@ public class ProjectInsertAction implements Action {
 
 		String projField = request.getParameter("projField");
 		if (projField != null)
-			projField = new String(projField.getBytes("8859_1"), "UTF-8");
+			projField = new String(projField.getBytes("UTF-8"));
+		
 		String projRegisterer = request.getParameter("projRegisterer");
 		String projRegisterDate = request.getParameter("projRegisterDate");
 		String projState = request.getParameter("projState");
 		if (projState != null)
-			projState = new String(projState.getBytes("8859_1"), "UTF-8");
+			projState = new String(projState.getBytes("UTF-8"));
 		String projName = request.getParameter("projName");
 		if (projName != null)
-			projName = new String(projName.getBytes("8859_1"), "UTF-8");
+			projName = new String(projName.getBytes("UTF-8"));
 		String devFieldSearch = request.getParameter("devFieldSearch");
 		if (devFieldSearch != null)
-			devFieldSearch = new String(devFieldSearch.getBytes("8859_1"), "UTF-8");
+			devFieldSearch = new String(devFieldSearch.getBytes("UTF-8"));
 		String[] langCount = request.getParameterValues("progLangSearch");
 		String dbNum = request.getParameter("DBMSSearch");
 		String[] tfwCount = request.getParameterValues("TOOLfwSearch");
@@ -75,13 +79,13 @@ public class ProjectInsertAction implements Action {
 		String recruitEndDate = request.getParameter("recruitEndDate");
 		String projTarget = request.getParameter("projTarget");
 		if (projTarget != null)
-			projTarget = new String(projTarget.getBytes("8859_1"), "UTF-8");
+			projTarget = new String(projTarget.getBytes("UTF-8"));
 		String projPartner = request.getParameter("projPartner");
 		if (projPartner != null)
-			projPartner = new String(projPartner.getBytes("8859_1"), "UTF-8");
+			projPartner = new String(projPartner.getBytes("UTF-8"));
 		String projPlan = request.getParameter("projPlan");
 		if (projPlan != null)
-			projPlan = new String(projPlan.getBytes("8859_1"), "UTF-8");
+			projPlan = new String(projPlan.getBytes("UTF-8"));
 
 		String[] roleName = new String[5];
 		int[] requirement = new int[5];
@@ -121,11 +125,11 @@ public class ProjectInsertAction implements Action {
 			project.setProjDevelopSort(devFieldSearch);
 			project.setDbNum(Integer.parseInt(dbNum));
 
-			roleName[0] = new String(request.getParameter("roleName1").getBytes("8859_1"), "UTF-8");
-			roleName[1] = new String(request.getParameter("roleName2").getBytes("8859_1"), "UTF-8");
-			roleName[2] = new String(request.getParameter("roleName3").getBytes("8859_1"), "UTF-8");
-			roleName[3] = new String(request.getParameter("roleName4").getBytes("8859_1"), "UTF-8");
-			roleName[4] = new String(request.getParameter("roleName5").getBytes("8859_1"), "UTF-8");
+			roleName[0] = new String(request.getParameter("roleName1").getBytes("UTF-8"));
+			roleName[1] = new String(request.getParameter("roleName2").getBytes("UTF-8"));
+			roleName[2] = new String(request.getParameter("roleName3").getBytes("UTF-8"));
+			roleName[3] = new String(request.getParameter("roleName4").getBytes("UTF-8"));
+			roleName[4] = new String(request.getParameter("roleName5").getBytes("UTF-8"));
 			for (int i = 0; i < roleName.length; i++)
 				System.out.println("역할 " + roleName[i]);
 			requirement[0] = Integer.parseInt(request.getParameter("requiredPerson1"));
