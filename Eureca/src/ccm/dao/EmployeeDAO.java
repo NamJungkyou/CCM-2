@@ -1226,7 +1226,6 @@ public class EmployeeDAO {
 	}
 	
 	public Employee geteVo(String id) {
-		// TODO Auto-generated method stub
 
 		Connection conn = null;
 		String sql = "select * from employee where empid=?";
