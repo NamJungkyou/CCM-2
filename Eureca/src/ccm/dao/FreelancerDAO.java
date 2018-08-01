@@ -17,7 +17,12 @@ import ccm.data.table.JoinProjectView;
 import ccm.data.table.ProgLang;
 import ccm.data.table.SkillInventory;
 import ccm.util.DBManager;
-
+/**
+ * 프리랜서에 관련된 메소드들을 정의해 놓은 클래스
+ * 
+ * @author 글로벌IT경영 남정규
+ *
+ */
 public class FreelancerDAO {
 	private static FreelancerDAO instance = new FreelancerDAO();
 
@@ -29,10 +34,21 @@ public class FreelancerDAO {
 		return instance;
 	}
 
+	/**
+	 * 로그인한 프리랜서를 리턴하는 메소드
+	 * 
+	 * @param loginFree
+	 * @return
+	 */
 	public Freelancer freeLogin(Freelancer loginFree) {
 		return loginFree;
 	}
 
+	/**
+	 * 
+	 * @param freeId
+	 * @return
+	 */
 	public int confirmID(String freeId) {
 		int result = -1;
 		String sql = "select freeid from freelancer where freeid=?";
@@ -68,6 +84,11 @@ public class FreelancerDAO {
 		return result;
 	}
 
+	/**
+	 * 
+	 * @param freeEmail
+	 * @return
+	 */
 	public int confirmEmail(String freeEmail) {
 		int result = -1;
 		String sql = "select freeemail from freelancer where freeemail=?";
@@ -174,13 +195,6 @@ public class FreelancerDAO {
 				fVo.setFreeRearAddr(rs.getString("freeRearAddr"));
 				fVo.setFreeBirth(rs.getString("freeBirth"));
 
-				/*
-				 * String freeBirth = rs.getString("freeBirth").toString(); String freeBirthsub
-				 * = freeBirth.substring(0, 10);
-				 * 
-				 * fVo.setFreeBirth(freeBirthsub);
-				 */
-
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,9 +208,6 @@ public class FreelancerDAO {
 		String sql = "update freelancer set freeEmail=?, freePic=?, freeFilePath=?, freePw=?, freeName=?, "
 				+ "freeBirth=date_format(?, '%Y-%m-%d'), freeSex=?, freeMarried=?, freePhone=?,  "
 				+ "freeFrontAddr=?, freeRearAddr=? where freeId=?";
-
-		// System.out.println(fVo.getFreeEmail().toString());
-		// System.out.println(fVo.getFreeName().toString());
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -603,7 +614,7 @@ public class FreelancerDAO {
 				while (dbRs.next()) {
 					DBMS newDBMS = new DBMS();
 					newDBMS.setParams(dbRs);
-					System.out.println("디비디비디비디비넘" + newDBMS.getDbNum());
+					System.out.println("DB번호" + newDBMS.getDbNum());
 					inven.setDb(newDBMS);
 				}
 				if (dbRs != null)
@@ -638,44 +649,140 @@ public class FreelancerDAO {
 		}
 	}
 
+	/**
+	 * 프리랜서 등록화면에서 스킬인벤토리를 등록하는 메소드
+	 * 
+	 * 같은 화면에서 등록과 수정이 이루어지므로 
+	 * 
+	 * 프로젝트 번호의 존재 여부를 검사한 후 INSERT와 UPDATE 구문을 실행
+	 * 
+	 * 회사 내부의 프로젝트는 등록/수정 할 필요가 없으므로 외부 프로젝트일 때만 등록/수정 수행
+	 * 
+	 * @param skillInvList
+	 * @param langNumList
+	 * @param frameNumList
+	 */
 	public void insertSkillInventory(List<SkillInventory> skillInvList, ArrayList<String[]> langNumList,
 			ArrayList<String[]> frameNumList) {
-		String projInsertSql = "insert into project (projname, isextern, dbNum, projcompany, projtarget) values (?, ?, ?, ?, ?)";
-		String joinProjInsertSql = "insert into joinproj (projnum, freeid, projrole, joinprojdate, exitprojdate) values((select last_insert_id()), ?, ?, date_format(?,'%Y-%m-%d'), date_format(?,'%Y-%m-%d'))";
-		String langSkillInsertSql = "insert into langskill(joinnum, langnum) values((select last_insert_id()), ?)";
-		String langSkillInsert2Sql = "insert into langskill(joinnum, langnum) values((select lsk.joinnum from langskill lsk where langskillnum=(select last_insert_id())), ?)";
-		String frameSkillInsertSql = "insert into frameworkskill(joinnum, framenum) values((select lsk.joinnum from langskill lsk where langskillnum=(select last_insert_id())), ?)";
-		String frameSkillInsert2Sql = "insert into frameworkSkill(joinnum, framenum) values((select fmw.joinnum from frameworkskill fmw where frameskillnum=(select last_insert_id())),?)";
-		String projUpdateSql = "update project set projname=?, dbNum=?, projcompany=?, projtarget=? where projnum=?";
-		String joinProjUpdateSql = "update joinproj set projrole=?, joinprojdate=?, exitprojdate=? where joinnum=(select * from (select pjoin.joinnum from joinproj as pjoin where projnum=?)j)";
-		String langSkillDeleteSql = "delete from langskill where joinnum=(select joinnum from joinproj where projnum=?)";
-		String langSkillInsertSql2 = "insert into langskill(joinnum, langnum) values((select joinnum from joinproj where projnum=?), ?)";
-		String frameSkillDeleteSql = "delete from frameworkskill where joinnum=(select joinnum from joinproj where projnum=?)";
-		String frameSkillInsertSql2 = "insert into frameworkskill(joinnum, framenum) values((select joinnum from joinproj where projnum=?), ?)";
+		/**
+		 *  스킬인벤토리는 데이터베이스상에 존재하는 테이블이 아니기 때문에 등록할 때 
+		 *  
+		 *  각각 다른 테이블에 입력받은 정보들을 등록해야 하는데 프로젝트 등록과 마찬가지로 
+		 *  
+		 *  하나의 커넥션 안에서 이루어져야 한다. (ProjectViewDAO.java의 insertProject 메소드 참고)
+		 */
+		
+		// project 테이블에 신규 프로젝트를 등록하는 쿼리
+		String projInsertSql = "INSERT INTO project (projname, isextern, dbNum, projcompany, projtarget) "
+						     + "VALUES (?, ?, ?, ?, ?)";
+		
+		// joinproj 테이블에 신규 프로젝트의 참여정보를 등록하기 위해서 프로젝트번호를 last_insert_id() 값으로 받아와 등록하는 쿼리
+		String joinProjInsertSql = "INSERT INTO joinproj (projnum, freeid, projrole, joinprojdate, exitprojdate) "
+								 + "VALUES ((select last_insert_id()), ?, ?, date_format(?,'%Y-%m-%d'), date_format(?,'%Y-%m-%d'))";
+		
+		// langskill 테이블에 프리랜서가 사용한 첫번째 언어를 등록하기 위해 joinnum을 last_insert_id()로 받아와 등록하는 쿼리
+		String langSkillInsertSql = "INSERT INTO langskill(joinnum, langnum) "
+								  + "VALUES((SELECT last_insert_id()), ?)";
+		
+		// 첫번째 언어 등록을 수행한 후 같은 쿼리로 INSERT구문을 수행하면 joinnum에 last_insert_id()값(langskillnum)을 등록하게 되므로
+		// 서브쿼리를 이용하여 lasst_insert_id()값(lanskillnum)으로 조회한 langskill의 joinnum을 찾아 다음 언어를 등록하는 쿼리
+		String langSkillInsert2Sql = "INSERT INTO langskill(joinnum, langnum) "
+								   + "VALUES((SELECT lsk.joinnum "
+								   			 + "FROM langskill lsk "
+								   			+ "WHERE langskillnum=(SELECT last_insert_id())), ?)";
+		
+		// frameworkskill 테이블에 서브쿼리를 이용하여 lasst_insert_id()값(langskillnum)으로 조회한 
+		// langskill의 joinnum을 찾아 첫번쨰 프레임워크를 등록하는 쿼리
+		String frameSkillInsertSql = "INSERT INTO frameworkskill(joinnum, framenum) "
+								   + "VALUES((SELECT lsk.joinnum "
+								   			 + "FROM langskill lsk "
+								   			+ "WHERE langskillnum=(SELECT last_insert_id())), ?)";
+		
+		// 첫번째 프레임워크 등록을 수행한 후 서브쿼리를 이용하여 lasst_insert_id()값(frameskillnum)으로 조회한 
+		// frameworkskill의 joinnum을 찾아 다음 프레임워크를 등록하는 쿼리
+		String frameSkillInsert2Sql = "INSERT INTO frameworkSkill(joinnum, framenum) "
+								 	+ "VALUES((SELECT fmw.joinnum "
+								 			  + "FROM frameworkskill fmw "
+								 			 + "WHERE frameskillnum=(SELECT last_insert_id())),?)";
+		
+		// 프로젝트 번호를 받아 해당 번호의 프로젝트 정보를 수정하는 쿼리
+		String projUpdateSql = "UPDATE project SET projname=?, dbNum=?, projcompany=?, projtarget=? WHERE projnum=?";
+		
+		// 서브쿼리를 이용하여 projnum으로 joinnum을 찾아 해당 joinnum의 프로젝트참여 정보를 수정하는 쿼리
+		String joinProjUpdateSql = "UPDATE joinproj SET projrole=?, joinprojdate=?, exitprojdate=? "
+								  + "WHERE joinnum=(SELECT * "
+								  				   + "FROM (SELECT pjoin.joinnum "
+								  				   		   + "FROM joinproj as pjoin "
+								  				   		  + "WHERE projnum=?)j)";
+		
+		/* 언어는 하나의 프로젝트에 여러개가 사용될 수 있다.
+		   프로젝트 또한 한명의 프리랜서가 여러개의 프로젝트에 참여할 수 있다.
+		   따라서 여러개의 언어가 사용된 프로젝트를 여러개 업데이트 해야 한다.
+		   이를 한번에 수행하기 위해서 사용된 언어의 번호(langnum)를 배열에 담는다.
+		   이 배열들은 프로젝트의 개수만큼 생성되고 그 배열들을 ArrayList에 담는다.
+		   이렇게 생성된 ArrayList를 매개변수로 받아와 쿼리들을 실행한다.
+		   스킬인벤토리를 수정 할 때 여러개의 프로젝트에 사용된 여러개의 언어를 하나씩 수정하려면
+		   projnum으로 joinnum을 잦아 joinnum이 해당하는 langskill중 langnum이 일치하는 행의 langnum을 수정해야하는데,
+		   그러면 쿼리와 소스코드가 너무 복잡해 지므로 프로젝트에 사용된 언어 전체를 삭제한 후 새로 등록한다.*/
+		
+		// langskill 테이블에서 projnum으로 해당 프로젝트의 joinnum을 찾아 그 joinnum이 있는 행을 모두 삭제하는 쿼리
+		String langSkillDeleteSql = "DELETE FROM langskill "
+										+ "WHERE joinnum=(SELECT joinnum "
+														 + "FROM joinproj "
+														+ "WHERE projnum=?)";
+		
+		// 삭제 후 projnum으로 joinproj 테이블에서 joinnum을 찾아 해당 프로젝트에 사용된 언어를 등록하는 쿼리
+		String langSkillInsertSql2 = "INSERT INTO langskill(joinnum, langnum) "
+								   + "VALUES((SELECT joinnum "
+								   			 + "FROM joinproj "
+								   		    + "WHERE projnum=?), ?)";
+		
+		// frameworkskill 테이블에서 projnum으로 해당 프로젝트의 joinnum을 찾아 그 joinnum이 있는 행을 모두 삭제하는 쿼리
+		String frameSkillDeleteSql = "DELETE FROM frameworkskill "
+									+ "WHERE joinnum=(SELECT joinnum "
+													 + "FROM joinproj "
+													+ "WHERE projnum=?)";
+		
+		// 삭제 후 projnum으로 joinproj 테이블에서 joinnum을 찾아 해당 프로젝트에 사용된 프레임워크를 등록하는 쿼리
+		String frameSkillInsertSql2 = "INSERT INTO frameworkskill(joinnum, framenum) "
+									+ "VALUES((SELECT joinnum "
+													  + "FROM joinproj "
+													 + "WHERE projnum=?), ?)";
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		try {
-			System.out.println("업데이트 메소드 실행");
+			System.out.println("인서트 메소드 실행");
+			// 커넥션 연결
 			conn = DBManager.getConnection();
+			
+			// skillInvList의 길이는 프로젝트 개수와 같음
 			for (int i = 0; i < skillInvList.size(); i++) {
+				// 프로젝트 번호와 외부 프로젝트 여부를 확인
 				System.out.println("프로젝트 번호 : " + skillInvList.get(i).getProjNum() + " 외부프로젝트 여부 : "
 						+ skillInvList.get(i).getIsExtern());
+				
+				// project 테이블에 번호가 0인 것은 없으므로 프로젝트 번호가 0이고 외부 프로젝트일 때 등록 실행
 				if ((skillInvList.get(i).getProjNum() == 0) && (skillInvList.get(i).getIsExtern() == 1)) {
 					System.out.println("프로젝트 등록 실행");
+					
+					// 프로젝트 등록 쿼리 준비
 					pstmt = conn.prepareStatement(projInsertSql);
+					// skillInvList의 i번째 인덱스에 있는 프로젝트에서 각 변수에 해당하는 값을 받아옴
 					pstmt.setString(1, skillInvList.get(i).getProjName());
 					pstmt.setInt(2, skillInvList.get(i).getIsExtern());
 					pstmt.setInt(3, skillInvList.get(i).getDbNum());
 					pstmt.setString(4, skillInvList.get(i).getProjCompany());
 					pstmt.setString(5, skillInvList.get(i).getProjTarget());
 
+					// 쿼리 실행
 					pstmt.executeUpdate();
 					pstmt.close();
 
+					// 프로젝트 참여 등록 쿼리 준비
 					pstmt = conn.prepareStatement(joinProjInsertSql);
-
+					// skillInvList의 i번째 인덱스에 있는 프로젝트에서 각 변수에 해당하는 값을 받아옴
 					pstmt.setString(1, skillInvList.get(i).getFreeId());
 					pstmt.setString(2, skillInvList.get(i).getProjRole());
 					pstmt.setString(3, skillInvList.get(i).getJoinProjDate());
@@ -684,13 +791,17 @@ public class FreelancerDAO {
 					pstmt.executeUpdate();
 					pstmt.close();
 
+					// langNumList의 i번째 인덱스가 null이 아니면
 					if (langNumList.get(i) != null) {
 						pstmt = conn.prepareStatement(langSkillInsertSql);
+						// langNumList의 i번째 인덱스에 있는 배열의 0번째 값을 얻어와서
 						pstmt.setInt(1, Integer.parseInt(langNumList.get(i)[0]));
+						// 쿼리 실행
 						pstmt.executeUpdate();
 						pstmt.close();
 						System.out.println("등록 언어 : " + langNumList.get(i)[0]);
 
+						// langNumList의 i번째 인데스에 있는 배열의 길이만큼 반복
 						for (int j = 1; j < langNumList.get(i).length; j++) {
 							pstmt = conn.prepareStatement(langSkillInsert2Sql);
 							pstmt.setInt(1, Integer.parseInt(langNumList.get(i)[j]));

@@ -441,15 +441,15 @@ public class ProjectViewDAO {
 		// 전체 정보를 조회하는 기본 쿼리
 		String sql = "select * from projoinfreeframelang_view";
 
-		/*
-		 * 매개변수를 올바르게 받았는지 확인하기 위한 출력문 
+		
+//		  매개변수를 올바르게 받았는지 확인하기 위한 출력문 
 		System.out.println("dao 프로젝트명 = " + projName);
 		System.out.println("dao 분야 = " + devCount);
 		System.out.println("dao 언어 = " + langCount);
 		System.out.println("dao 데이터베이스 = " + dbCount);
 		System.out.println("dao 툴프레임 = " + tfwCount);
 		System.out.println("dao 시간1 = " + time1);
-		System.out.println("dao 시간2 = " + time2);*/
+		System.out.println("dao 시간2 = " + time2);
 
 		// 검색조건에 프로젝트명이 있으면
 		if (projName != null && !projName.equals("")) {
