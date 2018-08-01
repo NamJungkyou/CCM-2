@@ -21,6 +21,14 @@ import ccm.data.table.Project;
 import ccm.data.table.Project_Info_view;
 import ccm.util.DBManager;;
 
+/**
+ * 
+ * 방문자, 직원, 프리랜서의 공통 기능을 담당하는 DAO
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
+
 public class CommonDAO {
 	private static CommonDAO instance = new CommonDAO();
 
