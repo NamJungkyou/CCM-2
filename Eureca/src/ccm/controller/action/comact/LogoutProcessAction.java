@@ -14,11 +14,8 @@ import ccm.controller.action.Action;
  * 
  * 로그아웃 과정을 처리하는 액션
  * 
- * 작성자 : 진재환
+ * 작성자 : 글로벌 IT 경영 진재환
  * 
- * 수정자 : 진재환
- * 
- * 수정일 : 2018-05-07
  *
  *
  ***************************/
@@ -33,6 +30,7 @@ public class LogoutProcessAction implements Action
 		if(ses.getAttribute("loginemp") != null) ses.setAttribute("loginemp", null);
 		if(ses.getAttribute("loginfree") != null)ses.setAttribute("loginfree", null);
 		
+		// 스크립트를 동적 실행해서 로그아웃이 되었다는 alert 창을 띄움
 		response.setContentType("text/html;charset=UTF-8");
 		response.getWriter().println("<script>");
 		response.getWriter().println("alert('로그아웃되었습니다');");
