@@ -15,11 +15,7 @@ import ccm.controller.action.Action;
  * login.jsp로 이동한다
  * 커맨드값 : login
  * 
- * 작성자 : 
- * 
- * 수정자 : 
- * 
- * 수정일 : 
+ * 작성자 : 글로벌 IT 경영 진재환
  *
  *
  ***************************/
@@ -29,7 +25,7 @@ public class GoToLoginAction implements Action {
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
-		//login.jsp ㄱㄱㄱ
+		//login.jsp로 이동함
 		request.getRequestDispatcher("/common/login.jsp").forward(request, response);
 	}
 }
