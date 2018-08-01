@@ -49,7 +49,7 @@ public class ProjectAF {
 			action = new ccm.controller.action.project.SendMessageAndPutInProcessAction();
 		if (command.equals("gotoputinofsearchfreelancer")) {
 			action = new ccm.controller.action.project.GoToPutInOfSearchFreelancerAction();
-
+		}
 			if (command.equals("project_list")) {
 				action = new ccm.controller.action.project.ProjectSearchAction(); // 프로젝트 리스트
 			} else if (command.equals("project_select")) {
@@ -77,7 +77,5 @@ public class ProjectAF {
 			if (command.equals("gotoputinofsearchfreelancer")) {
 				action = new ccm.controller.action.project.GoToPutInOfSearchFreelancerAction(); // 프로젝트 투입의 프리랜서 검색
 			}
-		}
 		return action;
-	}
-}
+}}
