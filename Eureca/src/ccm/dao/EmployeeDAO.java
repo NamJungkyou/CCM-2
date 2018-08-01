@@ -1205,7 +1205,6 @@ public class EmployeeDAO {
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			// ?占쏙옙 占쏙옙 占쏙옙占쏙옙
 
 			pstmt.setString(1, date);
 			pstmt.setString(2, location);
