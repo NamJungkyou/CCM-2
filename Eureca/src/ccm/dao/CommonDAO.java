@@ -315,10 +315,17 @@ public class CommonDAO {
 
 	// DB에서 프로그래밍 언어, DBMS, 프레임워크를 모두 가져오는 메소드 
 	public LangAndDBAndFrame getLangDBFrame() {
+		
+		// LangAndDBAndFrame 객체를 생성함
+		// 객체에는 언어, DBMS, 프레임워크 리스트가 모두 있음
 		LangAndDBAndFrame ldf = new LangAndDBAndFrame();
 		Connection conn = null;
+		
+		// 언어를 모두 가져오는 쿼리
 		String langSql = "SELECT * FROM PROGLANG ORDER BY LANGNUM";
+		// DBMS를 모두 가져오는 쿼리
 		String dbmsSql = "SELECT * FROM DBMS ORDER BY DBNUM";
+		// 프레임워크를 모두 가져오는 쿼리
 		String frameSql = "SELECT * FROM FRAMEWORK ORDER BY FRAMENUM";
 		ResultSet langRs = null;
 		ResultSet dbmsRs = null;
@@ -330,11 +337,21 @@ public class CommonDAO {
 		try {
 			conn = DBManager.getConnection();
 
+			// 언어부터 쿼리를 던짐
 			langPstmt = conn.prepareStatement(langSql);
 			langRs = langPstmt.executeQuery();
+			
+			// 루프 안에서 언어 데이터를 모두 가져와서
+			// ldf 객체의 lang 필드 리스트에 모두 넣어줌
 			while (langRs.next()) {
+				// 언어 객체 생성
 				ProgLang newLang = new ProgLang();
+				
+				// ResultSet 객체에서 값을 모두 가져와서
+				// 객체의 필드를 초기화함
 				newLang.setParams(langRs);
+				
+				// 리스트에 넣어줌
 				ldf.getLang().add(newLang);
 			}
 			if (langRs != null)
@@ -342,11 +359,21 @@ public class CommonDAO {
 			if (langPstmt != null)
 				langPstmt.close();
 
+			// 프레임워크 쿼리 실행
 			framePstmt = conn.prepareStatement(frameSql);
 			frameRs = framePstmt.executeQuery();
+			
+			// 루프 안에서 프레임워크 데이터를 모두 가져와서
+			// ldf 객체의 frame 필드 리스트에 모두 넣어줌
 			while (frameRs.next()) {
+				// 프레임워크 객체 생성
 				Framework newFrame = new Framework();
+				
+				// ResultSet 객체에서 값을 모두 가져와서
+				// 객체의 필드를 초기화함
 				newFrame.setParams(frameRs);
+				
+				// 리스트에 넣어줌
 				ldf.getFrame().add(newFrame);
 			}
 			if (frameRs != null)
@@ -354,11 +381,21 @@ public class CommonDAO {
 			if (framePstmt != null)
 				framePstmt.close();
 
+			// DBMS 쿼리 실행
 			dbmsPstmt = conn.prepareStatement(dbmsSql);
 			dbmsRs = dbmsPstmt.executeQuery();
+			
+			// 루프 안에서 DBMS 데이터를 모두 가져와서
+			// ldf 객체의 dbms 필드 리스트에 모두 넣어줌
 			while (dbmsRs.next()) {
+				// DBMS 객체 생성
 				DBMS newDbms = new DBMS();
+				
+				// ResultSet 객체에서 값을 모두 가져와서
+				// 객체의 필드를 초기화함
 				newDbms.setParams(dbmsRs);
+				
+				// 리스트에 넣어줌
 				ldf.getDbms().add(newDbms);
 			}
 			if (dbmsRs != null)
