@@ -22,7 +22,6 @@ public class ProjectAF {
 	public Action getAction(String command) {
 		Action action = null;
 		System.out.println("ProjectAF : " + command);
-<<<<<<< HEAD
 
 		if (command.equals("project_list")) {
 			action = new ccm.controller.action.project.ProjectSearchAction();
@@ -50,7 +49,6 @@ public class ProjectAF {
 			action = new ccm.controller.action.project.SendMessageAndPutInProcessAction();
 		if (command.equals("gotoputinofsearchfreelancer")) {
 			action = new ccm.controller.action.project.GoToPutInOfSearchFreelancerAction();
-=======
 		
 		if (command.equals("project_list")) {
 			action = new ccm.controller.action.project.ProjectSearchAction(); // 프로젝트 리스트
@@ -78,7 +76,6 @@ public class ProjectAF {
 			action = new ccm.controller.action.project.SendMessageAndPutInProcessAction(); // 강제투입
 		if (command.equals("gotoputinofsearchfreelancer")) {
 			action = new ccm.controller.action.project.GoToPutInOfSearchFreelancerAction(); // 프로젝트 투입의 프리랜서 검색
->>>>>>> branch 'master' of https://github.com/NamJungkyou/CCM-2.git
 		}
 		return action;
 	}
