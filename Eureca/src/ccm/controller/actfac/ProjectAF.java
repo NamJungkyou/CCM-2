@@ -3,7 +3,7 @@ package ccm.controller.actfac;
 import ccm.controller.action.Action;
 
 /**
- * 프로젝트 관련된 액션들을 처리하는 액션 팩토리
+ * 프로젝트 관련된 액션들을 처리하는 액션팩토리
  * 
  * @author 글로벌 IT 경영 진재환
  *
