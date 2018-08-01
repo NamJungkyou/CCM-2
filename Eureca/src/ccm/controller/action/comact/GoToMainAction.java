@@ -17,13 +17,6 @@ import ccm.data.table.Project_Info_view;
  * index.jsp에서 이 과정을 통해서 main.jsp로 이동한다
  * 유레카에서 가장먼저 실행되는 액션
  * 커맨드값 : main
- * 
- * 작성자 : 
- * 
- * 수정자 : 
- * 
- * 수정일 : 
- *
  *
  ***************************/
 
@@ -32,9 +25,15 @@ public class GoToMainAction implements Action
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
+		// 커먼DAO 객체 인스턴스를 받아옴
 		CommonDAO cDao = CommonDAO.getInstance();
+		
+		// 최신 프로젝트 정보를 받음
 		Project_Info_view project_Info_view = cDao.selectLastRegistProject();
+		
+		// 프로젝트 리스트를 받음
 		List<Project_Info_view> projectList = cDao.selectAllJoinableProject();
+		
 		
 		request.setAttribute("projectList", projectList);
 		request.setAttribute("project", project_Info_view);
