@@ -17,18 +17,18 @@ public class FreelancerEducationUpdateAction implements Action {
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		ArrayList<Education> eVo = new ArrayList<Education>();
+		ArrayList<Education> eVo = new ArrayList<Education>(); // 학력정보 저장을 위해 배열로 선언
 		
-		String[] eduNums = request.getParameterValues("eduNum");
-//		for(String s : eduNums)System.out.println("+++++++" + s.toString());
-		String[] eduSchools = request.getParameterValues("eduSchool");
-		/*for(String s : eduSchools)System.out.println(s.toString());*/
-		String[] eduMajors = request.getParameterValues("eduMajor");
-		String[] eduDeplomas = request.getParameterValues("eduDeploma");
-		String[] schoolJoinDates = request.getParameterValues("schoolJoinDate");
-		String[] schoolGraduatedDates = request.getParameterValues("schoolGraduatedDate");
-		String freeId = request.getParameter("freeId");
-//		System.out.println("+++++++++++" + freeId);
+		String[] eduNums = request.getParameterValues("eduNum"); // 학력번호
+//		for(String s : eduNums)System.out.println("학력번호가 제대로 들어가고 있는지 테스트" + s.toString());
+		String[] eduSchools = request.getParameterValues("eduSchool"); // 학교명
+		/*for(String s : eduSchools)System.out.println("학교명이 제대로 들어가고 있는지 테스트" + s.toString());*/
+		String[] eduMajors = request.getParameterValues("eduMajor"); // 전공
+		String[] eduDeplomas = request.getParameterValues("eduDeploma"); // 학위
+		String[] schoolJoinDates = request.getParameterValues("schoolJoinDate"); // 입학일
+		String[] schoolGraduatedDates = request.getParameterValues("schoolGraduatedDate"); // 졸업일
+		String freeId = request.getParameter("freeId"); // 아이디
+//		System.out.println("프리랜서 아이디 값을 제대로 받아오는지 테스트" + freeId);
 		
 		FreelancerDAO fDao = FreelancerDAO.getInstance();
 		
@@ -36,6 +36,7 @@ public class FreelancerEducationUpdateAction implements Action {
 		{
 			Education e = new Education();
 			
+			// 학력번호가 null이면 새로운 학력번호를 받아옴
 			e.setEduNum(eduNums[i] == null || eduNums[i].equals("") ? fDao.getNewEduNum() : Integer.parseInt(eduNums[i]));
 			e.setEduSchool(eduSchools[i]);
 			e.setEduMajor(eduMajors[i]);
@@ -46,53 +47,10 @@ public class FreelancerEducationUpdateAction implements Action {
 			
 			eVo.add(e);
 		}
-		
-/*		for(Education ed : eVo)
-		{
-			System.out.println("**********edededed : " + ed.getSchoolGraduatedDateyy()
-			+ ed.getSchoolGraduatedDatemm() + ed.getSchoolGraduatedDatedd());
-		}*/
-		
-		fDao.updateEducation(eVo);
+			
+		fDao.updateEducation(eVo); // 학력정보 업데이트 메소드실행
 		
 		new FreelancerProfileAction().execute(request, response);
 		
-				
-		/*eVo.setEduNum(Integer.parseInt(request.getParameter("eduNum")));
-		eVo.setEduSchool(request.getParameter("eduSchool"));
-		eVo.setEduMajor(request.getParameter("eduMajor"));
-		eVo.setEduDeploma(request.getParameter("eduDeploma"));
-		eVo.setSchoolJoinDateyy(request.getParameter("schoolJoinDateyy"));
-		eVo.setSchoolJoinDatemm(request.getParameter("schoolJoinDatemm"));
-		eVo.setSchoolJoinDatedd(request.getParameter("schoolJoinDatedd"));*/
-		/*eVo.setSchoolJoinDate(Date.valueOf(request.getParameter("schoolJoinDate")));*/
-		/*eVo.setSchoolGraduatedDateyy(request.getParameter("schoolGraduatedDateyy"));
-		eVo.setSchoolGraduatedDatemm(request.getParameter("schoolGraduatedDatemm"));
-		eVo.setSchoolGraduatedDatedd(request.getParameter("schoolGraduatedDatedd"));
-		eVo.setFreeId(request.getParameter("freeId"));*/
-		
-/*		eVo.setEduNum(Integer.parseInt(request.getParameter("eduNum")));
-		eVo.setEduSchool(request.getParameter("eduSchool"));
-		eVo.setEduMajor(request.getParameter("eduMajor"));
-		eVo.setEduDeploma(request.getParameter("eduDeploma"));
-		eVo.setSchoolJoinDate(Date.valueOf(request.getParameter("schoolJoinDate")));
-		eVo.setSchoolGraduatedDate(Date.valueOf(request.getParameter("schoolGraduatedDate")));
-		eVo.setFreeId(request.getParameter("freeId"));*/
-		
-		
-		/*FreelancerDAO fDao = FreelancerDAO.getInstance();
-		fDao.updateEducation( eVo);
-		
-		System.out.println(request.getParameter("eduNum"));
-		System.out.println(request.getParameter("eduSchool"));
-		System.out.println(request.getParameter("eduMajor"));
-		System.out.println(request.getParameter("eduDeploma"));
-		System.out.println(request.getParameter("schoolJoinDate"));
-		System.out.println(request.getParameter("schoolGraduatedDate"));
-		
-		new FreelancerProfileAction().execute(request, response);*/
-		
-
 	}
-
 }
