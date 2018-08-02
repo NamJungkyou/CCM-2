@@ -41,7 +41,7 @@ public class FreelancerEducationUpdateAction implements Action {
 		{
 			Education e = new Education();
 			
-			// 학력번호가 null이면 새로운 학력번호를 받아옴
+			// 학력번호가 null이면 freeDAO에서 새로운 학력번호를 생성하는 getNewEduNUm 메소드에서 학력번호를 받아옴 
 			e.setEduNum(eduNums[i] == null || eduNums[i].equals("") ? fDao.getNewEduNum() : Integer.parseInt(eduNums[i]));
 			e.setEduSchool(eduSchools[i]);
 			e.setEduMajor(eduMajors[i]);
