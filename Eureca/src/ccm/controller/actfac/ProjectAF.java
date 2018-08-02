@@ -22,35 +22,6 @@ public class ProjectAF {
 	public Action getAction(String command) {
 		Action action = null;
 		System.out.println("ProjectAF : " + command);
-<<<<<<< HEAD
-
-		if (command.equals("project_list")) {
-			action = new ccm.controller.action.project.ProjectSearchAction();
-		} else if (command.equals("project_select")) {
-			action = new ccm.controller.action.project.ProjectSelectAction();
-		} else if (command.equals("project_insert")) {
-			action = new ccm.controller.action.project.ProjectInsertAction();
-		}
-
-		if (command.equals("projectjoinaccept"))
-			action = new ccm.controller.action.project.GoToProjectJoinAcceptAction();
-		if (command.equals("acceptorrejectproc"))
-			action = new ccm.controller.action.project.ProjJoinAcceptOrRejectProcessAction();
-		if (command.equals("putfreelancer"))
-			action = new ccm.controller.action.project.GoToPutFreelancerAction();
-		if (command.equals("addtoputinfreelancerlist"))
-			action = new ccm.controller.action.project.AddToPutInFreelancerListAction();
-		if (command.equals("gotoputinofsearchproject"))
-			action = new ccm.controller.action.project.GoToPutInOfSearchProjectAction();
-		if (command.equals("putrequestordelete"))
-			action = new ccm.controller.action.project.GoToPutRequestOrDeleteAction();
-		if (command.equals("sendmessageforputinrequestproc"))
-			action = new ccm.controller.action.project.SendMessageForPutInProcessAction();
-		if (command.equals("sendmessageandputinproc"))
-			action = new ccm.controller.action.project.SendMessageAndPutInProcessAction();
-		if (command.equals("gotoputinofsearchfreelancer")) {
-			action = new ccm.controller.action.project.GoToPutInOfSearchFreelancerAction();
-=======
 		
 		if (command.equals("project_list")) {
 			action = new ccm.controller.action.project.ProjectSearchAction(); // 프로젝트 리스트
@@ -78,7 +49,6 @@ public class ProjectAF {
 			action = new ccm.controller.action.project.SendMessageAndPutInProcessAction(); // 강제투입
 		if (command.equals("gotoputinofsearchfreelancer")) {
 			action = new ccm.controller.action.project.GoToPutInOfSearchFreelancerAction(); // 프로젝트 투입의 프리랜서 검색
->>>>>>> branch 'master' of https://github.com/NamJungkyou/CCM-2.git
 		}
 		return action;
 	}
