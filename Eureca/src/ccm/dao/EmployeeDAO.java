@@ -17,7 +17,12 @@ import ccm.data.table.JoinFreelancerInterview_view;
 import ccm.data.table.JoinFreelancerSkillInventory_view;
 import ccm.data.table.JoinProj;
 import ccm.util.DBManager;
-
+/**
+ * 사원관련 메소드가 저장된 EmployeeDAO
+ * 
+ * @작성자 글로벌IT경영 김민현
+ *
+ */
 public class EmployeeDAO {
 	private static EmployeeDAO instance = new EmployeeDAO();
 
@@ -33,8 +38,10 @@ public class EmployeeDAO {
 		return loginEmp;
 	}
 	
+	// 등록하려는 사원아이디가 기존에 존재하고 있는 아이디와 중복되는지 체크
 	public int confirmID(String empId) {
 		int result = -1;
+		// 데이터베이스내에 저장된 empid값 중 where empid 값과 중복되는게 있는지 검색
 		String sql = "select empid from employee where empid=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -43,7 +50,7 @@ public class EmployeeDAO {
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, empId);
+			pstmt.setString(1, empId); // sql문에 empid=? 부분에 empId값을 받음
 		
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -65,8 +72,11 @@ public class EmployeeDAO {
 		return result;
 	}
 	
+	// 등록하려는 사원 휴대폰 번호가 중복되지 않는지 체크
+	// jsp페이지에서 따로 중복검사를 해야할 필요는 일반적으로 없지만, empPhone는 DB에서 unique로 설정되어있어 값 입력테스트를 할 때 오류발생을 막고자 사용하기 위해 제작
 	public int confirmPhone(String empPhone) {
 		int result = -1;
+		// 데이터베이스내에 저장된 empphone값 중 where empphone 값과 중복되는게 있는지 검색
 		String sql = "select empphone from employee where empphone=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -97,8 +107,11 @@ public class EmployeeDAO {
 		return result;
 	}
 	
+	// 등록하려는 사원 이메일이 중복되지 않는지 체크
+	// jsp페이지에서 따로 중복검사를 해야할 필요는 일반적으로 없지만, empEmail는 DB에서 unique로 설정되어있어 값 입력테스트를 할 때 오류발생을 막고자 사용하기 위해 제작
 	public int confirmEmail(String empEmail) {
 		int result = -1;
+		// 데이터베이스내에 저장된 empemail값 중 where empemail 값과 중복되는게 있는지 검색
 		String sql = "select empemail from employee where empemail=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -128,9 +141,10 @@ public class EmployeeDAO {
 		}
 		return result;
 	}
-
+	
+	// 사원 기본정보 조회(출력)
 	public Employee showProfile(String Empid) {
-		// 검색목록중 선택한 사람 아이디 기준으로 프로필 출력
+		// employee 테이블에서 empId값을 기준으로 사원 기본정보 출력 sql문
 		String sql = "select empId, empPw, empPicture, empName, empDept, empDuty, "
 				+ "date_format(empJoinDate, '%Y-%m-%d') as empJoinDate, date_format(empDropDate, '%Y-%m-%d') as empDropDate, empAuth, date_format(empBirth, '%Y-%m-%d') as empBirth, empSex, "
 				+ "empMarried, empPhone, empEmail, empFrontAddr, empRearAddr, "
@@ -145,7 +159,7 @@ public class EmployeeDAO {
 			conn = DBManager.getConnection();
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, Empid);
+			pstmt.setString(1, Empid); // sql문을 실행하는데 검색기준인 empid값을 넣어줌
 
 			rs = pstmt.executeQuery();
 
@@ -155,29 +169,25 @@ public class EmployeeDAO {
 				
 				eVo = new Employee();
 
-				eVo.setEmpId(rs.getString("empId"));
-				eVo.setEmpPw(rs.getString("empPw"));
-				eVo.setEmpPicture(rs.getString("empPicture"));
-				eVo.setEmpName(rs.getString("empName"));
-				eVo.setEmpDept(rs.getString("empDept"));
-				eVo.setEmpDuty(rs.getString("empDuty"));
-				
-
-				eVo.setEmpAuth(rs.getBoolean("empAuth"));
-				
-				eVo.setEmpSex(rs.getBoolean("empSex"));
-				eVo.setEmpMarried(rs.getBoolean("empMarried"));
-				eVo.setEmpPhone(rs.getString("empPhone"));
-				eVo.setEmpEmail(rs.getString("empEmail"));
-				eVo.setEmpFrontAddr(rs.getString("empFrontAddr"));
-				eVo.setEmpRearAddr(rs.getString("empRearAddr"));
-				eVo.setEmpBank(rs.getString("empBank"));
-				eVo.setEmpAccount(rs.getString("empAccount"));
-				eVo.setEmpAccName(rs.getString("empAccName"));
-				
-				eVo.setEmpBirth(rs.getString("empBirth"));
-				eVo.setEmpJoinDate(rs.getString("empJoinDate"));
-				eVo.setEmpDropDate(rs.getString("empDropDate"));
+				eVo.setEmpId(rs.getString("empId")); // 아이디
+				eVo.setEmpPw(rs.getString("empPw")); // 비밀번호
+				eVo.setEmpPicture(rs.getString("empPicture")); // 사진
+				eVo.setEmpName(rs.getString("empName")); // 이름
+				eVo.setEmpDept(rs.getString("empDept")); // 부서
+				eVo.setEmpDuty(rs.getString("empDuty")); // 직책
+				eVo.setEmpAuth(rs.getBoolean("empAuth")); // 관리권한			
+				eVo.setEmpSex(rs.getBoolean("empSex")); // 성별
+				eVo.setEmpMarried(rs.getBoolean("empMarried")); // 결혼여부
+				eVo.setEmpPhone(rs.getString("empPhone")); // 전화번호
+				eVo.setEmpEmail(rs.getString("empEmail")); // 이메일
+				eVo.setEmpFrontAddr(rs.getString("empFrontAddr")); // 주소
+				eVo.setEmpRearAddr(rs.getString("empRearAddr")); // 나머지주소
+				eVo.setEmpBank(rs.getString("empBank")); // 은행명
+				eVo.setEmpAccount(rs.getString("empAccount")); // 게좌번호
+				eVo.setEmpAccName(rs.getString("empAccName")); // 계좌명의				
+				eVo.setEmpBirth(rs.getString("empBirth")); // 생년월일
+				eVo.setEmpJoinDate(rs.getString("empJoinDate")); // 입사일
+				eVo.setEmpDropDate(rs.getString("empDropDate")); // 퇴사일
 
 			}
 		} catch (Exception e) {
@@ -188,7 +198,9 @@ public class EmployeeDAO {
 		return eVo;
 	}
 	
+	// 프리랜서 기본정보 조회(출력)
 	public Freelancer showFreelancerProfile(String freeId) {
+		// freelancer 테이블에서 freeId값을 기준으로 프리랜서 기본정보 출력 sql문
 		String sql = "select freeId, freeReviseDate, freeName, date_format(freeBirth, '%Y-%m-%d') as freeBirth, " 
 				+ "freeKosa, freeSex, freeMarried, freeScore, freePhone, freeEmail, "
 				+ "freeFrontAddr, freeRearAddr from Freelancer where freeId=?";
@@ -212,18 +224,18 @@ public class EmployeeDAO {
 				
 				fVo = new Freelancer();
 				
-				fVo.setFreeId(rs.getString("freeId"));
-				fVo.setFreeReviseDate(rs.getTimestamp("freeRevDate"));
-				fVo.setFreeName(rs.getString("freeName"));
-				fVo.setFreeBirth(rs.getString("freeBirth"));
-				fVo.setFreeKosa(rs.getInt("freeKosa"));
-				fVo.setFreeSex(rs.getBoolean("freeSex"));
-				fVo.setFreeMarried(rs.getBoolean("freeMarried"));
-				fVo.setFreeScore(rs.getDouble("freeScore"));
-				fVo.setFreePhone(rs.getString("freePhone"));
-				fVo.setFreeEmail(rs.getString("freeEmail"));
-				fVo.setFreeFrontAddr(rs.getString("freeFrontAddr"));
-				fVo.setFreeRearAddr(rs.getString("freeRearAddr"));
+				fVo.setFreeId(rs.getString("freeId")); // 아이디
+				fVo.setFreeReviseDate(rs.getTimestamp("freeRevDate")); // 정보수정날짜
+				fVo.setFreeName(rs.getString("freeName")); // 이름
+				fVo.setFreeBirth(rs.getString("freeBirth")); // 생년월일
+				fVo.setFreeKosa(rs.getInt("freeKosa")); // 등급
+				fVo.setFreeSex(rs.getBoolean("freeSex")); // 성별
+				fVo.setFreeMarried(rs.getBoolean("freeMarried")); // 결혼여부
+				fVo.setFreeScore(rs.getDouble("freeScore")); // 평점
+				fVo.setFreePhone(rs.getString("freePhone")); // 휴대폰번호
+				fVo.setFreeEmail(rs.getString("freeEmail")); // 이메일
+				fVo.setFreeFrontAddr(rs.getString("freeFrontAddr")); // 주소
+				fVo.setFreeRearAddr(rs.getString("freeRearAddr")); // 나머지 주소
 
 			}
 		} catch (Exception e) {
@@ -234,14 +246,15 @@ public class EmployeeDAO {
 		return fVo;
 	}
 	
-	
+	// 프리랜서 정보수정
 	public void updateFreelancerProfile(Freelancer fVo) {
+		// 정보수정을 위해 선택된 프리랜서 중 freeId를 기준으로 정보수정을 하는 sql문
 		String sql = "update freelancer set freeName=?, freeBirth=date_format(?, '%Y-%m-%d'), "
 				+ "freeKosa=?, freeSex=?, freeMarried=?, freeScore=?, freePhone=?, "
 				+ "freeEmail=?, freeFrontAddr=?, freeRearAddr=?, freePic=?, freeFilePath=? where freeId=?";
 		
-		/*System.out.println(fVo.getFreeEmail().toString());
-		System.out.println(fVo.getFreeName().toString());*/
+		/*System.out.println("이메일이 들어가는지 테스트" + fVo.getFreeEmail().toString());
+		System.out.println("이름이 들어가는지 테스트" + fVo.getFreeName().toString());*/
 		
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -250,19 +263,19 @@ public class EmployeeDAO {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, fVo.getFreeName());
-			pstmt.setString(2, fVo.getFreeBirth());
-			pstmt.setInt(3, fVo.getFreeKosa());
-			pstmt.setInt(4, fVo.getFreeSex() == true ? 1 : 0);
-			pstmt.setInt(5, fVo.getFreeMarried() == true ? 1 : 0);
-			pstmt.setDouble(6, fVo.getFreeScore());
-			pstmt.setString(7, fVo.getFreePhone());
-			pstmt.setString(8, fVo.getFreeEmail());
-			pstmt.setString(9, fVo.getFreeFrontAddr());
-			pstmt.setString(10, fVo.getFreeRearAddr());
-			pstmt.setString(11, fVo.getFreePic());
-			pstmt.setString(12, fVo.getfreeFilePath());
-			pstmt.setString(13, fVo.getFreeId());
+			pstmt.setString(1, fVo.getFreeName()); // 이름
+			pstmt.setString(2, fVo.getFreeBirth()); // 생년월일
+			pstmt.setInt(3, fVo.getFreeKosa()); // 등급
+			pstmt.setInt(4, fVo.getFreeSex() == true ? 1 : 0); // 성별(boolean)
+			pstmt.setInt(5, fVo.getFreeMarried() == true ? 1 : 0); // 결혼여부(boolean)
+			pstmt.setDouble(6, fVo.getFreeScore()); // 평점(정확한 평점을 위해 소수점까지)
+			pstmt.setString(7, fVo.getFreePhone()); // 휴대폰번호
+			pstmt.setString(8, fVo.getFreeEmail()); // 이메일
+			pstmt.setString(9, fVo.getFreeFrontAddr()); // 주소
+			pstmt.setString(10, fVo.getFreeRearAddr()); // 나머지주소
+			pstmt.setString(11, fVo.getFreePic()); // 사진
+			pstmt.setString(12, fVo.getfreeFilePath()); // 사진경로
+			pstmt.setString(13, fVo.getFreeId()); // 아이디
 			
 			pstmt.executeUpdate();
 		}	catch (SQLException e) {
@@ -273,18 +286,15 @@ public class EmployeeDAO {
 	}
 
 	
+	// 프리랜서 기본정보 등록
 	public void insertFreelancerProfile(Freelancer fVo) {
+		// 프리랜서 기본정보 등록(아이디, 비밀번호, 이름 등)하는 sql문
 		String sql = "insert into freelancer(freeId, freePw, freeName, freeBirth, freeSex, freePhone, "
 				+ "freeEmail, freeMarried, freePic, freeFilePath, freeFrontAddr, freeRearAddr, freeBank, freeAccName, freeAccount) " 
-				+ "values(?, ?, ?, date_format(?, '%Y-%m-%d'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "values(?, ?, ?, date_format(?, '%Y-%m-%d'), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";			
 		
-				/*System.out.println(eVo.getEmpBirth().toString());
-				System.out.println(eVo.getEmpJoinDate().toString());*/
-				
-		/*
-		 * System.out.println(fVo.getFreeEmail().toString());
-		 * System.out.println(fVo.getFreeName().toString());
-		 */
+		/* System.out.println("이메일이 들어가는지 테스트" + fVo.getFreeEmail().toString());
+		 * System.out.println("이름이 들어가는지 테스트" + fVo.getFreeName().toString()); */
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -292,23 +302,22 @@ public class EmployeeDAO {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, fVo.getFreeId());
-			pstmt.setString(2, fVo.getFreePw());
-			pstmt.setString(3, fVo.getFreeName());
-			pstmt.setString(4, fVo.getFreeBirth());			
-			pstmt.setInt(5, fVo.getFreeSex() == true ? 1 : 0);
-			pstmt.setString(6, fVo.getFreePhone());
-			/*pstmt.setString(7, eVo.getEmpDropDate());*/
-			pstmt.setString(7, fVo.getFreeEmail());
-			pstmt.setInt(8, fVo.getFreeMarried() == true ? 1 : 0);
-			pstmt.setString(9, fVo.getFreePic());
-			pstmt.setString(10, fVo.getfreeFilePath());
-			pstmt.setString(11, fVo.getFreeFrontAddr());
-			pstmt.setString(12, fVo.getFreeRearAddr());
-			pstmt.setString(13, fVo.getFreeBank());
-			pstmt.setString(14, fVo.getFreeAccName());
-			pstmt.setString(15, fVo.getFreeAccount());
-
+			pstmt.setString(1, fVo.getFreeId()); // 아이디
+			pstmt.setString(2, fVo.getFreePw()); // 비밀번호
+			pstmt.setString(3, fVo.getFreeName()); // 이름
+			pstmt.setString(4, fVo.getFreeBirth()); // 생년월일	
+			pstmt.setInt(5, fVo.getFreeSex() == true ? 1 : 0); // 성별(남자:true,1 여자:false,0)
+			pstmt.setString(6, fVo.getFreePhone()); // 전화번호
+			/*pstmt.setString(7, eVo.getEmpDropDate());*/ // 등록할때는 퇴사일 입력이 필요없음
+			pstmt.setString(7, fVo.getFreeEmail()); // 이메일
+			pstmt.setInt(8, fVo.getFreeMarried() == true ? 1 : 0); // 결혼여부(기혼:true,1 여자:false,0)
+			pstmt.setString(9, fVo.getFreePic()); // 사진
+			pstmt.setString(10, fVo.getfreeFilePath()); // 사진저장경로
+			pstmt.setString(11, fVo.getFreeFrontAddr()); // 주소
+			pstmt.setString(12, fVo.getFreeRearAddr()); // 나머지주소
+			pstmt.setString(13, fVo.getFreeBank()); // 은행명
+			pstmt.setString(14, fVo.getFreeAccName()); // 계좌명의
+			pstmt.setString(15, fVo.getFreeAccount()); // 계좌번호
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -318,12 +327,14 @@ public class EmployeeDAO {
 		}
 	}
 	
+	// 사원계정 추가정보 등록 및 수정(로그인한 사원계정)
 	public void updateEmployee(Employee eVo) {
-/*		System.out.println(eVo.getEmpDropDate().toString() + "이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트"
-				+ "이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트이엠피드랍데이트");*/
+		// empDropDate(퇴사일)값이 입력됬을때 실행되는 sql문
 		String sql = "update employee set empName=?, empPw=?, empDept=?, empDuty=?, "
 				+ "empJoinDate=date_format(?, '%Y-%m-%d'), empDropDate=date_format(?, '%Y-%m-%d'), empPicture=?, empFilePath=?, empAuth=?, empBirth=?, "
 				+ "empSex=?, empMarried=?, empPhone=?, empEmail=?, empFrontAddr=?, empRearAddr=?, empBank=?, empAccName=?, empAccount=? where empId=?";
+		// empDropDate(퇴사일)값이 null일 때, 실행되는 sql문
+		// 위의 sql문과 달리 empDropDate값은 들어가지 않음
 		if(eVo.getEmpDropDate() == null || eVo.getEmpDropDate().equals(""))
 			sql = "update employee set empName=?, empPw=?, empDept=?, empDuty=?, "
 					+ "empJoinDate=date_format(?, '%Y-%m-%d'), empPicture=?, empFilePath=?, empAuth=?, empBirth=?, "
@@ -337,40 +348,34 @@ public class EmployeeDAO {
 			System.out.println(sql);
 			int i = 1;
 			
-			pstmt.setString(i++, eVo.getEmpName());
-			pstmt.setString(i++, eVo.getEmpPw());
-			pstmt.setString(i++, eVo.getEmpDept());
-			pstmt.setString(i++, eVo.getEmpDuty());
-			pstmt.setString(i++, eVo.getEmpJoinDate());
-			
-			/*String empDropDate = ("empDropDate");		
-			if(empDropDate != null)
-			{
-			pstmt.setString(5, eVo.getEmpDropDate());
-			}*/
-			
+			pstmt.setString(i++, eVo.getEmpName()); // 이름
+			pstmt.setString(i++, eVo.getEmpPw()); // 비밀번호
+			pstmt.setString(i++, eVo.getEmpDept()); // 부서
+			pstmt.setString(i++, eVo.getEmpDuty()); // 직책
+			pstmt.setString(i++, eVo.getEmpJoinDate()); // 입사일
+		
+			// empDropDate(퇴사일)가 null값이 아닐 때, 값이 입력되면 DropDate값을 입력
+			// 만일 값이 입력되지 않으면 그냥 넘어감
 			if (eVo.getEmpDropDate() != null && !eVo.getEmpDropDate().equals(""))
 			{
-				pstmt.setString(i++, eVo.getEmpDropDate());
+				pstmt.setString(i++, eVo.getEmpDropDate()); // 퇴사일
 				System.out.println(i);
 			}
 			
-			pstmt.setString(i++, eVo.getEmpPicture());
-			pstmt.setString(i++, eVo.getEmpFilePath());
-			
-			pstmt.setInt(i++, eVo.getEmpAuth() == true ? 1 : 0);
-			pstmt.setString(i++, eVo.getEmpBirth());
-			pstmt.setInt(i++, eVo.getEmpSex() == true ? 1 : 0);
-			pstmt.setInt(i++, eVo.getEmpMarried() == true ? 1 : 0);
-			pstmt.setString(i++, eVo.getEmpPhone());
-			pstmt.setString(i++, eVo.getEmpEmail());
-			pstmt.setString(i++, eVo.getEmpFrontAddr());
-			pstmt.setString(i++, eVo.getEmpRearAddr());
-			pstmt.setString(i++, eVo.getEmpBank());
-			pstmt.setString(i++, eVo.getEmpAccName());
-			pstmt.setString(i++, eVo.getEmpAccount());
-			pstmt.setString(i++, eVo.getEmpId());
-//			System.out.println("피에스티엠티" + pstmt);
+			pstmt.setString(i++, eVo.getEmpPicture()); // 사진
+			pstmt.setString(i++, eVo.getEmpFilePath()); // 사진저장경로		
+			pstmt.setInt(i++, eVo.getEmpAuth() == true ? 1 : 0); // 사이트 관리권한(boolean)
+			pstmt.setString(i++, eVo.getEmpBirth()); // 생년월일
+			pstmt.setInt(i++, eVo.getEmpSex() == true ? 1 : 0); // 성별(boolean)
+			pstmt.setInt(i++, eVo.getEmpMarried() == true ? 1 : 0); // 결혼여부(boolean)
+			pstmt.setString(i++, eVo.getEmpPhone()); // 전화번호
+			pstmt.setString(i++, eVo.getEmpEmail()); // 이메일
+			pstmt.setString(i++, eVo.getEmpFrontAddr()); // 주소
+			pstmt.setString(i++, eVo.getEmpRearAddr()); // 나머지주소
+			pstmt.setString(i++, eVo.getEmpBank()); // 은행명
+			pstmt.setString(i++, eVo.getEmpAccName()); // 계좌명의
+			pstmt.setString(i++, eVo.getEmpAccount()); // 계좌번호
+			pstmt.setString(i++, eVo.getEmpId()); // 아이디
 			pstmt.executeUpdate();
 		}	catch (SQLException e) {
 			e.printStackTrace();
@@ -378,8 +383,8 @@ public class EmployeeDAO {
 			DBManager.close(conn, pstmt);
 		}
 	}
-	
-	
+		
+	// 프리랜서 학력 등록에서 새로운 학력을 등록할 때 생성되는 학력번호
 	public int getNewFreeEduNum() {
 		int eduNum = -1;
 		Connection conn = null;
@@ -388,10 +393,12 @@ public class EmployeeDAO {
 
 		try {
 			conn = DBManager.getConnection();
+			// 기존에 있는 학력번호(순번)중 최대(Max)값을 검색하여 그 값에 +1을 하여 NewEduNum을 생성
 			pstmt = conn.prepareStatement("SELECT MAX(EDUNUM) + 1 as NEWEDUNUM FROM EDUCATION");
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
+				// eduNum에 위에서 생성한 NewEduNum값을 넣어줌
 				eduNum = rs.getInt("NEWEDUNUM");
 			}
 		} catch (SQLException e) {
@@ -399,18 +406,18 @@ public class EmployeeDAO {
 		} finally {
 			DBManager.close(conn, pstmt, rs);
 		}
-
+		
 		return eduNum;
 	}
 	
-	
+	// 학력정보 추가등록 및 수정
 	public void updateFreeEducation(ArrayList<Education> eVos) {
-
+		// freeId를 기준으로 선택된 프리랜서의 학력정보를 추가등록하거나 수정하는 sql문 
 		String sql = "INSERT INTO education (edunum, eduschool, edumajor, edudeploma, schooljoindate, schoolgraduateddate, freeid) VALUES (?, ?, ?, ?, date_format(?, '%Y-%m-%d'), date_format(?, '%Y-%m-%d'), ?) "
 				+ "ON DUPLICATE KEY UPDATE edunum=?, eduschool=?, edumajor=?, edudeploma=?, schooljoindate=date_format(?, '%Y-%m-%d'), schoolgraduateddate=date_format(?, '%Y-%m-%d'), freeid=?";
 
-		// System.out.println("느얼" + eVos.get(getNewEduNum()).toString());
-		// System.out.println("느얼" + eVo.getSchoolJoinDate().toString());
+		// System.out.println("edunum이 들어가는지 테스트" + eVos.get(getNewEduNum()).toString());
+		// System.out.println("입학일이 들어가는지 테스트" + eVo.getSchoolJoinDate().toString());
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -419,21 +426,22 @@ public class EmployeeDAO {
 
 			for (Education e : eVos) {
 				pstmt = conn.prepareStatement(sql);
-
-				pstmt.setInt(1, e.getEduNum());
-				pstmt.setString(2, e.getEduSchool());
-				pstmt.setString(3, e.getEduMajor());
-				pstmt.setString(4, e.getEduDeploma());
-				pstmt.setString(5, e.getSchoolJoinDate());
-				pstmt.setString(6, e.getSchoolGraduatedDate());
-				pstmt.setString(7, e.getFreeId());
-				pstmt.setInt(8, e.getEduNum());
-				pstmt.setString(9, e.getEduSchool());
-				pstmt.setString(10, e.getEduMajor());
-				pstmt.setString(11, e.getEduDeploma());
-				pstmt.setString(12, e.getSchoolJoinDate());
-				pstmt.setString(13, e.getSchoolGraduatedDate());
-				pstmt.setString(14, e.getFreeId());
+				// Insert 구문이 실행될때 들어가는 값
+				pstmt.setInt(1, e.getEduNum()); // 학력번호(순번)
+				pstmt.setString(2, e.getEduSchool()); // 학교명
+				pstmt.setString(3, e.getEduMajor()); // 전공
+				pstmt.setString(4, e.getEduDeploma()); // 학위
+				pstmt.setString(5, e.getSchoolJoinDate()); // 입학일
+				pstmt.setString(6, e.getSchoolGraduatedDate()); // 졸업일
+				pstmt.setString(7, e.getFreeId()); // 아이디
+				// Update 구문이 실행될때 들어가는 값
+				pstmt.setInt(8, e.getEduNum()); // 학력번호(순번)
+				pstmt.setString(9, e.getEduSchool()); // 학교명
+				pstmt.setString(10, e.getEduMajor()); // 전공
+				pstmt.setString(11, e.getEduDeploma()); // 학위
+				pstmt.setString(12, e.getSchoolJoinDate()); // 입학일
+				pstmt.setString(13, e.getSchoolGraduatedDate()); // 졸업일
+				pstmt.setString(14, e.getFreeId()); // 아이디
 
 				pstmt.executeUpdate();
 
@@ -446,6 +454,7 @@ public class EmployeeDAO {
 		}
 	}
 	
+	// 새로운 경력번호 생성
 	public int getNewFreeCareerNum() {
 		int careerNum = -1;
 		Connection conn = null;
@@ -454,10 +463,12 @@ public class EmployeeDAO {
 
 		try {
 			conn = DBManager.getConnection();
+			// career테이블에서 현재 존재하는 careerNum 값 중 최대값(max)을 검색하고 그 값에 +1 하여 newCareerNum생성
 			pstmt = conn.prepareStatement("SELECT MAX(CAREERNUM) + 1 as NEWCAREERNUM FROM CAREER");
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
+				// careerNum에 새롭게 생성된 newCareerNum입력
 				careerNum = rs.getInt("NEWCAREERNUM");
 			}
 		} catch (SQLException e) {
@@ -469,34 +480,36 @@ public class EmployeeDAO {
 		return careerNum;
 	}
 	
-
+	// 프리랜서 경력 추가등록 및 수정
 	public void updateFreeCareer(ArrayList<Career> cVos) {
+		// freeId를 기준으로 선택된 프리랜서의 경력정보를 추가등록하거나 수정하는 sql문  
 		String sql = "INSERT INTO career (careernum, careercompany, companyjoindate, companydropdate, careerposition, careerjob, freeid) VALUES (?, ?, date_format(?, '%Y-%m-%d'), date_format(?, '%Y-%m-%d'), ?, ?, ?) "
 					+ "ON DUPLICATE KEY UPDATE careernum=?, careercompany=?, companyjoindate=date_format(?, '%Y-%m-%d'), companydropdate=date_format(?, '%Y-%m-%d'), careerposition=?, careerjob=?, freeid=?";
 		
-		/*System.out.println("성공해라 제발 아니 진짜 들어가라" +cVos.toString());*/
+		/*System.out.println("프리랜서 경력정보가 들어가는지 테스트" +cVos.toString());*/
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn=DBManager.getConnection();
 			
 			for(Career c : cVos) {
-				pstmt = conn.prepareStatement(sql);
-								
-				pstmt.setInt(1, c.getCareerNum());
-				pstmt.setString(2, c.getCareerCompany());
-				pstmt.setString(3, c.getCompanyJoinDate());
-				pstmt.setString(4, c.getCompanyDropDate());
-				pstmt.setString(5, c.getCareerPosition());
-				pstmt.setString(6, c.getCareerJob());
-				pstmt.setString(7, c.getFreeId());
-				pstmt.setInt(8, c.getCareerNum());
-				pstmt.setString(9, c.getCareerCompany());
-				pstmt.setString(10, c.getCompanyJoinDate());
-				pstmt.setString(11, c.getCompanyDropDate());
-				pstmt.setString(12, c.getCareerPosition());
-				pstmt.setString(13, c.getCareerJob());
-				pstmt.setString(14, c.getFreeId());
+				pstmt = conn.prepareStatement(sql);			
+				// Insert 구문이 실행될때 들어가는 값
+				pstmt.setInt(1, c.getCareerNum()); // 경력번호(순번)
+				pstmt.setString(2, c.getCareerCompany()); // 회사명
+				pstmt.setString(3, c.getCompanyJoinDate()); // 입사일
+				pstmt.setString(4, c.getCompanyDropDate()); // 퇴사일
+				pstmt.setString(5, c.getCareerPosition()); // 직책
+				pstmt.setString(6, c.getCareerJob()); // 회사내 역할
+				pstmt.setString(7, c.getFreeId());  // 아이디 
+				// Update 구문이 실행될때 들어가는 값
+				pstmt.setInt(8, c.getCareerNum()); // 경력번호(순번)
+				pstmt.setString(9, c.getCareerCompany()); // 회사명
+				pstmt.setString(10, c.getCompanyJoinDate()); // 입사일
+				pstmt.setString(11, c.getCompanyDropDate()); // 퇴사일
+				pstmt.setString(12, c.getCareerPosition()); // 직책
+				pstmt.setString(13, c.getCareerJob()); // 회사내 역할
+				pstmt.setString(14, c.getFreeId()); // 아이디
 				
 				pstmt.executeUpdate();
 				
@@ -508,24 +521,16 @@ public class EmployeeDAO {
 			DBManager.close(conn, null);
 		}
 	}
-	
-	
+		
+	// 사원계정등록
 	   public void insertProfile(Employee eVo) {
-		      String sql = "insert into employee(empId, empPw, empName, empDept, empDuty, empJoinDate, empPicture, empFilePath, "
+		   // employee 테이블에 사원계정정보를 등록하는 sql문   
+		   String sql = "insert into employee(empId, empPw, empName, empDept, empDuty, empJoinDate, empPicture, empFilePath, "
 		            + "empAuth, empBirth, empSex, empMarried, empPhone, empEmail, empFrontAddr, empRearAddr, "
 		            + "empBank, empAccName, empAccount) " 
 		            + "values(?, ?, ?, ?, ?, date_format(?, '%Y-%m-%d'), ?, ?, ?, date_format(?, '%Y-%m-%d'), ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		      /*String sql = "insert into employee (empid, emppw, empname, empdept, empduty, empjoindate, empdropdate, empauth, empbirth, empsex, empmarried, empphone, empemail, empfrontaddr, emprearaddr, empbank, empaccname, empaccount)" 
-		            + "values(?, ?, ?, ?, ?, date_format(?, '%Y-%m-%d'), date_format(?, '%Y-%m-%d'), ?, date_format(?, '%Y-%m-%d'), ?, ?, ?, ?, ?, ?, ?, ?, ?)" 
-		            + "on duplicate key update empid=?, empname=?, empdept=?, empduty=?, empjoindate=date_format(?, '%Y-%m-%d'), empdropdate=date_format(?, '%Y-%m-%d'), empauth=?, empbirth=date_format(?, '%Y-%m-%d'), empsex=?, empmarried=?, "
-		            + "empphone=?, empemail=?, empfrontaddr=?, emprearaddr=?, empbank=?, empaccname=?, empaccount=?";*/
-		            /*System.out.println(eVo.getEmpBirth().toString());
-		            System.out.println(eVo.getEmpJoinDate().toString());*/
-		            
-		      /*
-		       * System.out.println(fVo.getFreeEmail().toString());
-		       * System.out.println(fVo.getFreeName().toString());
-		       */
+		            /*System.out.println("empBirth 값이 들어가는지 테스트" + eVo.getEmpBirth().toString());
+		            System.out.println("empJoinDate 값이 들어가는지 테스트" + eVo.getEmpJoinDate().toString());*/		            
 
 		      Connection conn = null;
 		      PreparedStatement pstmt = null;
@@ -533,45 +538,27 @@ public class EmployeeDAO {
 		         conn = DBManager.getConnection();
 		         pstmt = conn.prepareStatement(sql);
 		         
-		         pstmt.setString(1, eVo.getEmpId());
-		         pstmt.setString(2, eVo.getEmpPw());
-		         pstmt.setString(3, eVo.getEmpName());
-		         pstmt.setString(4, eVo.getEmpDept());
-		         pstmt.setString(5, eVo.getEmpDuty());
-		         pstmt.setString(6, eVo.getEmpJoinDate());
-		         pstmt.setString(7, eVo.getEmpPicture());
-		         pstmt.setString(8, eVo.getEmpFilePath());
+		         pstmt.setString(1, eVo.getEmpId()); // 아이디
+		         pstmt.setString(2, eVo.getEmpPw()); // 비밀번호
+		         pstmt.setString(3, eVo.getEmpName()); // 이름
+		         pstmt.setString(4, eVo.getEmpDept()); // 부서
+		         pstmt.setString(5, eVo.getEmpDuty()); // 직책
+		         pstmt.setString(6, eVo.getEmpJoinDate()); // 입사일
+		         pstmt.setString(7, eVo.getEmpPicture()); // 사진
+		         pstmt.setString(8, eVo.getEmpFilePath()); // 사진저장경로
 		         
 		         /*pstmt.setString(7, eVo.getEmpDropDate());*/
-		         pstmt.setInt(9, eVo.getEmpAuth() == true ? 2 : 1);
-		         pstmt.setString(10, eVo.getEmpBirth());
-		         pstmt.setInt(11, eVo.getEmpSex() == true ? 1 : 0);
-		         pstmt.setInt(12, eVo.getEmpMarried() == true ? 1 : 0);
-		         pstmt.setString(13, eVo.getEmpPhone());
-		         pstmt.setString(14, eVo.getEmpEmail());
-		         pstmt.setString(15, eVo.getEmpFrontAddr());
-		         pstmt.setString(16, eVo.getEmpRearAddr());
-		         pstmt.setString(17, eVo.getEmpBank());
-		         pstmt.setString(18, eVo.getEmpAccName());
-		         pstmt.setString(19, eVo.getEmpAccount());
-		         
-		/*         pstmt.setString(19, eVo.getEmpId());
-		         pstmt.setString(20, eVo.getEmpName());
-		         pstmt.setString(21, eVo.getEmpDept());
-		         pstmt.setString(22, eVo.getEmpDuty());
-		         pstmt.setString(23, eVo.getEmpJoinDate());
-		         pstmt.setString(24, eVo.getEmpDropDate());
-		         pstmt.setInt(25, eVo.getEmpAuth() == true ? 2 : 1);
-		         pstmt.setString(26, eVo.getEmpBirth());
-		         pstmt.setInt(27, eVo.getEmpSex() == true ? 1 : 0);
-		         pstmt.setInt(28, eVo.getEmpMarried() == true ? 1 : 0);
-		         pstmt.setString(29, eVo.getEmpPhone());
-		         pstmt.setString(30, eVo.getEmpEmail());
-		         pstmt.setString(31, eVo.getEmpFrontAddr());
-		         pstmt.setString(32, eVo.getEmpRearAddr());
-		         pstmt.setString(33, eVo.getEmpBank());
-		         pstmt.setString(34, eVo.getEmpAccName());
-		         pstmt.setString(35, eVo.getEmpAccount());*/
+		         pstmt.setInt(9, eVo.getEmpAuth() == true ? 2 : 1); // 사이트내 관리권한
+		         pstmt.setString(10, eVo.getEmpBirth()); // 생년월일
+		         pstmt.setInt(11, eVo.getEmpSex() == true ? 1 : 0); // 성별(boolean)
+		         pstmt.setInt(12, eVo.getEmpMarried() == true ? 1 : 0); // 결혼여부(boolean)
+		         pstmt.setString(13, eVo.getEmpPhone()); // 전화번호
+		         pstmt.setString(14, eVo.getEmpEmail()); // 이메일
+		         pstmt.setString(15, eVo.getEmpFrontAddr()); // 주소
+		         pstmt.setString(16, eVo.getEmpRearAddr()); // 나머지주소
+		         pstmt.setString(17, eVo.getEmpBank()); // 은행명
+		         pstmt.setString(18, eVo.getEmpAccName()); // 계좌명의
+		         pstmt.setString(19, eVo.getEmpAccount()); // 계좌번호		 
 
 		         pstmt.executeUpdate();
 		      } catch (SQLException e) {
@@ -581,266 +568,246 @@ public class EmployeeDAO {
 		      }
 		   }
 
-	
-/*	public Date stringToDateSchoolJoinDate(Education education) {
-		String schoolJoinyear = education.getSchoolJoinDateyy();
-		String schoolJoinmonth = education.getSchoolJoinDatemm();
-		String schoolJoinday = education.getSchoolJoinDatedd();
+		// 사원학력정보를 등록할 때, 새로운 학력을 등록하면 생성되는 학력번호   
+		public int getNewEduNum() {
+			int eduNum = -1;
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
 
-		Date SchoolJoinDate = null;
+			try {
+				conn = DBManager.getConnection();
+				// 기존의 EduNum의 최대값(Max)를 검색하고, +1을 하여 새로운 newEduNum값을 생성
+				pstmt = conn.prepareStatement("SELECT MAX(EDUNUM) + 1 as NEWEDUNUM FROM EDUCATION");
 
-		if (schoolJoinyear != null && schoolJoinmonth != null && schoolJoinday != null)
-			SchoolJoinDate = Date.valueOf(schoolJoinyear + "-" + schoolJoinmonth + "-" + schoolJoinday);
-
-		return SchoolJoinDate;
-	}
-
-	public Date stringToDateSchoolGraduatedDate(Education education) {
-		String schoolGraduatedYear = education.getSchoolGraduatedDateyy();
-		String schoolGraduatedMonth = education.getSchoolGraduatedDatemm();
-		String schoolGraduatedDay = education.getSchoolGraduatedDatedd();
-
-		Date SchoolGraduatedDate = null;
-
-		if (schoolGraduatedYear != null && schoolGraduatedMonth != null && schoolGraduatedDay != null)
-			SchoolGraduatedDate = Date
-					.valueOf(schoolGraduatedYear + "-" + schoolGraduatedMonth + "-" + schoolGraduatedDay);
-
-		return SchoolGraduatedDate;
-	}*/
-
-	public int getNewEduNum() {
-		int eduNum = -1;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-
-		try {
-			conn = DBManager.getConnection();
-			pstmt = conn.prepareStatement("SELECT MAX(EDUNUM) + 1 as NEWEDUNUM FROM EDUCATION");
-
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				eduNum = rs.getInt("NEWEDUNUM");
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					// eduNum에 위에서 생성된 newEduNum값을 입력
+					eduNum = rs.getInt("NEWEDUNUM");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DBManager.close(conn, pstmt, rs);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
+
+			return eduNum;
 		}
-
-		return eduNum;
-	}
-	
-	public ArrayList<Education> showEducation(String empid) {
-		String sql = "select eduNum, eduSchool, eduMajor, eduDeploma, date_format(schoolJoinDate, '%Y-%m-%d') as schoolJoinDate, date_format(schoolGraduatedDate, '%Y-%m-%d') as schoolGraduatedDate from education where empId=? order by schoolGraduatedDate asc";
 		
-		ArrayList<Education> eVo = null;
-		eVo = new ArrayList<Education>();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			conn = DBManager.getConnection();
+		// 사원계정학력정보 조회(출력)
+		public ArrayList<Education> showEducation(String empid) {
+			// empid값을 기준으로 등록되어있는 학력정보를 education 테이블에서 schoolGraduatedDate(졸업일)순으로 출력하는 sql문
+			String sql = "select eduNum, eduSchool, eduMajor, eduDeploma, date_format(schoolJoinDate, '%Y-%m-%d') as schoolJoinDate, date_format(schoolGraduatedDate, '%Y-%m-%d') as schoolGraduatedDate from education where empId=? order by schoolGraduatedDate asc";
 			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, empid);
+			ArrayList<Education> eVo = null;
+			eVo = new ArrayList<Education>();
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
 			
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
+			try {
+				conn = DBManager.getConnection();
 				
-				/*String SchoolJoinDate = rs.getString("SchoolJoinDate").toString();
-				String SchoolJoinDatesub = SchoolJoinDate.substring(0, 10);
-				
-				String SchoolGraduatedDate = rs.getString("SchoolGraduatedDate").toString();
-				String SchoolGraduatedDatesub = SchoolGraduatedDate.substring(0, 10);*/
-				
-				Education edu = new Education();
-				edu.setEduNum(rs.getInt("eduNum"));
-				edu.setEduSchool(rs.getString("eduSchool"));
-				edu.setEduMajor(rs.getString("eduMajor"));
-				edu.setEduDeploma(rs.getString("eduDeploma"));
-				edu.setSchoolJoinDate(rs.getString("schoolJoinDate"));
-				edu.setSchoolGraduatedDate(rs.getString("schoolGraduatedDate"));
-				
-				eVo.add(edu);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
-		}
-		return eVo;
-	}
-
-	public void updateEducation(ArrayList<Education> eVos) {
-
-		String sql = "INSERT INTO education (edunum, eduschool, edumajor, edudeploma, schooljoindate, schoolgraduateddate, empid) VALUES (?, ?, ?, ?, date_format(?, '%Y-%m-%d'), date_format(?, '%Y-%m-%d'), ?) "
-				+ "ON DUPLICATE KEY UPDATE edunum=?, eduschool=?, edumajor=?, edudeploma=?, schooljoindate=date_format(?, '%Y-%m-%d'), schoolgraduateddate=date_format(?, '%Y-%m-%d'), empid=?";
-		
-		/*System.out.println("교육이는 들어가는지 안들어가는지 알슈가 읍네" + eVos.toString());*/
-		// System.out.println("느얼" + eVos.get(getNewEduNum()).toString());
-		// System.out.println("느얼" + eVo.getSchoolJoinDate().toString());
-
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = DBManager.getConnection();
-
-			for (Education e : eVos) {
 				pstmt = conn.prepareStatement(sql);
-
-				pstmt.setInt(1, e.getEduNum());
-				pstmt.setString(2, e.getEduSchool());
-				pstmt.setString(3, e.getEduMajor());
-				pstmt.setString(4, e.getEduDeploma());
-				pstmt.setString(5, e.getSchoolJoinDate());
-				pstmt.setString(6, e.getSchoolGraduatedDate());
-				pstmt.setString(7, e.getEmpId());
-				pstmt.setInt(8, e.getEduNum());
-				pstmt.setString(9, e.getEduSchool());
-				pstmt.setString(10, e.getEduMajor());
-				pstmt.setString(11, e.getEduDeploma());
-				pstmt.setString(12, e.getSchoolJoinDate());
-				pstmt.setString(13, e.getSchoolGraduatedDate());
-				pstmt.setString(14, e.getEmpId());
-
-				pstmt.executeUpdate();
-
-				pstmt.close();
+				pstmt.setString(1, empid); // sql문에 있는 empid=?에 empid값을 입력
+				
+				rs = pstmt.executeQuery();
+				
+				while (rs.next()) {
+					
+					Education edu = new Education();
+					edu.setEduNum(rs.getInt("eduNum")); // 학력번호
+					edu.setEduSchool(rs.getString("eduSchool")); // 학교
+					edu.setEduMajor(rs.getString("eduMajor")); // 전공
+					edu.setEduDeploma(rs.getString("eduDeploma")); // 학위
+					edu.setSchoolJoinDate(rs.getString("schoolJoinDate")); // 입학일
+					edu.setSchoolGraduatedDate(rs.getString("schoolGraduatedDate")); // 졸업일
+					
+					eVo.add(edu);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBManager.close(conn, pstmt, rs);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, null);
+			return eVo;
 		}
-	}
+		
+		// 사원계정 학력정보 등록 및 수정
+		public void updateEducation(ArrayList<Education> eVos) {
+			// 사용자가 입력한 정보 중 eduNum을 기준으로 education 테이블에 eduNum이 존재하면 update(수정)를 하고, 존재하지 않으면 insert(등록)을 하는 sql문
+			// insert가 실행될때는 on duplicate 전까지의 구문이 실행되고, update는 on duplicate 뒤의 구문이 실행
+			String sql = "INSERT INTO education (edunum, eduschool, edumajor, edudeploma, schooljoindate, schoolgraduateddate, empid) VALUES (?, ?, ?, ?, date_format(?, '%Y-%m-%d'), date_format(?, '%Y-%m-%d'), ?) "
+					+ "ON DUPLICATE KEY UPDATE edunum=?, eduschool=?, edumajor=?, edudeploma=?, schooljoindate=date_format(?, '%Y-%m-%d'), schoolgraduateddate=date_format(?, '%Y-%m-%d'), empid=?";
+			
+			/*System.out.println("학력이 제대로 들어가는지 테스트" + eVos.toString());*/
+			// System.out.println("널값인지 아닌지 테스트" + eVos.get(getNewEduNum()).toString());
+			// System.out.println("널값인지 아닌지 테스트" + eVo.getSchoolJoinDate().toString());
 
-	public int getNewCareerNum() {
-		int careerNum = -1;
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			try {
+				conn = DBManager.getConnection();
 
-		try {
-			conn = DBManager.getConnection();
-			pstmt = conn.prepareStatement("SELECT MAX(CAREERNUM) + 1 as NEWCAREERNUM FROM CAREER");
+				for (Education e : eVos) {
+					pstmt = conn.prepareStatement(sql);
+					
+					// 새로운 eduNum이 등록되어 insert
+					pstmt.setInt(1, e.getEduNum()); // 학력번호
+					pstmt.setString(2, e.getEduSchool()); // 학교
+					pstmt.setString(3, e.getEduMajor()); // 전공
+					pstmt.setString(4, e.getEduDeploma()); // 학위
+					pstmt.setString(5, e.getSchoolJoinDate()); // 입학일
+					pstmt.setString(6, e.getSchoolGraduatedDate()); // 졸업일
+					pstmt.setString(7, e.getEmpId()); // 아이디
+					
+					// 기존에 존재하는 eduNum이 있어 update
+					pstmt.setInt(8, e.getEduNum()); // 학력번호 
+					pstmt.setString(9, e.getEduSchool()); // 학교
+					pstmt.setString(10, e.getEduMajor()); // 전공
+					pstmt.setString(11, e.getEduDeploma()); // 학위
+					pstmt.setString(12, e.getSchoolJoinDate()); // 입학일
+					pstmt.setString(13, e.getSchoolGraduatedDate()); // 졸업일
+					pstmt.setString(14, e.getEmpId()); // 아이디
 
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				careerNum = rs.getInt("NEWCAREERNUM");
+					pstmt.executeUpdate();
+
+					pstmt.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DBManager.close(conn, null);
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
 		}
 
-		return careerNum;
-	}
+		// 사원경럭정보를 등록할 때, 새로운 경력을 등록하면 생성되는 경력번호
+		public int getNewCareerNum() {
+			int careerNum = -1;
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+
+			try {
+				conn = DBManager.getConnection();
+				// career 테이블에서 기존의 careerNum중 최대값(max)를 검색하여 +1을 하고 newCareerNum을 출력
+				pstmt = conn.prepareStatement("SELECT MAX(CAREERNUM) + 1 as NEWCAREERNUM FROM CAREER");
+
+				rs = pstmt.executeQuery();
+				while (rs.next()) {
+					// 위에서 출력한 newCareerNum을 careerNum에 입력
+					careerNum = rs.getInt("NEWCAREERNUM");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				DBManager.close(conn, pstmt, rs);
+			}
+
+			return careerNum;
+		}
 	
-	public ArrayList<Career> showCareer(String empid) {
-		String sql = "select careerNum, careerCompany, date_format(companyJoinDate, '%Y-%m-%d') as companyJoinDate, date_format(companyDropDate, '%Y-%m-%d') as companyDropDate, careerPosition, careerJob from career where empId=? order by companyDropDate asc";
-		
-		ArrayList<Career> cVo = null;
-		cVo = new ArrayList<Career>();
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		
-		try {
-			conn = DBManager.getConnection();
+		// 사원경력정보를 조회(출력)
+		public ArrayList<Career> showCareer(String empid) {
+			// career 테이블에서 경력정보를 empId 기준으로 검색하여 companyDropDate(퇴사일)순으로 출력하는 sql문
+			String sql = "select careerNum, careerCompany, date_format(companyJoinDate, '%Y-%m-%d') as companyJoinDate, date_format(companyDropDate, '%Y-%m-%d') as companyDropDate, careerPosition, careerJob from career where empId=? order by companyDropDate asc";
 			
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, empid);
+			ArrayList<Career> cVo = null;
+			cVo = new ArrayList<Career>();
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
 			
-			rs = pstmt.executeQuery();
-			
-			while (rs.next()) {
+			try {
+				conn = DBManager.getConnection();
 				
-
-				/*String CompanyJoinDate = rs.getString("CompanyJoinDate").toString();
-				String CompanyJoinDatesub = CompanyJoinDate.substring(0, 10);
-				
-				String CompanyDropDate = rs.getString("CompanyDropDate").toString();
-				String CompanyDropDatesub = CompanyDropDate.substring(0, 10);*/
-				
-				
-				Career car = new Career();
-				car.setCareerNum(rs.getInt("careerNum"));
-				car.setCareerCompany(rs.getString("careerCompany"));
-				car.setCompanyJoinDate(rs.getString("companyJoinDate"));
-				car.setCompanyDropDate(rs.getString("companyDropDate"));
-				car.setCareerPosition(rs.getString("careerPosition"));
-				car.setCareerJob(rs.getString("careerJob"));
-				
-				cVo.add(car);						
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt, rs);
-		}
-		return cVo;
-	}
-
-	public void updateCareer(ArrayList<Career> cVos) {
-		String sql = "INSERT INTO career (careernum, careercompany, companyjoindate, companydropdate, careerposition, careerjob, empid) VALUES (?, ?, date_format(?, '%Y-%m-%d'), date_format(?, '%Y-%m-%d'), ?, ?, ?) "
-					+ "ON DUPLICATE KEY UPDATE careernum=?, careercompany=?, companyjoindate=date_format(?, '%Y-%m-%d'), companydropdate=date_format(?, '%Y-%m-%d'), careerposition=?, careerjob=?, empid=?";
-		
-		/*System.out.println("성공해라 제발 아니 진짜 들어가라" +cVos.toString());*/
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn=DBManager.getConnection();
-			
-			for(Career c : cVos) {
 				pstmt = conn.prepareStatement(sql);
-								
-				pstmt.setInt(1, c.getCareerNum());
-				pstmt.setString(2, c.getCareerCompany());
-				pstmt.setString(3, c.getCompanyJoinDate());
-				pstmt.setString(4, c.getCompanyDropDate());
-				pstmt.setString(5, c.getCareerPosition());
-				pstmt.setString(6, c.getCareerJob());
-				pstmt.setString(7, c.getEmpId());
-				pstmt.setInt(8, c.getCareerNum());
-				pstmt.setString(9, c.getCareerCompany());
-				pstmt.setString(10, c.getCompanyJoinDate());
-				pstmt.setString(11, c.getCompanyDropDate());
-				pstmt.setString(12, c.getCareerPosition());
-				pstmt.setString(13, c.getCareerJob());
-				pstmt.setString(14, c.getEmpId());
+				pstmt.setString(1, empid); // sql문에 있는 empid=?에 empid 값을 입력
+				
+				rs = pstmt.executeQuery();
+				
+				while (rs.next()) {
+
+					Career car = new Career();
+					car.setCareerNum(rs.getInt("careerNum")); // 경력번호
+					car.setCareerCompany(rs.getString("careerCompany")); // 회사명
+					car.setCompanyJoinDate(rs.getString("companyJoinDate")); // 입사일
+					car.setCompanyDropDate(rs.getString("companyDropDate")); // 퇴사일
+					car.setCareerPosition(rs.getString("careerPosition")); // 직책
+					car.setCareerJob(rs.getString("careerJob")); // 회사내 역할
+					
+					cVo.add(car);						
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				DBManager.close(conn, pstmt, rs);
+			}
+			return cVo;
+		}
+
+		// 사원경력정보 등록 및 수정
+		public void updateCareer(ArrayList<Career> cVos) {
+			// careerNum을 기준으로 careerNum이 존재하면 update, 존재하지 않으면 insert하는 sql문
+			String sql = "INSERT INTO career (careernum, careercompany, companyjoindate, companydropdate, careerposition, careerjob, empid) VALUES (?, ?, date_format(?, '%Y-%m-%d'), date_format(?, '%Y-%m-%d'), ?, ?, ?) "
+						+ "ON DUPLICATE KEY UPDATE careernum=?, careercompany=?, companyjoindate=date_format(?, '%Y-%m-%d'), companydropdate=date_format(?, '%Y-%m-%d'), careerposition=?, careerjob=?, empid=?";
+			
+			/*System.out.println("경력정보가 제대로 들어가고 있는지 테스트" +cVos.toString());*/
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			try {
+				conn=DBManager.getConnection();
+				
+				for(Career c : cVos) {
+					pstmt = conn.prepareStatement(sql);
+					
+					// careerNum이 존재하지 않을 때 insert
+					pstmt.setInt(1, c.getCareerNum()); // 경력번호
+					pstmt.setString(2, c.getCareerCompany()); // 회사명
+					pstmt.setString(3, c.getCompanyJoinDate()); // 입사일
+					pstmt.setString(4, c.getCompanyDropDate()); // 퇴사일
+					pstmt.setString(5, c.getCareerPosition()); // 직책
+					pstmt.setString(6, c.getCareerJob()); // 회사내 역할
+					pstmt.setString(7, c.getEmpId()); // 아이디
+					
+					// careerNum이 존재할 때 update
+					pstmt.setInt(8, c.getCareerNum()); // 경력번호
+					pstmt.setString(9, c.getCareerCompany()); // 회사명
+					pstmt.setString(10, c.getCompanyJoinDate()); // 입사일
+					pstmt.setString(11, c.getCompanyDropDate()); // 퇴사일
+					pstmt.setString(12, c.getCareerPosition()); // 직책
+					pstmt.setString(13, c.getCareerJob()); // 회사내 역할
+					pstmt.setString(14, c.getEmpId()); // 아이디
+					
+					pstmt.executeUpdate();
+					
+					pstmt.close();			
+				}			
+			}	catch (SQLException e) {
+				e.printStackTrace();
+			}	finally {
+				DBManager.close(conn, null);
+			}
+		}
+	
+		// 사원계정 삭제
+		public void deleteEmployee(String empid) {
+			// empId를 기준으로 employee 테이블에서 사원계정을 삭제하는 sql문
+			String sql = "delete from employee where empId=?";
+			 
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			try {
+				conn = DBManager.getConnection();
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setString(1, empid); // sql문에서 empId=?에 empid 값을 입력
 				
 				pstmt.executeUpdate();
-				
-				pstmt.close();			
-			}			
-		}	catch (SQLException e) {
-			e.printStackTrace();
-		}	finally {
-			DBManager.close(conn, null);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		}
-	}
-	
-	public void deleteEmployee(String empid) {
-		String sql = "delete from employee where empId=?";
-		 
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = DBManager.getConnection();
-			pstmt = conn.prepareStatement(sql);
-			
-			pstmt.setString(1, empid);
-			
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
 
 	public List<Employee> selectAllEmp() {
 		// 사원들을 전부 가져오는 메소드
