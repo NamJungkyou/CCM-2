@@ -1,5 +1,10 @@
-<!-- @작성자 : 글로벌IT경영 김민현
- -->
+<%--
+	로그인한 프리랜서의 프로필을 출력하는 화면
+	
+	SkillIventory 작성 : 남정규
+	
+ --%>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -224,9 +229,10 @@
 							type="button" value="등록"
 							onclick="return CareerUpdate('${freeId}')">
 					</section>
+					
+					<!-- 스킬인벤토리 시작 -->
 					<section class="panel" style="overflow: scroll;">
 						<header class="panel-heading no-border">Skill Inventory</header>
-						<!-- <input type="text" name="skillCount"> -->
 						<table class="table table-bordered" id="skillInv">
 							<thead>
 								<tr>
@@ -247,6 +253,7 @@
 										value="${skillInventoryList.isExtern}">
 									<tr>
 										<c:choose>
+											<!-- 외부 프로젝트면 수정이 가능하도록 input박스에 출력 -->
 											<c:when test="${skillInventoryList.isExtern == 1}">
 												<input type="hidden" name="projNum"
 													value="${skillInventoryList.projNum}">
@@ -263,6 +270,7 @@
 												<td><input type="text" name="projRole"
 													value="${skillInventoryList.projRole}"></td>
 											</c:when>
+											<!-- 내부 프로젝트면 수정이 불가능하도록 그냥 출력 -->
 											<c:otherwise>
 												<input type="hidden" name="projNum"
 													value="${skillInventoryList.projNum}">
@@ -281,20 +289,25 @@
 											</c:otherwise>
 										</c:choose>
 										<td><c:choose>
+												<!-- 외부 프로젝트면 수정 가능하도록 출력  -->
 												<c:when test="${skillInventoryList.isExtern == 1}">
+													<!-- 드롭다운체크박스로 여러개의 언어를 선택할 수 있게 함 -->
 													<div class="checkbox-dropdown">
 														선택
 														<ul class="checkbox-dropdown-list">
+															<!-- progLang에 등록되어있는 모든 언어를 출력 -->
 															<c:forEach var="projSkillLangs"
 																items="${langDbFrame.lang}">
 																<c:set var="langCheck" value="" />
 																<c:forEach var="skillProjLang"
 																	items="${skillInventoryList.projlangs}">
+																	<!-- 이 프로젝트에서 사용된 언어가 있으면 checked -->
 																	<c:if
 																		test="${skillProjLang.langName eq projSkillLangs.langName}">
 																		<c:set var="langCheck" value="checked" />
 																	</c:if>
 																</c:forEach>
+																<!-- 몇번째 프로젝트의 체크박스인지 식별할 수 있도록 langNum에 skilInventoryList의 인데스값을 합침 -->
 																<li><label><input type="checkbox"
 																		name="langNum${skill.index}"
 																		value="${projSkillLangs.langNum}" ${langCheck} />
@@ -306,6 +319,7 @@
 												</c:when>
 												<c:otherwise>
 													<input type="hidden" name="langNum${skill.index}" value="0">
+													<!-- 내부프로젝트이면 수정이 불가능하도록 '/'로 구분하여 한줄로 출력 -->
 													<c:forEach var="skillProjLang"
 														items="${skillInventoryList.projlangs}" varStatus="status">
 														${skillProjLang.langName}<c:if test="${not status.last}">/</c:if>
@@ -337,6 +351,7 @@
                      </c:otherwise>
 											</c:choose></td>
 										<td><c:choose>
+											<!-- 프레임워크도 언어와 같은 방식으로 출력 -->
 												<c:when test="${skillInventoryList.isExtern == 1}">
 													<div class="checkbox-dropdown">
 														선택
@@ -378,13 +393,17 @@
 							type="button" onclick="delete_row3()" value="행삭제"> <input
 							type="button" value="등록" onclick="return SkillInventoryUpdate()">
 					</section>
+					<!-- 스킬인벤토리 끝 -->
 				</form>
 
 			</section>
 		</section>
 	</section>
 
+	<!-- 푸터 -->
 	<jsp:include page="/frame/footer.jsp"></jsp:include>
+	
+	<!-- 자바스크립트 - 다른 js파일들과 충돌하지 않도록 마지막에 선언 -->
 	<script type="text/javascript" src="/Eureca/script/dropdown.js"></script>
 	<script type="text/javascript" src="/Eureca/script/freelancer.js"></script>
 
