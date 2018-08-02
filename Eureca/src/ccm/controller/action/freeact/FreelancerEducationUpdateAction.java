@@ -10,7 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 import ccm.controller.action.Action;
 import ccm.dao.FreelancerDAO;
 import ccm.data.table.Education;
-
+/**
+ * 프리랜서 학력정보 등록 및 수정 액션
+ * 
+ * @작성자 글로벌IT경영 김민현
+ *
+ */
 public class FreelancerEducationUpdateAction implements Action {
 
 	@Override
