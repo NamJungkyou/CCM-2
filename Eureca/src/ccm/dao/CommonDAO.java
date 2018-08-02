@@ -21,14 +21,6 @@ import ccm.data.table.Project;
 import ccm.data.table.Project_Info_view;
 import ccm.util.DBManager;;
 
-/**
- * 
- * 방문자, 직원, 프리랜서의 공통 기능을 담당하는 DAO
- * 
- * @author 글로벌 IT 경영 진재환
- *
- */
-
 public class CommonDAO {
 	private static CommonDAO instance = new CommonDAO();
 
@@ -133,19 +125,6 @@ public class CommonDAO {
 		return result;
 	}
 	
-	
-	/**
-	 * 
-	 * 로그인할 때 아이디와 비밀번호가 DB에 존재하는 지
-	 *
-	 * 확인하고 결과값을 받환하는 메소드
-	 * 
-	 * @param id
-	 * @param pw
-	 * @param loginFree
-	 * @param loginEmp
-	 * @return
-	 */
 	public int loginCheck(String id, String pw, Freelancer loginFree, Employee loginEmp) // 로그인할때 아이디랑 비번이 맞는지 체크해주는거
 	{
 		// 쿼리를 둘다 실행해서 맞는값이 있는 쿼리일 때 프리랜서 또는 직원 로그인이 정해짐
