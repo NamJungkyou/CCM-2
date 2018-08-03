@@ -3,7 +3,7 @@
 	
 	SkillIventory 작성 : 남정규
 	
-	SkillInventory제외한 부분 작성 : 글로벌IT경영 김민현
+	SkillInventory 제외한 부분 작성 : 글로벌IT경영 김민현
 	
  --%>
 
