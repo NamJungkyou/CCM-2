@@ -3,64 +3,107 @@ package ccm.data.table;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-/***************************
+/**
+ * DB에 생성된 Employee 테이블의 프로퍼티를 모두 담는 클래스
  * 
- * 
- * 지권 지건 int형은 nullable이어야되니까 Integer 자료형으로 쓰도록
- * 
- * 작성자 :
- * 
- * 수정자 :
- * 
- * 수정일 :
+ * @author 글로벌 IT 경영 진재환
  *
- *
- ***************************/
+ */
 
 public class Employee {
-	/*
-	 * `EMPID` VARCHAR(15) NOT NULL COLLATE 'utf8mb4_unicode_ci', `EMPPW`
-	 * VARCHAR(100) NOT NULL COLLATE 'utf8mb4_unicode_ci', `EMPDUTY` VARCHAR(10)
-	 * NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci', `EMPNAME` VARCHAR(15)
-	 * NULL DEFAULT NULL COLLATE 'utf8mb4_unicode_ci', `EMPDEPT` VARCHAR(5) NULL
-	 * DEFAULT NULL COLLATE 'utf8mb4_unicode_ci', `EMPPICTURE` MEDIUMBLOB NULL,
-	 * `EMPJOINDATE` DATETIME NOT NULL, `EMPDROPDATE` DATETIME NULL DEFAULT
-	 * NULL, `EMPPHONE` VARCHAR(11) NULL DEFAULT NULL COLLATE
-	 * 'utf8mb4_unicode_ci', `EMPEMAIL` VARCHAR(50) NULL DEFAULT NULL COLLATE
-	 * 'utf8mb4_unicode_ci', `EMPBIRTH` DATETIME NULL DEFAULT NULL, `EMPSEX`
-	 * TINYINT(1) NULL DEFAULT NULL, `EMPMARRIED` TINYINT(1) NULL DEFAULT NULL,
-	 * `EMPFRONTADDR` VARCHAR(30) NULL DEFAULT NULL COLLATE
-	 * 'utf8mb4_unicode_ci', `EMPREARADDR` VARCHAR(30) NULL DEFAULT NULL COLLATE
-	 * 'utf8mb4_unicode_ci', `EMPBANK` VARCHAR(15) NULL DEFAULT NULL COLLATE
-	 * 'utf8mb4_unicode_ci', `EMPACCNAME` VARCHAR(12) NULL DEFAULT NULL COLLATE
-	 * 'utf8mb4_unicode_ci', `EMPACCOUNT` VARCHAR(30) NULL DEFAULT NULL COLLATE
-	 * 'utf8mb4_unicode_ci', `EMPAUTH` INT(11) NOT NULL,
-	 */
+	
+	// 직원 아이디
 	private String empId;
+	
+	// 직원 패스워드
 	private String empPw;
+	
+	// 직원 직급
 	private String empDuty;
+	
+	// 이름
 	private String empName;
+	
+	// 부서
 	private String empDept;
+	
+	// 사진
 	private String empPicture;
+	
+	// 입사일
 	private String empJoinDate;
+	
+	// 퇴사일
 	private String empDropDate;
+	
+	// 전화번호
 	private String empPhone;
+	
+	// 이메일
 	private String empEmail;
+	
+	// 생년월일
 	private String empBirth;
+	
+	// 성별
 	private Boolean empSex;
+	
+	// 혼인여부
 	private Boolean empMarried;
+	
+	// 도로명주소
 	private String roadAddrPart1;
+	
+	// 나머지주소
 	private String addrDetail;
+	
+	// 계좌은행
 	private String empBank;
+	
+	// 계좌이름
 	private String empAccName;
+	
+	// 계좌번호
 	private String empAccount;
+	
+	// 권한
 	private Boolean empAuth;
+	
+	// 파일경로
 	private String empFilePath;
 
+	/**
+	 * 기본 생성자
+	 */
 	public Employee() {
 		super();
 	}
 
+	/**
+	 * 
+	 * 매개변수가 있는 생성자
+	 * 
+	 * @param empId
+	 * @param empPw
+	 * @param empDuty
+	 * @param empName
+	 * @param empDept
+	 * @param empPicture
+	 * @param empJoinDate
+	 * @param empDropDate
+	 * @param empPhone
+	 * @param empEmail
+	 * @param empBirth
+	 * @param empSex
+	 * @param empMarried
+	 * @param empFrontAddr
+	 * @param empRearAddr
+	 * @param empBank
+	 * @param empAccName
+	 * @param empAccount
+	 * @param empAuth
+	 * @param empFilePath
+	 */
 	public Employee(String empId, String empPw, String empDuty, String empName, String empDept, String empPicture,
 			String empJoinDate, String empDropDate, String empPhone, String empEmail, String empBirth, Boolean empSex,
 			Boolean empMarried, String empFrontAddr, String empRearAddr, String empBank, String empAccName,
@@ -88,6 +131,13 @@ public class Employee {
 		this.empFilePath = empFilePath;
 	}
 
+	/**
+	 * DAO에서 쿼리 실행 후 ResultSet 객체로 받는
+	 * 변수들을 이 클래스 객체의 변수들에 세팅하는 메소드
+	 * 
+	 * @param paramResultSet
+	 * @throws SQLException
+	 */
 	public void setParams(ResultSet rs) throws SQLException {
 		this.empId = rs.getString("EMPID");
 		this.empPw = rs.getString("EMPPW");
@@ -111,6 +161,7 @@ public class Employee {
 		this.empFilePath = rs.getString("EMPFILEPATH");
 	}
 
+	/*************************  게터 세터  ***************************/
 	public String getEmpId() {
 		return empId;
 	}
