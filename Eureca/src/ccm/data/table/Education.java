@@ -1,25 +1,39 @@
 package ccm.data.table;
 
+/**
+ * DB에 생성된 Education 테이블의 프로퍼티를 모두 담는 클래스
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
 
 public class Education
 {
-	/*	  EDUNUM INT NOT NULL AUTO_INCREMENT, #학력번호
-	  EDUSCHOOL VARCHAR(15) NOT NULL, #학교명
-	  EDUDEPLOMA VARCHAR(2) NULL, #학위
-	  EDUMAJOR VARCHAR(15) NOT NULL, #전공
-	  SCHOOLJOINDATE DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(), #입학일
-	  SCHOOLGRADUATEDDATE DATETIME NULL, #졸업일(예정일)
-	  FREEID VARCHAR(15) NULL, #프리랜서아이디
-	  EMPID VARCHAR(15) NULL, #직원아이디*/
+	// 학력 번호
 	private Integer eduNum;
+	
+	// 교육기관 이름
 	private String eduSchool;
+	
+	// 학위
 	private String eduDeploma;
+	
+	// 전공
 	private String eduMajor;
+	
+	// 입학일
 	private String schoolJoinDate;
+	
+	// 졸업일
 	private String schoolGraduatedDate;
+	
+	// 프리랜서 아이디
 	private String freeId;
+	
+	// 직원 아이디
 	private String EmpId;
 	
+	/********************************  게터 세터  **********************************/
 	public Integer getEduNum() {
 		return eduNum;
 	}
@@ -69,17 +83,12 @@ public class Education
 		EmpId = empId;
 	}
 	
+	
+	// 객체 문자열 표현
 	@Override
 	public String toString() {
 		return "Education [eduNum=" + eduNum + ", eduSchool=" + eduSchool + ", eduDeploma=" + eduDeploma + ", eduMajor="
 				+ eduMajor + ", schoolJoinDate=" + schoolJoinDate + ", schoolGraduatedDate=" + schoolGraduatedDate
 				+ ", freeId=" + freeId + ", EmpId=" + EmpId + "]";
 	}
-	
-	
-	
-	
-
-	
-	
 }
