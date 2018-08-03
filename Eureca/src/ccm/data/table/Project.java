@@ -3,51 +3,84 @@ package ccm.data.table;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * DB에 생성된 Project 테이블의 프로퍼티를 모두 담는 클래스
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
+
 public class Project {
 
+	// 프로젝트 번호
 	private int projNum;
+	
+	// 외부프로젝트 여부
 	private boolean isExtern;
+	
+	// 프로젝트 분야
 	private String projField;
+	
+	// 프로젝트 이름
 	private String projName;
+	
+	// 프로젝트 상태
 	private String projState;
+	
+	// 프로젝트 등록일
 	private String projRegisterDate;
+	
+	// 프로젝트 등록일
 	private String projRegisterer;
+	
+	// 프로젝트 수정일
 	private String projReviseDate;
+	
+	// 프로젝트 수정자
 	private String projReviser;
+	
+	// 시작일
 	private String projStartDate;
+	
+	// 종료일
 	private String projEndDate;
+	
+	// 예상기간
 	private Integer projExpectedTime;
+	
+	// 고객사
 	private String projTarget;
+	
+	// 협력사
 	private String projPartner;
+	
+	// 프로젝트 계획서
 	private String projPlan;
+	
+	// 모집시작일
 	private String projRecruitStartDate;
+	
+	// 모집종료일
 	private String projRecruitEndDate;
+	
+	// 개발분야
 	private String projDevelopSort;
+	
+	// DBMS 번호
 	private int dbNum;
+	
+	
 	private String projLang;
 	private String projFramework;
 	private String projCompany;
 	
-	//PNUM BIGINT AUTO_INCREMENT NOT NULL, #프로젝트번호
-	//ISEXTERN BOOLEAN NOT NULL, #외부프로젝트 여부
-	//PFIELD VARCHAR(10) NOT NULL, #프로젝트 유형
-	//NAME VARCHAR(20) NOT NULL, #프로젝트 이름
-	//PROGSTATE VARCHAR(5) NOT NULL, #진행상태
-	//REGDATE DATE NULL, #등록일
-	//REGPERSON VARCHAR(15) NULL, #등록인
-	//REVDATE DATE NULL, #수정일
-	//REVPERSON VARCHAR(15) NULL, #수정인
-	//STARTDATE DATE NOT NULL, #프로젝트 시작일
-	//ENDDATE DATE NULL, #프로젝트 종료일
-	//EXPECTEDTIME INT NULL, #예상기간
-	//TARGET VARCHAR(20) NOT NULL, #고객사
-	//PARTNER VARCHAR(20) NULL, #협력사
-	//PLAN VARCHAR(5000) NOT NULL, #세부내용
-	//RECRUSTARTDATE DATE NULL, #모집시작일
-	//RECRUENDDATE DATE NULL, #모집마감일
-	//DEVSORT VARCHAR(10) NOT NULL, #개발분야
-	//DNUM BIGINT NOT NULL, #사용 DBMS
-	
+	/**
+	 * DAO에서 쿼리 실행 후 ResultSet 객체로 받는
+	 * 변수들을 이 클래스 객체의 변수들에 세팅하는 메소드
+	 * 
+	 * @param paramResultSet
+	 * @throws SQLException
+	 */
 	public void setParams(ResultSet rs) throws SQLException
 	{
 		this.projNum = rs.getInt("PROJNUM");
@@ -72,6 +105,8 @@ public class Project {
 		this.dbNum = rs.getInt("DBNUM");
 	}
 	
+	
+	/************************  게터 세터  ****************************/
 	public int getProjNum() {
 		return projNum;
 	}
