@@ -4,64 +4,84 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-/***************************
+/**
+ * DB에 생성된 Freelancer 테이블의 프로퍼티를 모두 담는 클래스
  * 
- * 
- * 프리랜서 기본정보 int형은 nullable이어야되니까 Integer 자료형으로 쓰도록
- * 
- * 작성자 :
- * 
- * 수정자 :
- * 
- * 수정일 :
+ * @author 글로벌 IT 경영 진재환
  *
- *
- ***************************/
+ */
 
 public class Freelancer {
-/*	  FREEID VARCHAR(15) NOT NULL, #아이디
-	  FREEPW VARCHAR(100) NOT NULL, #비번
-	  FREENAME VARCHAR(10) NULL, #이름
-	  FREEPIC MEDIUMBLOB NULL, #사진
-	  FREEBIRTH DATETIME NULL, #생년월일
-	  FREESEX BOOLEAN NULL, #성별
-	  FREEPHONE VARCHAR(11) NULL, #폰번
-	  FREEEMAIL VARCHAR(50) NOT NULL, #이메일
-	  FREEJOINDATE DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP(), #가입일
-	  FREEDROPDATE DATETIME NULL, #탈퇴일
-	  FREEKOSA INT NULL, #코사등급(개발자 등급)
-	  FREECLASS INT(1) NULL, #등급속성(회원 등급)
-	  FREEMARRIED BOOLEAN NULL, #결혼여부
-	  FREEFRONTADDR VARCHAR(30) NULL, #본주소 *************
-	  FREEREARADDR VARCHAR(30) NULL, #나머지주소 *************
-	  FREEBANK VARCHAR(15) NULL, #계좌은행
-	  FREEACCNAME VARCHAR(12) NULL, #계좌명의
-	  FREEACCOUNT VARCHAR(30) NULL, #계좌번호
-	  FREEREVISER VARCHAR(15) NULL, #수정인
-	  FREEREVISEDATE DATETIME NULL, #수정일 */
+	
+	// 프리랜서 아이디
 	private String freeId;
+	
+	// 패스워드
 	private String freePw;
+	
+	// 이름
 	private String freeName;
+	
+	// 사진
 	private String freePic;
+	
+	// 생년월일
 	private String freeBirth;
+	
+	// 성별
 	private Boolean freeSex;
+	
+	// 전화번호
 	private String freePhone;
+	
+	// 이메일
 	private String freeEmail;
+	
+	// 등록일
 	private Timestamp freeJoinDate;
+	
+	// 탈퇴일
 	private Timestamp freeDropDate;
+	
+	// 코사등급
 	private Integer freeKosa;
+	
+	// 권한
 	private Integer freeClass;
+	
+	// 결혼여부
 	private Boolean freeMarried;
+	
+	// 앞 주소
 	private String freeFrontAddr;
+	
+	// 나머지주소
 	private String freeRearAddr;
+	
+	// 계좌 은행
 	private String freeBank;
+	
+	// 계좌명의
 	private String freeAccName;
+	
+	// 계좌번호
 	private String freeAccount;
+	
+	// 수정자
 	private String freeReviser;
+	
+	// 수정일
 	private Timestamp freeReviseDate;
+	
+	// 평가점수
 	private double freeScore;
+	
+	// 파일경로
 	private String freeFilePath;
 	
+	
+	
+	/*******************************  게터 세터  ********************************/
 	public String getFreeId() {
 		return freeId;
 	}
@@ -195,6 +215,13 @@ public class Freelancer {
 		this.freeFilePath = freeFilePath;
 	}
 	
+	/**
+	 * DAO에서 쿼리 실행 후 ResultSet 객체로 받는
+	 * 변수들을 이 클래스 객체의 변수들에 세팅하는 메소드
+	 * 
+	 * @param paramResultSet
+	 * @throws SQLException
+	 */
 	public void setParams(ResultSet rs) throws SQLException
 	   {
 	      this.freeId = rs.getString("FREEID");

@@ -3,6 +3,8 @@
 	
 	SkillIventory 작성 : 남정규
 	
+	SkillInventory제외한 부분 작성 : 글로벌IT경영 김민현
+	
  --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -29,14 +31,15 @@
 	<section id="container" class="">
 		<section id="main-content">
 			<section class="wrapper">
-				<!-- <form name="frm" method="post" action="FreelancerServ"> -->
+				<!-- 사진 업로드를 위해 form태그안에 enctype을 multipart/form-data로 설정 -->
+				<!-- 기존의 request로 Parameter값을 받지 못하고 multi로 값을 받아야함 자세한건 Action참조 -->
 				<form name="frm" method="post" enctype="multipart/form-data">
-					<!-- <input type="hidden" name="command" value="freelancer_Profile_update"> -->
 					<section class="panel">
 						<header class="panel-heading no-border">내 프로필</header>
 						<table class="table table-bordered">
 							<tr>
 								<th>아이디</th>
+								<!-- 아이디값은 로그인한 사람의 아이디를 불러오므로 따로 수정이 필요하지 않아 hidden값을 주고 단순히 출력기능만 수행 -->
 								<td><input type="hidden" name="freeId"
 									value="${freelancer.freeId}">${freelancer.freeId}</td>
 								<th>이메일</th>
@@ -56,7 +59,9 @@
 
 							<tr>
 								<td rowspan="3" colspan="2" class="img-align-center"><div class="insert-picture">
-										<img src="/Eureca/upload/${freelancer.freePic}">
+										<!-- 이미지 출력, 절대경로가 아닌 상대경로로 이미지 불러옴 -->
+										<!-- azure에서는 절대경로 사용하면 경로를 못찾음, 무조건 상대경로 사용해야함 -->
+										<img src="upload/${freelancer.freePic}">
 									</div>
 									<input type="file" name="freePic" value="${freelancer.freePic}">
 								</td>
@@ -104,8 +109,9 @@
 								<th rowspan="2">주소</th>
 								<td colspan="5"><input type="text" id="roadAddrPart1"
 									name="freeFrontAddr" value="${freelancer.freeFrontAddr}"
-									size="20"><input type="button"
-									onClick="goPopup();" value="주소찾기" /></td>
+									size="20">
+								<!-- 주소 찾기 API팝업창 호출 -->
+								<input type="button" onClick="goPopup();" value="주소찾기" /></td>
 							</tr>
 
 							<tr>
@@ -118,7 +124,8 @@
 						<input type="button" value="탈퇴" onclick="return ProfileDelete()">
 					</section>
 				</form>
-
+				
+				<!-- 여기서부터는 form태크에 enctype을 따로 주지 않고 기존의 request 방식으로 parameter값을 받음 -->
 				<form name="frm2" method="post">
 					<section class="panel">
 						<header class="panel-heading no-border">계좌등록</header>
@@ -154,7 +161,8 @@
 						<input type="button" value="등록"
 							onclick="return BankUpdate('${freeId}')">
 					</section>
-
+					
+					<!-- 학력정보 등록 -->	
 					<section class="panel">
 						<header class="panel-heading no-border">학력</header>
 						<table class="table table-bordered">
@@ -170,6 +178,7 @@
 
 							<c:forEach var="Education" items="${Education}">
 								<tr>
+								<!-- eduNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 -->
 									<td><input type="hidden" name="eduNum"
 										value="${Education.eduNum}"> <input type="text"
 										name="eduSchool" value="${Education.eduSchool}"></td>
@@ -183,6 +192,7 @@
 										value="${Education.schoolGraduatedDate}"></td>
 								</tr>
 							</c:forEach>
+							<!-- javascript에서 행추가 및 행삭제 기능을 실행하기 위해 tbody id를 my-tbody로 설정 -->
 							<tbody id="my-tbody">
 							</tbody>
 						</table>
@@ -191,7 +201,8 @@
 							type="button" value="등록"
 							onclick="return EducationUpdate('${freeId}')">
 					</section>
-
+					
+					<!-- 경력정보 등록 -->
 					<section class="panel">
 						<header class="panel-heading no-border">경력</header>
 						<table class="table table-bordered">
@@ -206,6 +217,7 @@
 
 							<c:forEach var="Career" items="${Career}">
 								<tr>
+								<!-- careerNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 -->
 									<td><input type="hidden" name="careerNum"
 										value="${Career.careerNum}"> <input type="text"
 										name="careerCompany" value="${Career.careerCompany}"></td>
@@ -213,13 +225,13 @@
 										value="${Career.companyJoinDate}"> ㅡ <input
 										type="text" name="companyDropDate"
 										value="${Career.companyDropDate}"></td>
-
 									<td><input type="text" name="careerPosition"
 										value="${Career.careerPosition}"></td>
 									<td><input type="text" name="careerJob"
 										value="${Career.careerJob}"></td>
 								</tr>
 							</c:forEach>
+							<!-- javascript에서 행추가 및 행삭제 기능을 실행하기 위해 tbody id를 careerTable로 설정 -->
 							<tbody id="CareerTable">
 							</tbody>
 						</table>
@@ -404,8 +416,8 @@
 	<jsp:include page="/frame/footer.jsp"></jsp:include>
 	
 	<!-- 자바스크립트 - 다른 js파일들과 충돌하지 않도록 마지막에 선언 -->
-	<script type="text/javascript" src="/Eureca/script/dropdown.js"></script>
-	<script type="text/javascript" src="/Eureca/script/freelancer.js"></script>
+	<script type="text/javascript" src="script/dropdown.js"></script>
+	<script type="text/javascript" src="script/freelancer.js"></script>
 
 </body>
 </html>

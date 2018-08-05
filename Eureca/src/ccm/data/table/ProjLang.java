@@ -1,5 +1,19 @@
 package ccm.data.table;
 
+/**
+ * DB에 생성된 ProjLang 테이블의 프로퍼티를 모두 담는 클래스
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
+
+/**
+ * 사용되지 않아 폐기됨
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
+
 public class ProjLang {
 	/*
 	 * projNum BIGINT NOT NULL, #프로젝트 번호 langNum BIGINT NOT NULL, #프로그래밍 언어 번호

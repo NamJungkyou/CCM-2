@@ -1,13 +1,15 @@
 package ccm.data.table;
 
+/**
+ * DB에 생성된 LangSkill 테이블의 프로퍼티를 모두 담는 클래스
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
+
 public class LangSkill
-{
-	/*
-	LSNUM BIGINT NOT NULL AUTO_INCREMENT, #언어스킬 번호
-  JNUM BIGINT NOT NULL, #참여 번호
-  LNUM BIGINT NOT NULL, #프로그래밍 언어 번호
-	*/
-	
+{	
+	// 클래스가 쓰이지 않아 폐기됨
 	private int lsNum;
 	private int jNum;
 	private int lNum;

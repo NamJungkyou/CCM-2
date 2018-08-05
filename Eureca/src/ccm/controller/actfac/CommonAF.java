@@ -19,14 +19,11 @@ import ccm.controller.action.comact.ShowSendMessageAction;
 
 /***************************
  * 
+ * 공통적으로 들어가는 회원가입, 로그인 등 ActionFactory
  * 
- * 악숀 인터페이스 이걸로 각 기능의 액션을 만든다
+ * 작성자 : 글로벌IT경영 진재환, 김민현
  * 
- * 작성자 :
- * 
- * 수정자 :
- * 
- * 수정일 :
+ * 수정자 : 글로벌IT경영 박태근
  *
  *
  ***************************/
@@ -44,7 +41,7 @@ public class CommonAF {
 
 	public Action getAction(String command) {
 		Action action = null;
-		System.out.println("CommonAF :" + command);
+		System.out.println("CommonAF :" + command); // 어떤 CommonAF커맨드가 실행되는지 출력
 
 		// 커맨드를 넣는 코드 http://localhost:8181/FMS/Eu?c=login 이런식
 		if (command.equals("main")) {
@@ -64,12 +61,16 @@ public class CommonAF {
 		} // 회원가입 페이지로 이동
 		else if (command.equals("join")) {
 			action = new JoinAction();
-		} else if (command.equals("idCheck")) {
+		} // 아이디 중복 체크 
+		else if (command.equals("idCheck")) {
 			action = new IdCheckAction();
-		} else if (command.equals("emailCheck")) {
+		} // 이메일 중복 체크 
+		else if (command.equals("emailCheck")) {
 			action = new EmailCheckAction();
 		}
-
+		
+		
+		/*---------------------------박태근-----------------------------------*/
 		/*---------------------------메세지-----------------------------------*/
 		else if (command.equals("message")) {
 			// 메시지를 보내는 액션

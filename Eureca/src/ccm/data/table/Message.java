@@ -4,6 +4,13 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * DB에 생성된 Message 테이블의 프로퍼티를 모두 담는 클래스
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
+
 public class Message
 {
 	
@@ -20,10 +27,30 @@ public class Message
 	private String projNum;			// 관련 프로젝트 번호
 	private Date msgCheckedDate;	// 메시지 확인을 한 날
 	
+	/**
+	 * 기본 생성자
+	 */
 	public Message() {
 		super();
 	}
 	
+	/**
+	 * 
+	 * 매개변수가 있는 생성자
+	 * 
+	 * @param msgNum
+	 * @param prevMsgNum
+	 * @param freeWriter
+	 * @param empWriter
+	 * @param freeReceiver
+	 * @param empReceiver
+	 * @param msgTitle
+	 * @param msgContent
+	 * @param msgSendDate
+	 * @param msgChecked
+	 * @param projNum
+	 * @param msgCheckedDate
+	 */
 	public Message(Integer msgNum, String prevMsgNum, String freeWriter, String empWriter,
 			String freeReceiver, String empReceiver, String msgTitle, String msgContent,
 			Date msgSendDate, Integer msgChecked, String projNum, Date msgCheckedDate) {
@@ -41,6 +68,13 @@ public class Message
 		this.msgCheckedDate = msgCheckedDate;
 	}
 	
+	/**
+	 * DAO에서 쿼리 실행 후 ResultSet 객체로 받는
+	 * 변수들을 이 클래스 객체의 변수들에 세팅하는 메소드
+	 * 
+	 * @param paramResultSet
+	 * @throws SQLException
+	 */
 	public void setParams(ResultSet rs) throws SQLException{
 		this.msgNum = rs.getInt("msgNum");
 		this.prevMsgNum = rs.getString("prevMsgNum");
@@ -56,6 +90,7 @@ public class Message
 		this.msgCheckedDate = rs.getDate("msgCheckedDate");
 	}
 	
+	/*******************************  게터 세터  ********************************/
 	public Integer getMsgNum() {
 		return msgNum;
 	}

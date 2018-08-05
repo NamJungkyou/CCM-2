@@ -1,26 +1,40 @@
 package ccm.data.table;
 
+/**
+ * DB에 생성된 Career 테이블의 프로퍼티를 모두 담는 클래스
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
 
 public class Career
 {
-/*	  CAREERNUM INT NOT NULL AUTO_INCREMENT, #경력번호
-	  CAREERCOMPANY VARCHAR(15) NOT NULL, #근무회사
-	  COMPANYJOINDATE DATETIME NOT NULL, #입사일
-	  COMPANYDROPDATE DATETIME NULL, #퇴사일(예정일)
-	  CAREERPOSITION VARCHAR(15) NOT NULL, #직위
-	  CAREERJOB VARCHAR(15) NOT NULL, #담당업무
-	  FREEID VARCHAR(15) NULL, #프리랜서아이디
-	  EMPID VARCHAR(15) NULL, #직원아이디*/
-	
+	// 경력 번호
 	private Integer careerNum;
-	private String careerCompany;
-	private String companyJoinDate;
-	private String companyDropDate;
-	private String careerPosition;
-	private String careerJob;
-	private String freeId;
-	private String empId;
 	
+	// 경력기간 내 근무 회사
+	private String careerCompany;
+	
+	// 입사일
+	private String companyJoinDate;
+	
+	// 퇴사일
+	private String companyDropDate;
+	
+	// 직위
+	private String careerPosition;
+	
+	// 담당 업무
+	private String careerJob;
+	
+	// 프리랜서 아이디
+	private String freeId;
+	
+	// 직원 아이디
+	private String empId;
+
+
+	/************************************  게터 세터  ****************************************/
 	public Integer getCareerNum() {
 		return careerNum;
 	}
@@ -70,22 +84,12 @@ public class Career
 		this.empId = empId;
 	}
 	
+	
+	// 객체 문자열 표현 메소드
 	@Override
 	public String toString() {
 		return "Career [careerNum=" + careerNum + ", careerCompany=" + careerCompany + ", companyJoinDate="
 				+ companyJoinDate + ", companyDropDate=" + companyDropDate + ", careerPosition=" + careerPosition
 				+ ", careerJob=" + careerJob + ", freeId=" + freeId + ", empId=" + empId + "]";
 	}
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-
-		
 }

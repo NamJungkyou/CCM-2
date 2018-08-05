@@ -1,5 +1,19 @@
 package ccm.data.table;
 
+/**
+ * DB에 생성된 ProjFramework 테이블의 프로퍼티를 모두 담는 클래스
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
+
+/**
+ * 사용되지 않아 폐기됨
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
+
 public class ProjFramework {
 	private int projNum;
 	private int frameNum;
