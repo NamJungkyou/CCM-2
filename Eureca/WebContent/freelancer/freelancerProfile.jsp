@@ -178,7 +178,7 @@
 
 							<c:forEach var="Education" items="${Education}">
 								<tr>
-								<!-- eduNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 -->
+								<%-- eduNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 --%>
 									<td><input type="hidden" name="eduNum"
 										value="${Education.eduNum}"> <input type="text"
 										name="eduSchool" value="${Education.eduSchool}"></td>
@@ -192,7 +192,7 @@
 										value="${Education.schoolGraduatedDate}"></td>
 								</tr>
 							</c:forEach>
-							<!-- javascript에서 행추가 및 행삭제 기능을 실행하기 위해 tbody id를 my-tbody로 설정 -->
+							<%-- javascript에서 행추가 및 행삭제 기능을 실행하기 위해 tbody id를 my-tbody로 설정 --%>
 							<tbody id="my-tbody">
 							</tbody>
 						</table>
@@ -217,7 +217,7 @@
 
 							<c:forEach var="Career" items="${Career}">
 								<tr>
-								<!-- careerNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 -->
+								<%-- careerNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 --%>
 									<td><input type="hidden" name="careerNum"
 										value="${Career.careerNum}"> <input type="text"
 										name="careerCompany" value="${Career.careerCompany}"></td>
