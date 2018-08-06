@@ -36,21 +36,28 @@ public class GoToPutInOfSearchProjectAction implements Action
 	{
 		request.setCharacterEncoding("UTF-8");
 
+		// 페이지를 이동시킬 주소
 		String url = "/project/putinofsearchproject.jsp";
 
 		ProjectViewDAO projectViewDao = ProjectViewDAO.getInstance();
 		CommonDAO commonDao = CommonDAO.getInstance();
 
-		String order = request.getParameter("order");// 프로젝트리스트 정렬 기준
+		// 프로젝트리스트 정렬 기준을 request에서 받음
+		String order = request.getParameter("order");
 
+		// 모든 데이터베이스 정보를 가져오는 리스트
 		List<DBMS> dbmsList = commonDao.DBMSList();
+		// 모든 언어 정보를 가져오는 리스트
 		List<ProgLang> langList = commonDao.ProgLangList();
+		// 모든 프레임워크 정보를 가져오는 리스트
 		List<Framework> frameList = commonDao.FameworkList();
 
+		// 각 리스트들을 request에 할당
 		request.setAttribute("dbmsList", dbmsList);
 		request.setAttribute("langList", langList);
 		request.setAttribute("frameList", frameList);
 
+		// request에서 프로젝트 정보들을 받아 각 변수들에 할당
 		String projName = request.getParameter("projNameSearch");
 		String[] devCount = request.getParameterValues("devFieldSearch");
 		String[] langCount = request.getParameterValues("progLangSearch");
@@ -59,6 +66,7 @@ public class GoToPutInOfSearchProjectAction implements Action
 		String time1 = request.getParameter("period1");
 		String time2 = request.getParameter("period2");
 		
+		// 페이지번호
 		int pageNum;
 
 		if ((request.getParameter("pageNum") == null) || (request.getParameter("pageNum").equals(""))) {
@@ -68,12 +76,14 @@ public class GoToPutInOfSearchProjectAction implements Action
 		}
 		/*-----------------------------------------------검색--------------------------------------------------*/
 
+		// 검색 결과를 얻기 위한 객체 생성 및 메소드 호출
 		List<ProjectView> projViewList = projectViewDao.searchAllCheckedProject(projName, devCount, langCount, dbCount,
 				tfwCount, time1, time2, order, pageNum);
+		// 페이징을 하기위한 객체 생성 및 메소드 호출
 		ParamInt paramInt = projectViewDao.projectPaging(projName, devCount, langCount, dbCount,
 				tfwCount, time1, time2, pageNum);
 		
-
+		// request에 변수들을 저장
 		request.setAttribute("projViewList", projViewList);
 
 		/*------------------------------페이징변수-------------------------------------*/
@@ -96,6 +106,7 @@ public class GoToPutInOfSearchProjectAction implements Action
 
 		String projNum = request.getParameter("projNum");
 
+		// 프로젝트 번호가 null이 아니면 그 프로젝트 번호로 검색한 결과를 각 리스트에 저장
 		if (projNum != null && !projNum.equals("")) {
 			ProjectView pSelectViewList = projectViewDao.selectAllProjectInfoByProjNum(Integer.parseInt(projNum));
 			List<Framework> projFrameList = projectViewDao.selectProjFrameworkByProjNum(Integer.parseInt(projNum));
@@ -104,6 +115,8 @@ public class GoToPutInOfSearchProjectAction implements Action
 			List<JoinProj> joinProjList = projectViewDao.proJoinListByProjNum(Integer.parseInt(projNum));
 			
 		/*---------------------------------참여자목록 페이징-----------------------------------*/	
+
+			// 참여자 목록을 페이징 처리하기위한 변수
 			int joinFreePageNum;
 
 			if ((request.getParameter("joinFreePageNum") == null) || (request.getParameter("joinFreePageNum").equals(""))) {
@@ -115,11 +128,13 @@ public class GoToPutInOfSearchProjectAction implements Action
 			ParamInt joinFreeParamInt = projectViewDao.proJoinFreePaging(pageNum, Integer.parseInt(projNum));
 			
 			request.setAttribute("projNum", projNum);
+			// 참여자 목록의 페이징 처리를 위한 변수들을 request에 저장
 			request.setAttribute("joinFreePageNum", joinFreePageNum);
 			request.setAttribute("joinFreePageCount", joinFreeParamInt.getPageCount());
 			request.setAttribute("joinFreeFirstPage", joinFreeParamInt.getFirstPage());
 			request.setAttribute("joinFreeLastPage", joinFreeParamInt.getLastPage());
 
+			// 검색한 정보들을 담은 변수들를 request에 저장
 			request.setAttribute("pSelectViewList", pSelectViewList);
 			request.setAttribute("projFrameList", projFrameList);
 			request.setAttribute("projLangList", projLangList);
@@ -127,6 +142,7 @@ public class GoToPutInOfSearchProjectAction implements Action
 			request.setAttribute("joinProjList", joinProjList);
 		}
 
+		// url에 저장된 주소로 이동
 		RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 		dispatcher.forward(request, response);
 	}
