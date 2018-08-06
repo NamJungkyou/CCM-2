@@ -10,24 +10,29 @@ import javax.servlet.http.HttpServletResponse;
 import ccm.controller.action.Action;
 import ccm.dao.FreelancerDAO;
 import ccm.data.table.Education;
-
+/**
+ * 프리랜서 계정동륵에서 학력정보 등록 액션
+ * 
+ * @작성자 글로벌IT경영 김민현
+ *
+ */
 public class EmpFreelancerEducationInsertAction implements Action {
 
 	@Override
 	public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		
-		ArrayList<Education> eVo = new ArrayList<Education>();
+		ArrayList<Education> eVo = new ArrayList<Education>(); // 학력정보 저장을 위해 배열로 선언
 		
-		String[] eduNums = request.getParameterValues("eduNum");
-		for(String s : eduNums)System.out.println(s.toString());
-		String[] eduSchools = request.getParameterValues("eduSchool");
-		/*for(String s : eduSchools)System.out.println(s.toString());*/
-		String[] eduMajors = request.getParameterValues("eduMajor");
-		String[] eduDeplomas = request.getParameterValues("eduDeploma");
-		String[] schoolJoinDates = request.getParameterValues("schoolJoinDate");
-		String[] schoolGraduatedDates = request.getParameterValues("schoolGraduatedDate");
-		String freeId = request.getParameter("freeId");
+		String[] eduNums = request.getParameterValues("eduNum"); // 학력번호
+		/*for(String s : eduNums)System.out.println("학력번호가 잘들어가는지 테스트" + s.toString());*/
+		String[] eduSchools = request.getParameterValues("eduSchool"); // 학교명
+		/*for(String s : eduSchools)System.out.println("학교명이 잘들어가는지 테스트" + s.toString());*/
+		String[] eduMajors = request.getParameterValues("eduMajor"); // 전공
+		String[] eduDeplomas = request.getParameterValues("eduDeploma"); // 학위
+		String[] schoolJoinDates = request.getParameterValues("schoolJoinDate"); // 입학일
+		String[] schoolGraduatedDates = request.getParameterValues("schoolGraduatedDate"); // 졸업일
+		String freeId = request.getParameter("freeId"); // 아이디
 		
 		FreelancerDAO fDao = FreelancerDAO.getInstance();
 		
@@ -35,6 +40,7 @@ public class EmpFreelancerEducationInsertAction implements Action {
 		{
 			Education e = new Education();
 			
+			// 학력번호가 null이면 freeDAO에서 새로운 학력번호를 생성하는 getNewEduNUm 메소드에서 학력번호를 받아옴 
 			e.setEduNum(eduNums[i] == null || eduNums[i].equals("") ? fDao.getNewEduNum() : Integer.parseInt(eduNums[i]));
 			e.setEduSchool(eduSchools[i]);
 			e.setEduMajor(eduMajors[i]);
@@ -46,13 +52,7 @@ public class EmpFreelancerEducationInsertAction implements Action {
 			eVo.add(e);
 		}
 		
-/*		for(Education ed : eVo)
-		{
-			System.out.println("**********edededed : " + ed.getSchoolGraduatedDateyy()
-			+ ed.getSchoolGraduatedDatemm() + ed.getSchoolGraduatedDatedd());
-		}*/
-		
-		fDao.updateEducation(eVo);
+		fDao.updateEducation(eVo); // freelancerDAO에서 학력정보 업데이트 updateEducation 메소드실행
 		
 		new EmpFreelancerProfileAction().execute(request, response);
 
