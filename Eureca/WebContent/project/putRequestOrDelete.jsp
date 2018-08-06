@@ -229,9 +229,9 @@ function submitMessageRequest(number, msgOrPutIn)
 							type="hidden" name="freeNames" value="${list.freeName}">
 						</td>
 						<td><input type="text" class="datepicker"
-							name="putInStartDate" value="${list.startDate}" size="10"> ~ <input
+							name="putInStartDate" value="${list.startDate}" size="10" readonly="readonly"> ~ <input
 							type="text" class="datepicker" name="putInExitDate"
-							value="${list.endDate}" size="10"></td>
+							value="${list.endDate}" size="10" readonly="readonly"></td>
 						<td colspan="2"><input type="button" value="요청전송"
 							onclick="submitMessageRequest(${status.index}, false)"> <input
 							type="button" value="투입"
