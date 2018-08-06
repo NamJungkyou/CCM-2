@@ -19,6 +19,15 @@ import ccm.data.table.JoinProj;
 import ccm.data.table.ProgLang;
 import ccm.data.table.ProjectView;
 
+/**
+ * 프로젝트 투입 화면에서 프로젝트 검색 버튼을 누르면
+ * 
+ * 팝업창이 열리면서 이 액션을 실행하고 프로젝트 검색 페이지로 이동
+ * 
+ * @author 글로벌 IT 경영 진재환
+ *
+ */
+
 public class GoToPutInOfSearchProjectAction implements Action
 {
 
@@ -33,15 +42,10 @@ public class GoToPutInOfSearchProjectAction implements Action
 		CommonDAO commonDao = CommonDAO.getInstance();
 
 		String order = request.getParameter("order");// 프로젝트리스트 정렬 기준
-		System.out.println("정렬기준 = " + order);
 
 		List<DBMS> dbmsList = commonDao.DBMSList();
 		List<ProgLang> langList = commonDao.ProgLangList();
 		List<Framework> frameList = commonDao.FameworkList();
-
-		System.out.println("db리스트 =" + dbmsList.toString());
-		System.out.println("언어 리스트 = " + langList.toString());
-		System.out.println("프레임 리스트 = " + frameList.toString());
 
 		request.setAttribute("dbmsList", dbmsList);
 		request.setAttribute("langList", langList);
@@ -62,23 +66,13 @@ public class GoToPutInOfSearchProjectAction implements Action
 		} else {
 			pageNum = Integer.parseInt(request.getParameter("pageNum"));// 페이지 번호
 		}
-		System.out.println("페이지 번호 = " + pageNum);
 		/*-----------------------------------------------검색--------------------------------------------------*/
-
-		System.out.println("프로젝트 검색 액션 프로젝트명 = " + projName);
-		System.out.println("프로젝트 검색 액션 개발분야 = " + devCount);
-		System.out.println("프로젝트 검색 액션 언어 = " + langCount);
-		System.out.println("프로젝트 검색 액션 DBMS = " + dbCount);
-		System.out.println("프로젝트 검색 액션 툴프레임 = " + tfwCount);
-		System.out.println("프로젝트 검색 액션 기간1 = " + time1);
-		System.out.println("프로젝트 검색 액션 기간2 = " + time2);
 
 		List<ProjectView> projViewList = projectViewDao.searchAllCheckedProject(projName, devCount, langCount, dbCount,
 				tfwCount, time1, time2, order, pageNum);
 		ParamInt paramInt = projectViewDao.projectPaging(projName, devCount, langCount, dbCount,
 				tfwCount, time1, time2, pageNum);
 		
-		System.out.println("프로젝트 검색결과 리스트" + projViewList.toString());
 
 		request.setAttribute("projViewList", projViewList);
 
@@ -101,7 +95,6 @@ public class GoToPutInOfSearchProjectAction implements Action
 		/*----------------------------------------프로젝트 상세보기------------------------------------*/
 
 		String projNum = request.getParameter("projNum");
-		System.out.println("프로젝트 번호 = " + projNum);
 
 		if (projNum != null && !projNum.equals("")) {
 			ProjectView pSelectViewList = projectViewDao.selectAllProjectInfoByProjNum(Integer.parseInt(projNum));
@@ -118,7 +111,6 @@ public class GoToPutInOfSearchProjectAction implements Action
 			} else {
 				joinFreePageNum = Integer.parseInt(request.getParameter("joinFreePageNum"));// 페이지 번호
 			}
-			System.out.println("페이지 번호 = " + joinFreePageNum);
 			
 			ParamInt joinFreeParamInt = projectViewDao.proJoinFreePaging(pageNum, Integer.parseInt(projNum));
 			
@@ -127,12 +119,6 @@ public class GoToPutInOfSearchProjectAction implements Action
 			request.setAttribute("joinFreePageCount", joinFreeParamInt.getPageCount());
 			request.setAttribute("joinFreeFirstPage", joinFreeParamInt.getFirstPage());
 			request.setAttribute("joinFreeLastPage", joinFreeParamInt.getLastPage());
-
-			System.out.println("선택한 프로젝트 기본정보 = " + pSelectViewList.toString());
-			System.out.println("선택한 프로젝트 프레임워크정보 = " + projFrameList.toString());
-			System.out.println("선택한 프로젝트 언어정보 = " + projLangList.toString());
-			System.out.println("선택한 프로젝트 참여자 정보 = " + freelancerList.toString());
-			System.out.println("선택한 프로젝트 참여 정보 = " + joinProjList.toString());
 
 			request.setAttribute("pSelectViewList", pSelectViewList);
 			request.setAttribute("projFrameList", projFrameList);

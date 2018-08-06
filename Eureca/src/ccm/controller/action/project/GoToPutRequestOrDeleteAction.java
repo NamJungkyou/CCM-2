@@ -1,14 +1,14 @@
 package ccm.controller.action.project;
 
-import ccm.controller.action.Action;
-import ccm.dao.ProjectAdministrationDAO;
-import ccm.data.FreeIdFreeNameStartEndDate;
-import java.io.PrintStream;
 import java.util.ArrayList;
-import javax.servlet.RequestDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import ccm.controller.action.Action;
+import ccm.dao.ProjectAdministrationDAO;
+import ccm.data.FreeIdFreeNameStartEndDate;
 
 /**
  * 
@@ -24,6 +24,10 @@ public class GoToPutRequestOrDeleteAction implements Action {
 
 	public void execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, java.io.IOException {
+		
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=utf-8");
+		response.setCharacterEncoding("UTF-8");
 		
 		// 프리랜서 아이디 리스트
 		String[] freeIds = request.getParameterValues("freeIds");
@@ -43,7 +47,8 @@ public class GoToPutRequestOrDeleteAction implements Action {
 		
 		// 프로젝트 이름을 받아옴
 		String projName = request.getParameter("projName");
-
+		projName = new String(projName.getBytes("8859_1"), "UTF-8");
+		
 		// 프리랜서 리스트 객체변수를 만들어주고
 		ArrayList freeList = null;
 

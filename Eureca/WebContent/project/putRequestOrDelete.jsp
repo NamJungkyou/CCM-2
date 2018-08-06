@@ -7,16 +7,48 @@
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
+<!-- Bootstrap CSS -->
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!-- bootstrap theme -->
+<link href="css/bootstrap-theme.css" rel="stylesheet">
+<!--external css-->
+<!-- font icon -->
+<link href="css/elegant-icons-style.css" rel="stylesheet" />
+<link href="css/font-awesome.min.css" rel="stylesheet" />
+<!-- full calendar css-->
+<link href="assets/fullcalendar/fullcalendar/bootstrap-fullcalendar.css"
+	rel="stylesheet" />
+<link href="assets/fullcalendar/fullcalendar/fullcalendar.css"
+	rel="stylesheet" />
+<!-- easy pie chart-->
+<link href="assets/jquery-easy-pie-chart/jquery.easy-pie-chart.css"
+	rel="stylesheet" type="text/css" media="screen" />
+<!-- owl carousel -->
+<link rel="stylesheet" href="css/owl.carousel.css" type="text/css">
+<link href="css/jquery-jvectormap-1.2.2.css" rel="stylesheet">
+<!-- Custom styles -->
+<link rel="stylesheet" href="css/fullcalendar.css">
+<link href="css/widgets.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+<link href="css/style-responsive.css" rel="stylesheet" />
+<link href="css/xcharts.min.css" rel=" stylesheet">
+<link href="css/jquery-ui-1.10.4.min.css" rel="stylesheet">
+<!-- =======================================================
+    Theme Name: NiceAdmin
+    Theme URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
+    Author: BootstrapMade
+    Author URL: https://bootstrapmade.com
+  ======================================================= -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>투입 메시지 전송</title>
 <script src="//code.jquery.com/jquery.min.js"></script>
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script> 
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <script>
 // 데이트픽커로 투입일 또는 종료일 버튼을 누르면
 // 달력이 동적으로 생성되도록 함
@@ -43,6 +75,20 @@ function getCurDate()
             + days;
     
     return datetime;
+}
+
+/**
+ * 인풋 값이 비어있는지 확인하는 메소드
+ * 값이 비어있으면 true 를 반환
+ */
+function isEmptyValue(value)
+{
+	if (value.value == null || value.value < 0)
+	{
+		return true;
+	}
+	
+	return false;
 }
 
 // 투입 요청 메시지를 보내는 함수
@@ -153,48 +199,53 @@ function submitMessageRequest(number, msgOrPutIn)
 </script>
 </head>
 <body>
-	<form>
-		<table border>
-			<tr>
-				<td>발신인</td>
-				<td>${loginemp.empName}</td>
-				<td>발신일</td>
-				<td><script>document.write(getCurDate())</script></td>
-			</tr>
-			<tr>
-				<td>프로젝트명</td>
-				<td colspan="3">${projName}</td>
-			</tr>
-			<tr>
-				<td>수신인</td>
-				<td>투입일</td>
-				<td colspan="2"></td>
-			</tr>
-			<%-- 이 페이지로 넘어온 투입 대상자들을 목록화해서 페이지에 뿌려줌 --%>
-			<c:forEach var="list" items="${freeList}" varStatus="status">
+	<section id="container" class=""> <section id="main-content">
+	<section class="wrapper">
+	<div class="col-lg-8">
+		<section class="panel">
+		<form>
+
+			<table border>
 				<tr>
-					<td>
-						${list.freeName}
-						<input type="hidden" name="putInFreeIdReal" value="${list.freeId}">
-						<input type="hidden" name="freeNames" value="${list.freeName}">
-					</td>
-					<td>
-						<input type="text" class="datepicker" name="putInStartDate" value="${list.startDate}">
-						~
-						<input type="text" class="datepicker" name="putInExitDate" value="${list.endDate}">
-					</td>
-					<td colspan="2">
-						<input type="button" value="요청전송" onclick="submitMessageRequest(${status.index}, false)">
-						<input type="button" value="투입" onclick="submitMessageRequest(${status.index}, true)">
-					</td>
+					<th>발신인</td>
+					<td>${loginemp.empName}</td>
+					<th>발신일</td>
+					<td><script>document.write(getCurDate())</script></td>
 				</tr>
-			</c:forEach>
-			<tr>
-				<td colspan="4">
-					<input type="button" value="확인" onclick="window.close()">
-				</td>
-			</tr>
-		</table>
-	</form>
+				<tr>
+					<th>프로젝트명</td>
+					<td colspan="3">${projName}</td>
+				</tr>
+				<tr>
+					<th>수신인</td>
+					<th>투입일</td>
+					<td colspan="2"></td>
+				</tr>
+				<%-- 이 페이지로 넘어온 투입 대상자들을 목록화해서 페이지에 뿌려줌 --%>
+				<c:forEach var="list" items="${freeList}" varStatus="status">
+					<tr>
+						<td>${list.freeName} <input type="hidden"
+							name="putInFreeIdReal" value="${list.freeId}"> <input
+							type="hidden" name="freeNames" value="${list.freeName}">
+						</td>
+						<td><input type="text" class="datepicker"
+							name="putInStartDate" value="${list.startDate}" size="10"> ~ <input
+							type="text" class="datepicker" name="putInExitDate"
+							value="${list.endDate}" size="10"></td>
+						<td colspan="2"><input type="button" value="요청전송"
+							onclick="submitMessageRequest(${status.index}, false)"> <input
+							type="button" value="투입"
+							onclick="submitMessageRequest(${status.index}, true)"></td>
+					</tr>
+				</c:forEach>
+				<tr>
+					<td colspan="4"><input type="button" value="확인"
+						onclick="window.close()"></td>
+				</tr>
+			</table>
+		</form>
+		</section>
+	</div>
+	</section> </section> </section>
 </body>
 </html>
