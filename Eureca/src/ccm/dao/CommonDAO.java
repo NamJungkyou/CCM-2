@@ -32,8 +32,9 @@ public class CommonDAO {
 		return instance;
 	}
 
+	// 프리랜서 회원가입
 	public void insertMember(Freelancer fVo) {
-		// 프리랜서 회원가입
+		// 회원가입에 입력된 프리랜서아이디, 이메일, 패스워드 정보를 DB에 등록하는 sql문
 		String sql = "insert into freelancer(" + "freeid, freeemail, freepw) " + "values(?, ?, ?)";
 
 		Connection conn = null;
@@ -43,9 +44,9 @@ public class CommonDAO {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, fVo.getFreeId());
-			pstmt.setString(2, fVo.getFreeEmail());
-			pstmt.setString(3, fVo.getFreePw());
+			pstmt.setString(1, fVo.getFreeId()); // 아이디
+			pstmt.setString(2, fVo.getFreeEmail()); // 이메일
+			pstmt.setString(3, fVo.getFreePw()); // 비밀번호
 
 			pstmt.executeUpdate();
 
@@ -57,9 +58,10 @@ public class CommonDAO {
 
 	}
 
+	// 아이디 중복체크
 	public int confirmID(String freeid) {
 		int result = -1;
-//		String sql = "select freelancer.freeid, employee.empid from freelancer, employee where freelancer.freeid=? and employee.empid=?";
+		// 입력된 아이디값과 DB에 프리랜서 아이디값이 있는지 검색하는 sql문
 		String sql = "select freeid from freelancer where freeid=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -68,8 +70,7 @@ public class CommonDAO {
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, freeid);
-//			pstmt.setString(2, freeid);
+			pstmt.setString(1, freeid); // sql문에 freeid=? 부분에 freeid값을 받음
 		
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -91,9 +92,10 @@ public class CommonDAO {
 		return result;
 	}
 	
+	// 이메일 중복체크
 	public int confirmEmail(String freeemail) {
 		int result = -1;
-//		String sql = "select freelancer.freeid, employee.empid from freelancer, employee where freelancer.freeid=? and employee.empid=?";
+		// 입력된 이메일값과 DB에 프리랜서 이메일값이 있는지 검색하는 sql문
 		String sql = "select freeemail from freelancer where freeemail=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -102,8 +104,7 @@ public class CommonDAO {
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, freeemail);
-//			pstmt.setString(2, freeid);
+			pstmt.setString(1, freeemail); // sql문에 freeemail=? 부분에 freeemail값을 받음
 		
 			rs = pstmt.executeQuery();
 			if (rs.next()) {

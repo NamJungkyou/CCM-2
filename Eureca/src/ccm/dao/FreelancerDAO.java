@@ -21,6 +21,8 @@ import ccm.util.DBManager;
  * 프리랜서에 관련된 메소드들을 정의해 놓은 클래스
  * 
  * @author 글로벌IT경영 남정규
+ * 
+ * @추가작성자 글로벌IT경영 김민현
  *
  */
 public class FreelancerDAO {
@@ -44,13 +46,10 @@ public class FreelancerDAO {
 		return loginFree;
 	}
 
-	/**
-	 * 
-	 * @param freeId
-	 * @return
-	 */
+	// 프리랜서가 회원가입을 하거나, 프리랜서 계정등록을 할 때, 등록하려는 아이디가 기존에 존재하는지 중복검사
 	public int confirmID(String freeId) {
 		int result = -1;
+		// 데이터베이스내에 저장된 freeid값 중 where freeid 값과 중복되는게 있는지 검색
 		String sql = "select freeid from freelancer where freeid=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -59,7 +58,7 @@ public class FreelancerDAO {
 		try {
 			conn = DBManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, freeId);
+			pstmt.setString(1, freeId); // sql문에 freeid=? 부분에 freeid값을 받음
 
 			rs = pstmt.executeQuery();
 			if (rs.next()) {
@@ -84,11 +83,8 @@ public class FreelancerDAO {
 		return result;
 	}
 
-	/**
-	 * 
-	 * @param freeEmail
-	 * @return
-	 */
+	// 등록하려는 프리랜서 이메일이 중복되지 않는지 체크
+	// jsp페이지에서 따로 중복검사를 해야할 필요는 일반적으로 없지만, freeemail는 DB에서 unique로 설정되어있어 값 입력테스트를 할 때 오류발생을 막고자 사용하기 위해 제작
 	public int confirmEmail(String freeEmail) {
 		int result = -1;
 		String sql = "select freeemail from freelancer where freeemail=?";
@@ -124,8 +120,11 @@ public class FreelancerDAO {
 		return result;
 	}
 
+	// 등록하려는 프리랜서 휴대폰 번호가 중복되지 않는지 체크
+	// jsp페이지에서 따로 중복검사를 해야할 필요는 일반적으로 없지만, freephone는 DB에서 unique로 설정되어있어 값 입력테스트를 할 때 오류발생을 막고자 사용하기 위해 제작
 	public int confirmPhone(String freePhone) {
 		int result = -1;
+		// 데이터베이스내에 저장된 freephone값 중 where freephone 값과 중복되는게 있는지 검색
 		String sql = "select freephone from freelancer where freephone=?";
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -159,8 +158,9 @@ public class FreelancerDAO {
 		return result;
 	}
 
+	// 로그인한 프리랜서의 마이프로필을 출력
 	public Freelancer showProfile(String freeid) {
-		// 로그인한 사람 아이디 기준으로 내프로필 출력
+		// 로그인한 사람 아이디 기준으로 내프로필 출력하는 sql문
 		String sql = "select freeId, freePw, freeEmail, freeName, freePic, "
 				+ "date_format(freeBirth, '%Y-%m-%d') as freeBirth, freeSex, freePhone, freeMarried, freeFrontAddr, "
 				+ "freeRearAddr from freelancer where freeId=?";
@@ -174,7 +174,7 @@ public class FreelancerDAO {
 			conn = DBManager.getConnection();
 
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, freeid);
+			pstmt.setString(1, freeid); // sql문에 freeid=? 부분에 freeid값을 받음
 
 			rs = pstmt.executeQuery();
 
@@ -182,18 +182,17 @@ public class FreelancerDAO {
 
 				fVo = new Freelancer();
 
-				fVo.setFreeId(rs.getString("freeId"));
-				fVo.setFreePw(rs.getString("freePw"));
-				fVo.setFreeEmail(rs.getString("freeEmail"));
-				fVo.setFreeName(rs.getString("freeName"));
-				fVo.setFreePic(rs.getString("freePic"));
-
-				fVo.setFreeSex(rs.getBoolean("freeSex"));
-				fVo.setFreePhone(rs.getString("freePhone"));
-				fVo.setFreeMarried(rs.getBoolean("freeMarried"));
-				fVo.setFreeFrontAddr(rs.getString("freeFrontAddr"));
-				fVo.setFreeRearAddr(rs.getString("freeRearAddr"));
-				fVo.setFreeBirth(rs.getString("freeBirth"));
+				fVo.setFreeId(rs.getString("freeId")); // 아이디
+				fVo.setFreePw(rs.getString("freePw")); // 비밀번호
+				fVo.setFreeEmail(rs.getString("freeEmail")); // 이메일
+				fVo.setFreeName(rs.getString("freeName")); // 이름
+				fVo.setFreePic(rs.getString("freePic")); // 사진
+				fVo.setFreeSex(rs.getBoolean("freeSex")); // 성별
+				fVo.setFreePhone(rs.getString("freePhone")); // 전화번호 
+				fVo.setFreeMarried(rs.getBoolean("freeMarried")); // 결혼여부
+				fVo.setFreeFrontAddr(rs.getString("freeFrontAddr")); // 주소
+				fVo.setFreeRearAddr(rs.getString("freeRearAddr")); // 나머지주소
+				fVo.setFreeBirth(rs.getString("freeBirth")); // 생년월일
 
 			}
 		} catch (Exception e) {
@@ -204,7 +203,9 @@ public class FreelancerDAO {
 		return fVo;
 	}
 
+	// 프리랜서 마이프로필 기본정보 수정
 	public void updateProfile(Freelancer fVo) {
+		// 로그인한 프리랜서의 기본정보를 추가등록하거나 수정하는 sql문
 		String sql = "update freelancer set freeEmail=?, freePic=?, freeFilePath=?, freePw=?, freeName=?, "
 				+ "freeBirth=date_format(?, '%Y-%m-%d'), freeSex=?, freeMarried=?, freePhone=?,  "
 				+ "freeFrontAddr=?, freeRearAddr=? where freeId=?";
@@ -216,18 +217,18 @@ public class FreelancerDAO {
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, fVo.getFreeEmail());
-			pstmt.setString(2, fVo.getFreePic());
-			pstmt.setString(3, fVo.getfreeFilePath());
-			pstmt.setString(4, fVo.getFreePw());
-			pstmt.setString(5, fVo.getFreeName());
-			pstmt.setString(6, fVo.getFreeBirth());
-			pstmt.setInt(7, fVo.getFreeSex() == true ? 1 : 0);
-			pstmt.setInt(8, fVo.getFreeMarried() == true ? 1 : 0);
-			pstmt.setString(9, fVo.getFreePhone());
-			pstmt.setString(10, fVo.getFreeFrontAddr());
-			pstmt.setString(11, fVo.getFreeRearAddr());
-			pstmt.setString(12, fVo.getFreeId());
+			pstmt.setString(1, fVo.getFreeEmail()); // 이메일
+			pstmt.setString(2, fVo.getFreePic()); // 사진
+			pstmt.setString(3, fVo.getfreeFilePath()); // 사진저장경로
+			pstmt.setString(4, fVo.getFreePw()); // 비밀번호
+			pstmt.setString(5, fVo.getFreeName()); // 이름
+			pstmt.setString(6, fVo.getFreeBirth()); // 생년월일
+			pstmt.setInt(7, fVo.getFreeSex() == true ? 1 : 0); // 성별
+			pstmt.setInt(8, fVo.getFreeMarried() == true ? 1 : 0); // 결혼여부
+			pstmt.setString(9, fVo.getFreePhone()); // 전화번호
+			pstmt.setString(10, fVo.getFreeFrontAddr()); // 주소
+			pstmt.setString(11, fVo.getFreeRearAddr()); // 나머지주소
+			pstmt.setString(12, fVo.getFreeId()); // 아이디
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -237,29 +238,11 @@ public class FreelancerDAO {
 		}
 	}
 
-	public void updatePicture(Freelancer fVo) {
-		String sql = "update freelancer set freePic=? where freeId=?";
+	/* 기존에 여기에 위치해있던 updatePicture 메소드 삭제했음 사진 업데이트 하는데 전혀 필요없는 메소드*/
 
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try {
-			conn = DBManager.getConnection();
-
-			pstmt = conn.prepareStatement(sql);
-
-			pstmt.setString(1, fVo.getFreePic());
-			pstmt.setString(2, fVo.getFreeId());
-
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DBManager.close(conn, pstmt);
-		}
-	}
-
+	// 프리랜서 계좌정보 출력
 	public Freelancer showAccount(String freeid) {
-		// 로그인한 아이디 기준 계좌등록 화면 출력
+		// 로그인한 아이디 기준 계좌정보 출력 sql문
 		String sql = "select freeBank, freeAccName, freeAccount from freelancer where freeId=?";
 
 		Freelancer fVo = null;
@@ -278,9 +261,9 @@ public class FreelancerDAO {
 			if (rs.next()) {
 				fVo = new Freelancer();
 
-				fVo.setFreeBank(rs.getString("freeBank"));
-				fVo.setFreeAccName(rs.getString("freeAccName"));
-				fVo.setFreeAccount(rs.getString("freeAccount"));
+				fVo.setFreeBank(rs.getString("freeBank")); // 은행명
+				fVo.setFreeAccName(rs.getString("freeAccName")); // 계좌명의
+				fVo.setFreeAccount(rs.getString("freeAccount")); // 계좌번호
 
 			}
 		} catch (Exception e) {
@@ -291,7 +274,9 @@ public class FreelancerDAO {
 		return fVo;
 	}
 
+	// 계좌정보 등록 및 수정
 	public void updateAccount(Freelancer fVo) {
+		// 프리랜서 아이디값을 기준으로 프리랜서 계좌정보 등록 및 수정 sql문
 		String sql = "update freelancer set freeBank=?, freeAccName=?, " + "freeAccount=? where freeId=?";
 
 		Connection conn = null;
@@ -301,10 +286,10 @@ public class FreelancerDAO {
 
 			pstmt = conn.prepareStatement(sql);
 
-			pstmt.setString(1, fVo.getFreeBank());
-			pstmt.setString(2, fVo.getFreeAccName());
-			pstmt.setString(3, fVo.getFreeAccount());
-			pstmt.setString(4, fVo.getFreeId());
+			pstmt.setString(1, fVo.getFreeBank()); // 은행명
+			pstmt.setString(2, fVo.getFreeAccName()); // 계좌명의
+			pstmt.setString(3, fVo.getFreeAccount()); // 계좌번호
+			pstmt.setString(4, fVo.getFreeId()); // 아이디
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -314,6 +299,7 @@ public class FreelancerDAO {
 		}
 	}
 
+	// 새로운 학력정보를 추가할때 필요한 학력번호 생성
 	public int getNewEduNum() {
 		int eduNum = -1;
 		Connection conn = null;
@@ -322,10 +308,12 @@ public class FreelancerDAO {
 
 		try {
 			conn = DBManager.getConnection();
+			// 기존에 있는 학력번호(순번)중 최대(Max)값을 검색하여 그 값에 +1을 하여 NewEduNum을 생성
 			pstmt = conn.prepareStatement("SELECT MAX(EDUNUM) + 1 as NEWEDUNUM FROM EDUCATION");
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
+				// eduNum에 위에서 생성한 NewEduNum값을 넣어줌
 				eduNum = rs.getInt("NEWEDUNUM");
 			}
 		} catch (SQLException e) {
@@ -337,7 +325,9 @@ public class FreelancerDAO {
 		return eduNum;
 	}
 
+	// 프리랜서 학력정보 출력
 	public ArrayList<Education> showEducation(String freeid) {
+		// 프리랜서 아이디 기준으로 등록된 학력정보를 불러오는 sql문
 		String sql = "select eduNum, eduSchool, eduMajor, eduDeploma, schoolJoinDate, schoolGraduatedDate from education where freeId=?";
 
 		ArrayList<Education> eVo = null;
@@ -355,20 +345,20 @@ public class FreelancerDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-
+				// 입학일을 DB에서 불러올때, 시간을 제외한, YYYY-MM-DD와 같이 년도,월,일만 불러오도록 0번째에서 10번째까지 잘라줌
 				String SchoolJoinDate = rs.getString("SchoolJoinDate").toString();
 				String SchoolJoinDatesub = SchoolJoinDate.substring(0, 10);
-
+				// 졸업일을 DB에서 불러올때, 시간을 제외한, YYYY-MM-DD와 같이 년도,월,일만 불러오도록 0번째에서 10번째까지 잘라줌
 				String SchoolGraduatedDate = rs.getString("SchoolGraduatedDate").toString();
 				String SchoolGraduatedDatesub = SchoolGraduatedDate.substring(0, 10);
 
 				Education edu = new Education();
-				edu.setEduNum(rs.getInt("eduNum"));
-				edu.setEduSchool(rs.getString("eduSchool"));
-				edu.setEduMajor(rs.getString("eduMajor"));
-				edu.setEduDeploma(rs.getString("eduDeploma"));
-				edu.setSchoolJoinDate(SchoolJoinDatesub);
-				edu.setSchoolGraduatedDate(SchoolGraduatedDatesub);
+				edu.setEduNum(rs.getInt("eduNum")); // 학력번호
+				edu.setEduSchool(rs.getString("eduSchool")); // 학교명
+				edu.setEduMajor(rs.getString("eduMajor")); // 전공
+				edu.setEduDeploma(rs.getString("eduDeploma")); // 학위
+				edu.setSchoolJoinDate(SchoolJoinDatesub); // 입학일(String으로 선언된 년,월,일로 자른 입학일값)
+				edu.setSchoolGraduatedDate(SchoolGraduatedDatesub); // 졸업일 (String으로 선언된 년,월,일로 자른 졸업일값)
 
 				eVo.add(edu);
 			}
@@ -380,13 +370,15 @@ public class FreelancerDAO {
 		return eVo;
 	}
 
+	// 학력정보 추가 등록 및 수정
 	public void updateEducation(ArrayList<Education> eVos) {
-
+		// 사용자가 입력한 정보 중 eduNum을 기준으로 education 테이블에 eduNum이 존재하면 update(수정)를 하고, 존재하지 않으면 insert(등록)을 하는 sql문
+		// insert가 실행될때는 on duplicate 전까지의 구문이 실행되고, update는 on duplicate 뒤의 구문이 실행
 		String sql = "INSERT INTO education (edunum, eduschool, edumajor, edudeploma, schooljoindate, schoolgraduateddate, freeid) VALUES (?, ?, ?, ?, date_format(?, '%Y-%m-%d'), date_format(?, '%Y-%m-%d'), ?) "
 				+ "ON DUPLICATE KEY UPDATE edunum=?, eduschool=?, edumajor=?, edudeploma=?, schooljoindate=date_format(?, '%Y-%m-%d'), schoolgraduateddate=date_format(?, '%Y-%m-%d'), freeid=?";
 
-		// System.out.println("느얼" + eVos.get(getNewEduNum()).toString());
-		// System.out.println("느얼" + eVo.getSchoolJoinDate().toString());
+		// System.out.println("학력번호가 들어갔는지 테스트" + eVos.get(getNewEduNum()).toString());
+		// System.out.println("입학일이 들어갔는지 테스트" + eVo.getSchoolJoinDate().toString());
 
 		Connection conn = null;
 		PreparedStatement pstmt = null;
@@ -395,21 +387,24 @@ public class FreelancerDAO {
 
 			for (Education e : eVos) {
 				pstmt = conn.prepareStatement(sql);
-
-				pstmt.setInt(1, e.getEduNum());
-				pstmt.setString(2, e.getEduSchool());
-				pstmt.setString(3, e.getEduMajor());
-				pstmt.setString(4, e.getEduDeploma());
-				pstmt.setString(5, e.getSchoolJoinDate());
-				pstmt.setString(6, e.getSchoolGraduatedDate());
-				pstmt.setString(7, e.getFreeId());
-				pstmt.setInt(8, e.getEduNum());
-				pstmt.setString(9, e.getEduSchool());
-				pstmt.setString(10, e.getEduMajor());
-				pstmt.setString(11, e.getEduDeploma());
-				pstmt.setString(12, e.getSchoolJoinDate());
-				pstmt.setString(13, e.getSchoolGraduatedDate());
-				pstmt.setString(14, e.getFreeId());
+				
+				// 새로운 eduNum이 등록되어 insert
+				pstmt.setInt(1, e.getEduNum()); // 학력번호
+				pstmt.setString(2, e.getEduSchool()); // 학교명
+				pstmt.setString(3, e.getEduMajor()); // 전공
+				pstmt.setString(4, e.getEduDeploma()); // 학위
+				pstmt.setString(5, e.getSchoolJoinDate()); // 입학일
+				pstmt.setString(6, e.getSchoolGraduatedDate()); // 졸업일
+				pstmt.setString(7, e.getFreeId()); // 아이디
+				
+				// 기존에 존재하는 eduNum이 있어 update
+				pstmt.setInt(8, e.getEduNum()); // 학력번호
+				pstmt.setString(9, e.getEduSchool()); // 학교명
+				pstmt.setString(10, e.getEduMajor()); // 전공
+				pstmt.setString(11, e.getEduDeploma()); // 학위
+				pstmt.setString(12, e.getSchoolJoinDate()); // 입학일
+				pstmt.setString(13, e.getSchoolGraduatedDate()); // 졸업일
+				pstmt.setString(14, e.getFreeId()); // 아이디
 
 				pstmt.executeUpdate();
 
@@ -422,6 +417,7 @@ public class FreelancerDAO {
 		}
 	}
 
+	// 새로운 경력정보를 추가할때 필요한 경력번호 생성
 	public int getNewCareerNum() {
 		int careerNum = -1;
 		Connection conn = null;
@@ -430,10 +426,12 @@ public class FreelancerDAO {
 
 		try {
 			conn = DBManager.getConnection();
+			// career 테이블에서 기존의 careerNum중 최대값(max)를 검색하여 +1을 하고 newCareerNum을 출력
 			pstmt = conn.prepareStatement("SELECT MAX(CAREERNUM) + 1 as NEWCAREERNUM FROM CAREER");
 
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
+				// 위에서 출력한 newCareerNum을 careerNum에 입력
 				careerNum = rs.getInt("NEWCAREERNUM");
 			}
 		} catch (SQLException e) {
@@ -445,7 +443,9 @@ public class FreelancerDAO {
 		return careerNum;
 	}
 
+	// 프리랜서 경럭정보 출력
 	public ArrayList<Career> showCareer(String freeid) {
+		// 프리랜서 아이디값을 기준으로 경력정보 출력 sql문
 		String sql = "select careerNum, careerCompany, companyJoinDate, companyDropDate, careerPosition, careerJob from career where freeId=?";
 
 		ArrayList<Career> cVo = null;
@@ -463,20 +463,20 @@ public class FreelancerDAO {
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-
+				// 입사일을 DB에서 불러올때, 시간을 제외한, YYYY-MM-DD와 같이 년도,월,일만 불러오도록 0번째에서 10번째까지 잘라줌
 				String CompanyJoinDate = rs.getString("CompanyJoinDate").toString();
 				String CompanyJoinDatesub = CompanyJoinDate.substring(0, 10);
-
+				// 퇴사일을 DB에서 불러올때, 시간을 제외한, YYYY-MM-DD와 같이 년도,월,일만 불러오도록 0번째에서 10번째까지 잘라줌
 				String CompanyDropDate = rs.getString("CompanyDropDate").toString();
 				String CompanyDropDatesub = CompanyDropDate.substring(0, 10);
 
 				Career car = new Career();
-				car.setCareerNum(rs.getInt("careerNum"));
-				car.setCareerCompany(rs.getString("careerCompany"));
-				car.setCompanyJoinDate(CompanyJoinDatesub);
-				car.setCompanyDropDate(CompanyDropDatesub);
-				car.setCareerPosition(rs.getString("careerPosition"));
-				car.setCareerJob(rs.getString("careerJob"));
+				car.setCareerNum(rs.getInt("careerNum")); // 경력번호
+				car.setCareerCompany(rs.getString("careerCompany")); // 회사명
+				car.setCompanyJoinDate(CompanyJoinDatesub); // 입사일(String으로 선언된 년,월,일로 자른 입사일값)
+				car.setCompanyDropDate(CompanyDropDatesub); // 퇴사일(String으로 선언된 년,월,일로 자른 퇴사일값)
+				car.setCareerPosition(rs.getString("careerPosition")); // 직책
+				car.setCareerJob(rs.getString("careerJob")); // 회사내 역할
 
 				cVo.add(car);
 			}
@@ -488,7 +488,9 @@ public class FreelancerDAO {
 		return cVo;
 	}
 
+	// 경력정보 추가 등록 및 수정
 	public void updateCareer(ArrayList<Career> cVos) {
+		// careerNum을 기준으로 careerNum이 존재하면 update, 존재하지 않으면 insert하는 sql문
 		String sql = "INSERT INTO career (careernum, careercompany, companyjoindate, companydropdate, careerposition, careerjob, freeid) VALUES (?, ?, date_format(?, '%Y-%m-%d'), date_format(?, '%Y-%m-%d'), ?, ?, ?) "
 				+ "ON DUPLICATE KEY UPDATE careernum=?, careercompany=?, companyjoindate=date_format(?, '%Y-%m-%d'), companydropdate=date_format(?, '%Y-%m-%d'), careerposition=?, careerjob=?, freeid=?";
 
@@ -500,20 +502,23 @@ public class FreelancerDAO {
 			for (Career c : cVos) {
 				pstmt = conn.prepareStatement(sql);
 
-				pstmt.setInt(1, c.getCareerNum());
-				pstmt.setString(2, c.getCareerCompany());
-				pstmt.setString(3, c.getCompanyJoinDate());
-				pstmt.setString(4, c.getCompanyDropDate());
-				pstmt.setString(5, c.getCareerPosition());
-				pstmt.setString(6, c.getCareerJob());
-				pstmt.setString(7, c.getFreeId());
-				pstmt.setInt(8, c.getCareerNum());
-				pstmt.setString(9, c.getCareerCompany());
-				pstmt.setString(10, c.getCompanyJoinDate());
-				pstmt.setString(11, c.getCompanyDropDate());
-				pstmt.setString(12, c.getCareerPosition());
-				pstmt.setString(13, c.getCareerJob());
-				pstmt.setString(14, c.getFreeId());
+				// careerNum이 존재하지 않을 때 insert
+				pstmt.setInt(1, c.getCareerNum()); // 경력번호
+				pstmt.setString(2, c.getCareerCompany()); // 회사명
+				pstmt.setString(3, c.getCompanyJoinDate()); // 입사일
+				pstmt.setString(4, c.getCompanyDropDate()); // 퇴사일
+				pstmt.setString(5, c.getCareerPosition()); // 직책
+				pstmt.setString(6, c.getCareerJob()); // 회사내 역할
+				pstmt.setString(7, c.getFreeId()); // 아이디
+				
+				// careerNum이 존재할 때 update
+				pstmt.setInt(8, c.getCareerNum()); // 경력번호
+				pstmt.setString(9, c.getCareerCompany()); // 회사명
+				pstmt.setString(10, c.getCompanyJoinDate()); // 입사일
+				pstmt.setString(11, c.getCompanyDropDate()); // 퇴사일
+				pstmt.setString(12, c.getCareerPosition()); // 직책
+				pstmt.setString(13, c.getCareerJob()); // 회사내 역할
+				pstmt.setString(14, c.getFreeId()); // 아이디
 
 				pstmt.executeUpdate();
 
@@ -632,7 +637,9 @@ public class FreelancerDAO {
 		return skillInven;
 	}
 
+	// 프리랜서 계정 탈퇴(삭제)
 	public void deleteFreelancer(String freeid) {
+		// 프리랜서 아이디값을 기준으로 프리랜서 계정 삭제 sql문
 		String sql = "delete from freelancer where freeId=?";
 
 		Connection conn = null;
