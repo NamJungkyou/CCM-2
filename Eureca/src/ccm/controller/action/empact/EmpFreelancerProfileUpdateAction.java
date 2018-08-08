@@ -33,7 +33,7 @@ public class EmpFreelancerProfileUpdateAction implements Action {
         MultipartRequest multi = new MultipartRequest(request, savePath, sizeLimit, "utf-8", new DefaultFileRenamePolicy());
        
         // 기존의 request.getParameter로 값을 받을 수 없어, multi.getParameter로 값을 받음
-        // jsp페이지에서 form태그안에 enctype을 multipart/form-data으로 선언
+        // jsp페이지에서 form태그안에 enctype을 multipart/form-data로 선언
         String freeEmail = multi.getParameter("freeEmail"); // 이메일
         String freePw = multi.getParameter("freePw"); // 비밀번호
         String freeName = multi.getParameter("freeName"); // 이름
