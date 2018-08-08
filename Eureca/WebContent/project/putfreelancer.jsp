@@ -779,7 +779,8 @@
 		web_window.focus();
 	}
 	
-	
+	// 프로젝트 투입페이지의 프로젝트 번호를
+	// 바꿔서 다시 프로젝트 정보를 불러옴
 	function refreshWithProjectNum(projNum)
 	{
 		var url = "ProjectServ?command=addtoputinfreelancerlist&curProjNum=" + projNum;
