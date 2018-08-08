@@ -490,7 +490,6 @@
 									프로젝트 참여 기록
 									<div style="float: right;">
 										정렬 기준
-										
 										<%-- 참여기록 정렬옵션 코드를 검사해서 체크상태를 유지함 --%> 
 										<select name="joinedRecordSortCode"
 											onchange="changeJoinedRecordSortCode(this.value)">

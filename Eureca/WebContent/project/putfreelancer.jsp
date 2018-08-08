@@ -750,11 +750,13 @@
 		var projName = "${curProject.projName}";
 		
 		var url = "ProjectServ?command=putrequestordelete" + "&projNum=" + projNum + "&projName=" + projName;
-		
+
 		for(var i = 0; i < freeIdCheckBox.length; i++)
 			if(freeIdCheckBox[i].checked) url += "&freeIds=" + freeIdCheckBox[i].value;
+				
+		var a = window.open(url, "", "width=450, height=500, left=500, top=400");
 		
-		window.open(url, "", "width=400, height=300, left=500, top=400");
+		a.location.href=url;
 	}
 	
 	// 프리랜서 검색창을 팝업으로 생성
