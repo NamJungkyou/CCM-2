@@ -71,6 +71,7 @@ public class SendMessageForPutInProcessAction implements Action {
 		request.setAttribute("freeList", freeList);
 		request.setAttribute("projNum", Integer.valueOf(projNum));
 		request.setAttribute("projName", projName);
+		request.setAttribute("msg", 1);
 
 		request.getRequestDispatcher("/project/putRequestOrDelete.jsp").forward(request, response);
 	}

@@ -81,10 +81,18 @@ function getCurDate()
  * 인풋 값이 비어있는지 확인하는 메소드
  * 값이 비어있으면 true 를 반환
  */
-function isEmptyValue(value)
+function isEmptyValue(number)
 {
-	if (value.value == null || value.value < 0)
+	var startDate = document.getElementsByName("putInStartDate")[number].value;
+	var exitDate = document.getElementsByName("putInExitDate")[number].value;
+	if (startDate == "")
 	{
+		alert("투입일을 선택해주세요");
+		return true;
+	}
+	else if (exitDate == "")
+	{
+		alert("철수일을 선택해주세요");
 		return true;
 	}
 	
@@ -98,6 +106,8 @@ function isEmptyValue(value)
 // 강제투입을 할 건지 결정하는 불리언변수
 function submitMessageRequest(number, msgOrPutIn)
 {
+	if (isEmptyValue(number)) return;
+	
 	// 폼 객체를 새로 생성함
 	var form = document.createElement("form");
 	form.setAttribute("method", "post");
@@ -141,7 +151,7 @@ function submitMessageRequest(number, msgOrPutIn)
 	length.setAttribute("name","length");
 	length.setAttribute("value", document.getElementsByName("putInFreeIdReal").length);
 	
-	// 인덱스는 함수 파라미터로 넘겨진 넘버
+	// 투입 또는 메시지를 보낼 프리랜서의 인덱스
 	var index = document.createElement("input");
 	index.setAttribute("type", "hidden");
 	index.setAttribute("name", "index");
@@ -191,14 +201,23 @@ function submitMessageRequest(number, msgOrPutIn)
 	}
 	
 	// 파라미터 값에 따라 얼럿 메시지를 다르게 줌
-	if(msgOrPutIn) alert("투입되었습니다");
-	else alert("투입 요청 메시지를 보냈습니다");
+//	if(msgOrPutIn) alert("투입되었습니다");
+//	else alert("투입 요청 메시지를 보냈습니다");
 	
 	form.submit();
 }
+
+// 투입 또는 메시지를 보낸 후
+// 다시 이 페이지를 요청하면 경고창을 띄움
+function PostPutInOrSendMessage(msg)
+{
+	if (msg == 1) alert("투입되었습니다");
+	else if (msg == 2) alert("투입요청 메시지를 보냈습니다");
+}
+
 </script>
 </head>
-<body>
+<body onload="PostPutInOrSendMessage(${msg})">
 	<section id="container" class=""> <section id="main-content">
 	<section class="wrapper">
 	<div class="col-lg-8">
@@ -207,18 +226,18 @@ function submitMessageRequest(number, msgOrPutIn)
 
 			<table border>
 				<tr>
-					<th>발신인</td>
+					<th>발신인</th>
 					<td>${loginemp.empName}</td>
-					<th>발신일</td>
+					<th>발신일</th>
 					<td><script>document.write(getCurDate())</script></td>
 				</tr>
 				<tr>
-					<th>프로젝트명</td>
+					<th>프로젝트명</th>
 					<td colspan="3">${projName}</td>
 				</tr>
 				<tr>
-					<th>수신인</td>
-					<th>투입일</td>
+					<th>수신인</th>
+					<th>투입일</th>
 					<td colspan="2"></td>
 				</tr>
 				<%-- 이 페이지로 넘어온 투입 대상자들을 목록화해서 페이지에 뿌려줌 --%>
