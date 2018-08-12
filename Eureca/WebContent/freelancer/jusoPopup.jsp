@@ -1,3 +1,14 @@
+<%--
+
+	주소검색 API(행정안전부 제공) jsp
+
+	작성자 : 글로벌IT경영 김민현
+	
+	기능은 시스템 필요에 맞게 어느정도 수정을 거침
+	
+	기본적으로 가져올때부터 주석이 어느정도 달려잇었음
+	
+ --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
