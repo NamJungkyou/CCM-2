@@ -1,3 +1,12 @@
+<%--
+
+	로그인한 관리자 계정정보 수정 jsp(현재는 없는 페이지)
+	
+	사원계정등록과 거의 동일하므로 주석참조바람
+
+	작성자 : 글로벌IT경영 김민현
+	
+ --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
