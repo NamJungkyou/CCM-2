@@ -1,3 +1,10 @@
+<%-- 
+
+	사원계정등록 페이지
+	
+	@작성자 : 글로벌IT경영 김민현
+	
+--%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -17,16 +24,18 @@
 	<section id="container" class="">
 		<section id="main-content">
 			<section class="wrapper">
+				<!-- 사진업로드 기능을 위해 enctype을  multipart/form-data로 설정-->
+				<!-- form태그안에 enctype을 multipart/form-data로 설정하게되면 설정한 form안의 모든 값들은 request가 아닌 multi로 parameter값을 받아야함 -->
 				<form name="frm" method="post" enctype="multipart/form-data">
-					<!-- <div class="col-lg-10"> -->
 					<section class="panel">
 						<header class="panel-heading no-border"> 사원 계정 등록 </header>
 						<table class="table table-bordered">
 							<tr>
 								<th>아이디</th>
 								<td colspan="2"><input type="text" name="empId"
-									value="${empId}"> <input type="button" value="중복체크"
-									onclick="idCheck()"></td>
+									value="${empId}"> 
+								<!-- 아이디 중복체크 -->	
+								<input type="button" value="중복체크" onclick="idCheck()"></td>
 
 								<th>비밀번호</th>
 								<td colspan=""><input type="password" name="empPw"
@@ -38,9 +47,9 @@
 
 							<tr>
 								<th rowspan="4">사진</th>
-								<td rowspan="4" colspan="2"><img
-									src="/Eureca/upload/${empPicture}"> <input type="file"
-									name="empPicture" value="${empPicture}"></td>
+								<td rowspan="4" colspan="2">
+							<%-- 	<img src="/Eureca/upload/${empPicture}">  --%>
+								<input type="file" name="empPicture" value="${empPicture}"></td>
 
 								<th>이름</th>
 								<td><input type="text" name="empName" value="${empName}"></td>
@@ -151,16 +160,16 @@
 									value="${empAccount}" size="20" style="width: 97%;"></td>
 							</tr>
 							<tr>
-								<td><input type="button" value="등록"
-									onclick="return ProfileUpdate()"></td>
+								<!-- <td><input type="button" value="등록"
+									onclick="return ProfileUpdate()"></td> -->
 							</tr>
 						</table>
 					</section>
 					<!-- 			</div> -->
-				</form>
+				
 				<div class="clear"></div>
-				<form name="frm2" method="post">
-					<section class="panel">
+		
+						<!-- 학력 등록 -->
 						<header class="panel-heading no-border"> 학력 </header>
 						<table class="table table-bordered">
 							<thead>
@@ -175,6 +184,7 @@
 
 							<c:forEach var="educationList" items="${Education}">
 								<tr>
+								<!-- eduNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 -->
 									<td><input type="hidden" name="eduNum"
 										value="${educationList.eduNum}"> <input type="text"
 										name="eduSchool" value="${educationList.eduSchool}"></td>
@@ -188,17 +198,18 @@
 										value="${educationList.schoolGraduatedDate}"></td>
 								</tr>
 							</c:forEach>
+							<!-- javascript에서 행추가 및 행삭제 기능을 실행하기 위해 tbody id를 my-tbody로 설정 -->
 							<tbody id="my-tbody">
 							</tbody>
 						</table>
 
 
 						<input type="button" onclick="add_row()" value="행추가"> <input
-							type="button" onclick="delete_row()" value="행삭제"> <input
+							type="button" onclick="delete_row()" value="행삭제"> <%-- <input
 							type="button" value="등록"
-							onclick="return EducationUpdate('${empId}')">
-
-
+							onclick="return EducationUpdate('${empId}')"> --%>
+	
+						<!-- 경력 등록 -->
 						<header class="panel-heading no-border"> 경력 </header>
 						<table class="table table-bordered">
 							<thead>
@@ -212,6 +223,7 @@
 
 							<c:forEach var="CareerList" items="${Career}">
 								<tr>
+								<!-- careerNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 -->
 									<td><input type="hidden" name="careerNum"
 										value="${CareerList.careerNum}"> <input type="text"
 										name="careerCompany" value="${CareerList.careerCompany}">
@@ -227,6 +239,7 @@
 										value="${CareerList.careerJob}"></td>
 								</tr>
 							</c:forEach>
+							<!-- javascript에서 행추가 및 행삭제 기능을 실행하기 위해 tbody id를 CareerTable로 설정 -->
 							<tbody id="CareerTable">
 							</tbody>
 						</table>
@@ -234,8 +247,11 @@
 						<input type="button" onclick="add_row2()" value="행추가"> <input
 							type="button" onclick="delete_row2()" value="행삭제"> <input
 							type="button" value="등록"
-							onclick="return CareerUpdate('${empId}')">
-
+							onclick="return TotalUpdate()">
+				</form>
+				
+				<form name="frm2" method="post">
+					<section class="panel">
 						<header class="panel-heading no-border"> Skill Inventory
 						</header>
 						<table class="table table-bordered" id="skillInv">
