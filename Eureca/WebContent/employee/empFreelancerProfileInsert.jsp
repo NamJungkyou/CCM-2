@@ -1,3 +1,10 @@
+<%--
+
+	프리랜서 계정등록 jsp
+
+	작성자 : 글로벌IT경영 김민현
+	
+ --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -21,7 +28,8 @@
 	<section id="container" class="">
 		<section id="main-content">
 			<section class="wrapper">
-				<!-- <form name="frm" method="post" action="FreelancerServ"> -->
+			<!-- 사진 업로드를 위해 form태그안에 enctype을 multipart/form-data로 설정 -->
+			<!-- 기존의 request로 Parameter값을 받지 못하고 multi로 값을 받아야함 자세한건 Action참조 -->
 				<form name="frm" method="post" enctype="multipart/form-data">
 					<!-- <input type="hidden" name="command" value="freelancer_Profile_update"> -->
 					<section class="panel">
@@ -30,12 +38,14 @@
 							<tr>
 								<th>아이디</th>
 								<td colspan="2"><input type="text" name="freeId"
-									value="${freeId}"><input type="button" value="중복체크"
-									onclick="idCheck()"></td>
+									value="${freeId}">
+									<!-- 아이디 중복체크버튼 -->
+								<input type="button" value="중복체크" onclick="idCheck()"></td>
 								<th>이메일</th>
 								<td colspan="3"><input type="text" name="freeEmail"
-									value="${freeEmail}"> <input type="button" value="중복체크"
-									onclick="emailCheck()"></td>
+									value="${freeEmail}"> 
+								<!-- 이메일 중복체크버튼(있어도되고 없어도되고) --> 
+								<input type="button" value="중복체크" onclick="emailCheck()"></td>
 							</tr>
 
 							<tr>
@@ -48,8 +58,8 @@
 
 							<tr>
 								<th rowspan="5">사진</th>
-								<td rowspan="5" colspan="2"><img
-									src="/Eureca/upload/${freelancer.freePic}"> <input
+								<td rowspan="5" colspan="2"><%-- <img
+									src="/Eureca/upload/${freelancer.freePic}"> --%> <input
 									type="file" name="freePic" value="${freelancer.freePic}">
 								</td>
 								<th>이름</th>
@@ -93,10 +103,12 @@
 								<th rowspan="2">주소</th>
 								<td colspan="3"><input type="text" id="roadAddrPart1"
 									name="freeFrontAddr" value="${freeFrontAddr}" size="20">
+								<!-- 주소검색 API호출 --> 
 								<input type="button" onClick="goPopup();" value="주소찾기" /></td>
 							</tr>
 
 							<tr>
+								<!-- FrontAddr은 API에서 검색한 값을 바탕으로 자동입력되고 addrDetail값은 관리자가 직접 입력해야함 -->
 								<td colspan="3"><input type="text" id="addrDetail"
 									name="freeRearAddr" value="${freeRearAddr}"></td>
 							</tr>
@@ -105,6 +117,7 @@
 
 					</section>
 
+				    <!-- 계좌정보등록 -->
 					<section class="panel">
 						<header class="panel-heading no-border"> 계좌등록 </header>
 						<table class="table table-bordered">
@@ -139,7 +152,7 @@
 				</form>
 
 				<form name="frm2" method="post">
-					<input type="button" value="등록" onclick="return empFreeInsert()">
+					<!-- <input type="button" value="등록" onclick="return empFreeInsert()"> -->
 					<section class="panel">
 						<header class="panel-heading no-border"> 학력 </header>
 						<table class="table table-bordered">
@@ -155,6 +168,7 @@
 							</thead>
 							<c:forEach var="Education" items="${Education}">
 								<tr>
+								<!-- eduNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 -->
 									<td><input type="hidden" name="eduNum"
 										value="${Education.eduNum}"> <input type="text"
 										name="eduSchool" value="${Education.eduSchool}"></td>
@@ -168,13 +182,14 @@
 										value="${Education.schoolGraduatedDate}"></td>
 								</tr>
 							</c:forEach>
+							<!-- javascript에서 행추가 및 행삭제 기능을 실행하기 위해 tbody id를 empFreeEducationTable로 설정 -->
 							<tbody id="empFreeEducationTable">
 							</tbody>
 						</table>
 						<input type="button" onclick="add_Edu_row()" value="행추가">
 						<input type="button" onclick="delete_Edu_row()" value="행삭제">
-						<input type="button" value="등록"
-							onclick="return empFreeEducationInsert('${freeId}')">
+						<%-- <input type="button" value="등록"
+							onclick="return empFreeEducationInsert('${freeId}')"> --%>
 					</section>
 					<section class="panel">
 						<header class="panel-heading no-border"> 경력 </header>
@@ -190,6 +205,7 @@
 
 							<c:forEach var="Career" items="${Career}">
 								<tr>
+								<!-- careerNum은 따로 등록하거나 수정하는게 아니라 자동으로 설정되는 값이므로 hidden타입으로 설정 -->
 									<td><input type="hidden" name="careerNum"
 										value="${Career.careerNum}"> <input type="text"
 										name="careerCompany" value="${Career.careerCompany}"></td>
@@ -204,14 +220,16 @@
 										value="${Career.careerJob}"></td>
 								</tr>
 							</c:forEach>
+							<!-- javascript에서 행추가 및 행삭제 기능을 실행하기 위해 tbody id를 empFreeCareerTable로 설정 -->
 							<tbody id="empFreeCareerTable">
 							</tbody>
 						</table>
 
 						<input type="button" onclick="add_Career_row()" value="행추가">
 						<input type="button" onclick="delete_Career_row()" value="행삭제">
+						<!-- 한번에 전체등록 -->
 						<input type="button" value="등록"
-							onclick="return empFreeCareerUpdate('${freeId}')">
+                    	 onclick="return empFreeTestInsert()">
 					</section>
 					<section class="panel">
 						<header class="panel-heading no-border"> Skill Inventory
