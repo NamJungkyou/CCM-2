@@ -1,3 +1,12 @@
+<%--
+
+	프리랜서 계정수정 jsp
+	
+	프리랜서계정등록과 거의 동일하므로 주석참조바람
+
+	작성자 : 글로벌IT경영 김민현
+	
+ --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
